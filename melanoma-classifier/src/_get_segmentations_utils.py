@@ -81,8 +81,8 @@ def compute_segmentations(cfg, df, input_path, output_path):
 
 # Detta har vi gjort
 
-testImg = cv2.imread("./../../randomTest/Dullrazor-algorithm/ISIC_0031023.jpg")
-razoredImg = dullrazor(testImg)
-cv2.imshow("Kanser", razoredImg)
-cv2.waitKey(0) # waits until a key is pressed
-cv2.destroyAllWindows() 
+# testImg = cv2.imread("./../../randomTest/Dullrazor-algorithm/ISIC_0031023.jpg")
+# razoredImg = dullrazor(testImg)
+# cv2.imshow("Kanser", razoredImg)
+# cv2.waitKey(0) # waits until a key is pressed
+# cv2.destroyAllWindows() 
