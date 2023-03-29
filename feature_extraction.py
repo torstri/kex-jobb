@@ -1,10 +1,14 @@
+import os
 import cv2
 from border_detection import border_detection
 import dullrazor
 # import dullrazor
 from skimage import measure
 from melanoma_classifier.src import _get_tabular_dataframe_utils as tab
-import pandas
+# import pandas
+from sklearn.datasets import make_classification
+import numpy as np
+import csv
 
 
 def get_props(segment_label):
@@ -52,12 +56,40 @@ def feature_extraction(original_path, segmented_path):
 # color_f, asymm_f, bord_f = feature_extraction(original_path, segmented_path)
 # print("\ncolor features: ", color_f, "\n\n asymmetry features: ", asymm_f, "\n\n border features: ", bord_f)
 
+def create_array(path):
+  # x = np.array()
+  y = np.zeros()
+  
+  imgs_path = path + "/images"
+  seg_imgs_path = path + "/masks"
 
-def uh():
-    df = pandas.DataFrame(columns=["img_id", "mask_id", "A1", "A2", "irA", "irB", "F4","F5","F6","F10","F11","F12","F13","F14","F15"])
-    original_path = "./orginal.png"
-    segmented_path =  "./segmenterad.png"
-    features = feature_extraction(original_path,segmented_path)
-    print(features)
+  for img_number in range(24306, 34320):  # 34320
+    img_path = imgs_path + "/ISIC_00" + str(img_number) + ".jpg"
+    seg_img_path = seg_imgs_path + "/ISIC_00" + str(img_number) + "_segmentation.jpg"
+    features = feature_extraction(img_path, seg_img_path)
     
-uh()
+  
+
+    
+    # img = cv2.imread(img_path)
+    # cv2.imshow(str(img_number), img)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+
+def read_csv(path):
+  x = np.zeros(10015)
+  i = 0
+  with open(path, 'r') as file:
+    next(file)
+    csvreader = csv.reader(file)
+    for row in csvreader:
+      if(row[1] == 1.0):
+        x[i] = 1
+      else:
+        x[i] = 0
+      i += 1
+  print(x)
+  
+read_csv("./dataset/archive-2/GroundTruth.csv")
+
+# create_array("./dataset/archive-2")
