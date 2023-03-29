@@ -5,35 +5,49 @@ import dullrazor
 from skimage import measure
 from melanoma_classifier.src import _get_tabular_dataframe_utils as tab
 
-original_path = "./orginal.png"
-segemented_path =  "./segmenterad.png"
 
-# original_img = cv2.imread(original_path)
 
-# Dullrazor
-original_img = dullrazor.dullrazor(original_path)
+def get_props(segment_label):
+  return measure.regionprops_table(segment_label, properties=['area', 'extent', 'perimeter', 'solidity', 'major_axis_length', 'minor_axis_length', 'centroid'])
 
-contours = border_detection.find_border(segemented_path, original_path)
-# print(contours)
-
-segmented_img = cv2.imread(segemented_path)
-imgseg = cv2.cvtColor(segmented_img.astype('uint8'), cv2.COLOR_BGR2GRAY)/255.
-segment_label = measure.label(imgseg)
-props = measure.regionprops_table(segment_label, properties=['area', 'extent', 'perimeter', 'solidity', 'major_axis_length', 'minor_axis_length', 'centroid'])
 # Retrieve assymmetry features
-A1, A2 = tab.getAsymmetry(imgseg, props['centroid-0'][0], props['centroid-1'][0], props['area'][0])
+def get_asymmetry_features(props, imgseg):
+  A1, A2 = tab.getAsymmetry(imgseg, props['centroid-0'][0], props['centroid-1'][0], props['area'][0])
+  return [A1, A2]
 
-# print(props)
-print("A1: ", A1, ", A2: ", A2)
 
 # Colour features extraction
-colour_features = tab.getColorFeatures(original_img, imgseg)
-print("Colour features: " , colour_features)
+def get_colour_features(original_img, imgseg):
+    colour_features = tab.getColorFeatures(original_img, imgseg)
+    return colour_features
 
 # Border feature extraction
-irA = props['perimeter'][0] / props['area'][0]
-irB = tab.getBorderIrregularity(props['perimeter'][0], props['minor_axis_length'][0], props['major_axis_length'][0])
+def get_border_features (props):
+    irA = props['perimeter'][0] / props['area'][0]
+    irB = tab.getBorderIrregularity(props['perimeter'][0], props['minor_axis_length'][0], props['major_axis_length'][0])
 
-print('irA: ' , irA)
+    # print('irA: ' , irA)
+    # print('irB: ' , irB)
+    return [irA, irB]
 
-print('irB: ' , irB)
+def feature_extraction(original_path, segmented_path):
+    original_img = dullrazor.dullrazor(original_path) # dullrazor
+
+    contours = border_detection.find_border(segmented_path, original_path)
+
+    segmented_img = cv2.imread(segmented_path)
+    imgseg = cv2.cvtColor(segmented_img.astype('uint8'), cv2.COLOR_BGR2GRAY)/255.
+    segment_label = measure.label(imgseg)
+    props = get_props(segment_label)
+    
+    colour_features = get_colour_features(original_img, imgseg)
+    asymmetry_features = get_asymmetry_features(props, imgseg)
+    border_features = get_border_features(props)
+    
+    return colour_features, asymmetry_features, border_features
+
+
+original_path = "./orginal.png"
+segmented_path =  "./segmenterad.png"
+color_f, asymm_f, bord_f = feature_extraction(original_path, segmented_path)
+print("\ncolor features: ", color_f, "\n\n asymmetry features: ", asymm_f, "\n\n border features: ", bord_f)
