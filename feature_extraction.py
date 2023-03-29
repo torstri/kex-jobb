@@ -4,7 +4,7 @@ import dullrazor
 # import dullrazor
 from skimage import measure
 from melanoma_classifier.src import _get_tabular_dataframe_utils as tab
-
+import pandas
 
 
 def get_props(segment_label):
@@ -51,3 +51,13 @@ def feature_extraction(original_path, segmented_path):
 # segmented_path =  "./segmenterad.png"
 # color_f, asymm_f, bord_f = feature_extraction(original_path, segmented_path)
 # print("\ncolor features: ", color_f, "\n\n asymmetry features: ", asymm_f, "\n\n border features: ", bord_f)
+
+
+def uh():
+    df = pandas.DataFrame(columns=["img_id", "mask_id", "A1", "A2", "irA", "irB", "F4","F5","F6","F10","F11","F12","F13","F14","F15"])
+    original_path = "./orginal.png"
+    segmented_path =  "./segmenterad.png"
+    features = feature_extraction(original_path,segmented_path)
+    print(features)
+    
+uh()
