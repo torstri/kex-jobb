@@ -47,7 +47,7 @@ def feature_extraction(original_path, segmented_path):
     return colour_features, asymmetry_features, border_features
 
 
-original_path = "./orginal.png"
-segmented_path =  "./segmenterad.png"
-color_f, asymm_f, bord_f = feature_extraction(original_path, segmented_path)
-print("\ncolor features: ", color_f, "\n\n asymmetry features: ", asymm_f, "\n\n border features: ", bord_f)
+# original_path = "./orginal.png"
+# segmented_path =  "./segmenterad.png"
+# color_f, asymm_f, bord_f = feature_extraction(original_path, segmented_path)
+# print("\ncolor features: ", color_f, "\n\n asymmetry features: ", asymm_f, "\n\n border features: ", bord_f)
