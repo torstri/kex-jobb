@@ -145,6 +145,12 @@ def get_tabular_features(cfg, df, images_path, segmentations_path):
         #Asymmetry
         A1, A2 = getAsymmetry(imgseg, props['centroid-1'][0], props['centroid-0'][0], props['area'][0])
         #Border Irregularity
+
+        if(props['minor_axis_length'][0] * props['major_axis_length'][0] == 0):
+            print("ZERO found! ", df.filename[i])
+            print("minor: ", props['minor_axis_length'][0])
+            print("major: ", props['major_axis_length'][0])
+        
         B = getBorderIrregularity(props['perimeter'][0], props['minor_axis_length'][0], props['major_axis_length'][0])
         #Color Features
         CD = getColorFeatures(imgcol, imgseg)

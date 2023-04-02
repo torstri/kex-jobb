@@ -15,50 +15,7 @@ from timeit import default_timer as timer
 import pandas as pd
 import tensorflow as tf
 import get_config as conf
-
-
-
-# def create_array(path):
-#   test_size = 5
-#   x = np.zeros((test_size, 13)) # number of images and number of features
-#   y = read_csv(path + "/GroundTruth.csv")
-#   y = y[:test_size]
-  
-#   ratio = get_ratio(y)
-
-#   imgs_path = path + "/images"
-#   seg_imgs_path = path + "/masks"
-
-#   for img_number in range(24306, 24306+test_size):  # 34320 is the maximum
-#     img_path = imgs_path + "/ISIC_00" + str(img_number) + ".jpg"
-#     seg_img_path = seg_imgs_path + "/ISIC_00" + str(img_number) + "_segmentation.png"
-#     features = feature_extraction(img_path, seg_img_path) # Bild 26042 är whack eftersom hela bilden är utslaget
-#     i = 0
-#     for feature_list in features:
-#       for feature in feature_list:
-#         x[img_number-24306][i] = feature
-#         i += 1
-
-#   curr_time = timer()
-#   print("Time for feature extraction: ", curr_time - start)
-
-#   x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3,random_state=109) # 70% training and 30% test
-
-#   clf = svm.SVC(kernel='linear', class_weight={1: ratio}) # Linear Kernel
-
-#   clf.fit(x_train, y_train)
-
-#   curr_time = timer()
-#   print("Time after fitting: ", curr_time - start)
-
-#   y_pred = clf.predict(x_test)
-
-#   print(y_pred)
-
-#   print_statistics(y_test, y_pred)
-
-#def train_and_test_SVM(features):
-
+import matplotlib.pyplot as plt
 
 def print_statistics(y_test, y_pred):
   print("Accuracy: ",metrics.accuracy_score(y_test, y_pred))
@@ -87,26 +44,45 @@ def read_csv(path):
 
 def construct_df(test_size):
   data = []
-  y = read_csv("./dataset/archive-2/GroundTruth.csv")
   for i in range(24306, 24306+test_size):
-
     # result = "malignant" if y[i-24306] == 1 else "benign"
-    # data.append(["/ISIC_00" + str(i) + ".jpg", result])
-    # If we want result in df as well.
-    data.append("/ISIC_00" + str(i) + ".jpg")
-  df = pd.DataFrame(data, columns=["filename"]) # , "target" if result is wanted
+    data.append(["/ISIC_00" + str(i) + ".jpg"]) # , result
+  df = pd.DataFrame(data, columns=["filename"]) # , "target"
   return df
+
+def create_train_and_test_SVM(x, y):
+  x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3,random_state=79) # 70% training and 30% test
+  clf = svm.SVC(kernel='linear', class_weight={1: 7}) # Linear Kernel
+  clf.fit(x_train, y_train)
+  curr_time = timer()
+  print("Time after fitting: ", curr_time - start)
+  y_pred = clf.predict(x_test)
+
+  print(y_pred)
+  print_statistics(y_test, y_pred)
 
 start = timer()
 
-df = construct_df(100)
+test_size = 1000  # efter 34180 är det whack
+
+df = construct_df(test_size)
 cfg = conf.get_config()
 
-features = tab.get_tabular_features(cfg, df, "./dataset/archive-2/images", "./dataset/archive-2/masks")
+features = tab.get_tabular_features(cfg, df, "./dataset/archive-2/images", "./dataset/archive-2/segmentations")
 
-print(features)
+x = features.drop(columns=["filename"]).to_numpy()  # we do not modify features
+y = read_csv("./dataset/archive-2/GroundTruth.csv")[:test_size]
 
-#train_and_test_SVM(features)
+print(x.shape)
+
+for j in range(0, x.shape[1]):
+  plt.title(list(features.columns)[j+1])
+  for i in range(0, test_size):
+    color = "r+" if y[i] == 1 else "bo"
+    plt.plot(x[i][j], i, color)
+  plt.show()
+
+create_train_and_test_SVM(x, y)
 
 end = timer()
 print("\nTime for execution: ", end - start)
