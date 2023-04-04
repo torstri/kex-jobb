@@ -17,13 +17,6 @@ import tensorflow as tf
 import get_config as conf
 import matplotlib.pyplot as plt
 
-def print_statistics(y_test, y_pred):
-  print("Accuracy: ",metrics.accuracy_score(y_test, y_pred))
-  print("Balanced accurancy: ", metrics.balanced_accuracy_score(y_test, y_pred))
-  print("Precision: ", metrics.precision_score(y_test, y_pred))
-  print("Recall: ", metrics.recall_score(y_test, y_pred))
-  print("F1: ", metrics.f1_score(y_test, y_pred))
-
 # def get_ratio(y):
 #   y_sum = sum(y)
 #   return (len(y) - y_sum) / y_sum
@@ -36,17 +29,6 @@ def construct_df(test_size):
   df = pd.DataFrame(data, columns=["filename"]) # , "target"
   return df
 
-def create_train_and_test_SVM(x, y):
-  x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.1,random_state=79) # 70% training and 30% test
-  clf = svm.SVC(kernel='linear', class_weight={1: 5}) # Linear Kernel
-  clf.fit(x_train, y_train)
-  curr_time = timer()
-  print("Time after fitting: ", curr_time - start)
-  y_pred = clf.predict(x_test)
-
-  print(y_pred)
-  print_statistics(y_test, y_pred)
-
 start = timer()
 
 test_size = 9800  # efter 34178 är det whack
@@ -57,9 +39,10 @@ cfg = conf.get_config()
 features = tab.get_tabular_features(cfg, df, "./dataset/archive-2/images", "./dataset/archive-2/segmentations")
 
 x = features.drop(columns=["filename"]).to_numpy()  # we do not modify features
-y = np.load("./dataset/archive-2/GroundTruth.npy")[:test_size]
+np.save("./dataset/features.npy", x)
 
-print(x.shape)
+curr_time = timer()
+print("Time after feature extraction: ", curr_time-start)
 
 # for j in range(0, x.shape[1]):
 #   plt.title(list(features.columns)[j+1])
@@ -68,7 +51,3 @@ print(x.shape)
 #     plt.plot(x[i][j], i, color)
 #   plt.show()
 
-create_train_and_test_SVM(x, y)
-
-end = timer()
-print("\nTime for execution: ", end - start)
