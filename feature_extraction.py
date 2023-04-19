@@ -23,31 +23,33 @@ import matplotlib.pyplot as plt
 
 def construct_df(test_size):
   data = []
-  for i in range(24306, 24306+test_size):
+  for i in range(1, 1+test_size):
     # result = "malignant" if y[i-24306] == 1 else "benign"
-    data.append(["/ISIC_00" + str(i) + ".jpg"]) # , result
+    data.append([str(i) + ".jpg"]) # , result
   df = pd.DataFrame(data, columns=["filename"]) # , "target"
   return df
 
 start = timer()
 
-test_size = 9800  # efter 34178 är det whack
+test_size = 3297  # efter 34178 är det whack på HAM10000
 
 df = construct_df(test_size)
 cfg = conf.get_config()
 
-features = tab.get_tabular_features(cfg, df, "./dataset/archive-2/images", "./dataset/archive-2/segmentations")
+features = tab.get_tabular_features(cfg, df, "./dataset/balanced/images/", "./dataset/balanced/segmentations/")
 
 x = features.drop(columns=["filename"]).to_numpy()  # we do not modify features
-np.save("./dataset/features.npy", x)
+np.save("./dataset/balanced/features.npy", x)
 
 curr_time = timer()
 print("Time after feature extraction: ", curr_time-start)
 
-# for j in range(0, x.shape[1]):
-#   plt.title(list(features.columns)[j+1])
-#   for i in range(0, test_size):
-#     color = "r+" if y[i] == 1 else "bo"
-#     plt.plot(x[i][j], i, color)
-#   plt.show()
+y = np.load("./dataset/balanced/GroundTruth.npy")
+
+for j in range(0, x.shape[1]):
+  plt.title(list(features.columns)[j+1])
+  for i in range(0, test_size):
+    color = "r+" if y[i] == 1 else "bo"
+    plt.plot(x[i][j], i, color)
+  plt.show()
 
