@@ -1,8 +1,6 @@
 import os
 import cv2
 from border_detection import border_detection
-import dullrazor
-# import dullrazor
 from skimage import measure
 from melanoma_classifier.src import _get_tabular_dataframe_utils as tab
 from sklearn.datasets import make_classification
@@ -23,7 +21,8 @@ import matplotlib.pyplot as plt
 
 def construct_df(test_size):
   data = []
-  for i in range(1, 1+test_size):
+  img_to_use = np.load('./SIFT/array_data/used.npy')
+  for i in img_to_use:
     # result = "malignant" if y[i-24306] == 1 else "benign"
     data.append([str(i) + ".jpg"]) # , result
   df = pd.DataFrame(data, columns=["filename"]) # , "target"
@@ -40,16 +39,22 @@ features = tab.get_tabular_features(cfg, df, "./dataset/balanced/images/", "./da
 
 x = features.drop(columns=["filename"]).to_numpy()  # we do not modify features
 np.save("./dataset/balanced/features.npy", x)
+print(x.shape)
+
+used_imgs = features["filename"].map(lambda x: int(''.join(x.split())[:-4])).to_numpy()
+np.save("./dataset/balanced/used_imgs.npy", used_imgs)
+
+print(used_imgs.shape)
 
 curr_time = timer()
 print("Time after feature extraction: ", curr_time-start)
 
 y = np.load("./dataset/balanced/GroundTruth.npy")
 
-for j in range(0, x.shape[1]):
-  plt.title(list(features.columns)[j+1])
-  for i in range(0, test_size):
-    color = "r+" if y[i] == 1 else "bo"
-    plt.plot(x[i][j], i, color)
-  plt.show()
+# for j in range(0, x.shape[1]):
+#   plt.title(list(features.columns)[j+1])
+#   for i in range(0, test_size):
+#     color = "r+" if y[i] == 1 else "bo"
+#     plt.plot(x[i][j], i, color)
+#   plt.show()
 

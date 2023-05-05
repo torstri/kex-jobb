@@ -43,6 +43,10 @@ def train_and_test(x, y, number_of_loops):
   print("Balanced mean accurancy: ", total_acc/number_of_loops)
   return total_acc/number_of_loops
   
+# x = np.load('./dataset/balanced/allFeatures.npy')
+# y = np.load('./SIFT/array_data/y.npy')
+
+# train_and_test(x, y, 50)
 
 # start = timer()
 # curr_time = timer()
