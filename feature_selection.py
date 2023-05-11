@@ -9,6 +9,8 @@ from timeit import default_timer as timer
 from sklearn.model_selection import train_test_split
 from sklearn import metrics
 from sklearn.neural_network import MLPClassifier
+from mlxtend.plotting import plot_sequential_feature_selection as plot_sfs
+import matplotlib.pyplot as plt
 
 x = np.load('./dataset/balanced/allFeatures.npy')
 y = np.load('./SIFT/array_data/y.npy')
@@ -34,7 +36,7 @@ def perform_and_test_feature_selection(model_function):
     now = timer()
 
     x_train, x_test, y_train, y_test = train_test_split(
-        x, y, test_size=0.1)  # Too much training data for sfs
+        x, y, test_size=0.2)  # Too much training data for sfs
 
     model = model_function
     model.fit(x_train, y_train)
@@ -42,17 +44,25 @@ def perform_and_test_feature_selection(model_function):
     print("Old accuracy: ", metrics.balanced_accuracy_score(y_test, y_pred))
 
     model = model_function
-    sfs_selector = SequentialFeatureSelector(model, k_features=50,
+    sfs_selector = SequentialFeatureSelector(model, k_features=168,
                                              forward=True,
                                              floating=False,
                                              verbose=2,
-                                             scoring='balanced_accuracy',
-                                             cv=0)
+                                             scoring='accuracy',
+                                             cv=3)
     sfs_selector.fit_transform(x_test, y_test)
 
     print('Chosen features: ', sfs_selector.k_feature_idx_)
     print("Subsets: ", sfs_selector.subsets_)
     remove = invert_array(sfs_selector.k_feature_idx_, 169)
+
+    fig1 = plot_sfs(sfs_selector.get_metric_dict(), kind='std_dev')
+
+    plt.ylim([0.6, 1])
+    plt.title('Sequential Forward Selection (w. StdDev)')
+    plt.grid()
+    plt.xticks(range(0, len(sfs_selector.get_metric_dict())+10, 10))
+    plt.show()
 
     x_train = np.delete(x_train, remove, 1)
     x_test = np.delete(x_test, remove, 1)
@@ -60,7 +70,7 @@ def perform_and_test_feature_selection(model_function):
     model = model_function
     model.fit(x_train, y_train)
     y_pred = model.predict(x_test)
-    print("New accuracy: ", metrics.balanced_accuracy_score(y_test, y_pred))
+    print("New accuracy: ", metrics.accuracy_score(y_test, y_pred))
     print('time: ', timer() - now)
 
 
