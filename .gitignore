@@ -1,1 +1,4 @@
-/dataset
+/dataset/archive-2
+/dataset/balanced/images
+/dataset/balanced/segmentations
+/dataset/balanced/.DS_Store
