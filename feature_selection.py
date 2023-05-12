@@ -11,6 +11,7 @@ from sklearn import metrics
 from sklearn.neural_network import MLPClassifier
 from mlxtend.plotting import plot_sequential_feature_selection as plot_sfs
 import matplotlib.pyplot as plt
+import json
 
 
 x = np.load('./dataset/balanced/allFeatures.npy')
@@ -41,71 +42,49 @@ def get_important_features(subsets, acc, features):
         if(highest_accuracy < accuracy):
             highest_accuracy = accuracy
             features = subsets[subset]['feature_idx']
+            
     return features, highest_accuracy
 
-def get_feature_rating(features):
-    print("")
-
-def tests(model_function, forwards, num_features, num_tests):
-   
+def test_model(model_function):
     x_train, x_test, y_train, y_test = train_test_split(
     x, y, test_size=0.2)  # Too much training data for sfs
     
     model = model_function
     model.fit(x_train, y_train)
     y_pred = model.predict(x_test)
-    old_accuracy = metrics.accuracy_score(y_test, y_pred) # initial accuracy
+    accuracy = metrics.accuracy_score(y_test, y_pred) # initial accuracy
+    return accuracy
     
-    accuracies = 0
-    # Dictionary for feature frequency
-    freqs = {k: 0 for k in range(170)}
-    highest_accuracy = 0
+def tests(model_function, forwards, num_features, num_tests):
+   
+   
+    old_accuracy = test_model(model_function) # Get initial accuracy
     
+    accuracy = 0 # max accuracy for feature selection
+    freqs = {k: 0 for k in range(170)} # Dictionary for feature frequency
+    number_of_features = 0
+    # Perform tests
     i = 1
     while i <= num_tests:
         
+        # Perform feature selection
         sfs_selector = perform_feature_selection(model_function, forwards, num_features)
-        features, accuracy = get_important_features(sfs_selector.subsets_,sfs_selector.subsets_[1]['avg_score'], sfs_selector.subsets_[1]['feature_idx'])
+        
+        # Get best accuracy and important features
+        features, acc,  = get_important_features(sfs_selector.subsets_,sfs_selector.subsets_[1]['avg_score'], sfs_selector.subsets_[1]['feature_idx'])
+        
+        # Update frequencies
         for feature in features:
             freqs[feature] += 1
         i +=1
-        accuracies += accuracy
-        
-    b = 0
-    for feature in freqs:
-        if(freqs[feature] > 0):
-            print(b)
-        b += 1
-        
-    sorted_freqs = dict(sorted(freqs.items(), key=lambda x:x[1], reverse = True))
-    for feature in sorted_freqs:
-        print("Feature: ", feature, " Frequency: ", sorted_freqs[feature])
-    print("Average accuracy =", accuracies/num_tests)
-    print("Initial accuracy = ", old_accuracy)
-    
-    # # Remove ineffective features
-    # remove = invert_array(sfs_selector.k_feature_idx_, 169)
-    # x_train = np.delete(x_train, remove, 1)
-    # x_test = np.delete(x_test, remove, 1)
+        accuracy += acc # and accuracy
+        number_of_features += len(features)
 
-    # print("\n================================ Important features ======================================")    
-    
-    # print("Highest accuracy: ", highest_accuracy)
-    # print("Most important features: ", features)
-    # print("Number of features: ", len(features))
-    # x_train = np.delete(x_train, remove, 1)
-    # x_test = np.delete(x_test, remove, 1)
-    # print("======================================================================")    
-    # print('Chosen features: ', sfs_selector.k_feature_idx_)
-    # print("----------------------------------------------------")
+    accuracy = accuracy / num_tests      
+    number_of_features = number_of_features / num_tests  
+    sorted_freqs = dict(sorted(freqs.items(), key=lambda x:x[1], reverse = True)) # sort frequency list
+    return sorted_freqs, accuracy, old_accuracy, number_of_features
 
-    # model = model_function
-    # model.fit(x_train, y_train)
-    # y_pred = model.predict(x_test)
-    # print("Old accuracy: ", old_accuracy)
-    # print("New accuracy: ", metrics.accuracy_score(y_test, y_pred))
-    # print('time: ', timer() - now)
-    # print("ABCD features: ", abcd_features)
     
     
 # Perform feature selection
@@ -154,33 +133,9 @@ def perform_and_test_feature_selection(model_function):
     print("---------------------------------------------------")
     # print('Removed features: ', remove)
     highest_accuracy = old_accuracy
-    # Printa iterationer
-    # print("\n=================================== Iterations ===================================")
-    # it = 0
-    # abcd_features = 0
-    # for subset in sfs_selector.subsets_:
-    #     print('Current feature set: ', sfs_selector.subsets_[subset]['feature_idx'])
-    #     diff = 0
-    #     if(subset > 1):
-            
-    #         old = sfs_selector.subsets_[subset - 1]['feature_idx']
-    #         new = sfs_selector.subsets_[subset]['feature_idx']
-    #         for  new_feature in new:
-    #             is_new = True
-    #             for old_feature in old:
-    #                 if(old_feature == new_feature):
-    #                     is_new = False
-    #                     break
-    #             if(is_new):
-    #                 print("New feature = ", new_feature)
-    #                 diff = new_feature
-        
-    #     if(diff > 154):
-    #             print("New feature is ABCD")
-    #             abcd_features += 1
-    #     print('Current accuracy: ', sfs_selector.subsets_[subset]['avg_score'])
-    #     print("-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --")    
-    #     it+=1
+    
+    
+    
     
     
     features, highest_accuracy = get_important_features(sfs_selector.subsets_,sfs_selector.subsets_[1]['avg_score'], sfs_selector.subsets_[1]['feature_idx'])
@@ -201,39 +156,63 @@ def perform_and_test_feature_selection(model_function):
     print("Old accuracy: ", old_accuracy)
     print("New accuracy: ", metrics.accuracy_score(y_test, y_pred))
     print('time: ', timer() - now)
-    print("ABCD features: ", abcd_features)
-    # Plott
-    # fig1 = plot_sfs(sfs_selector.get_metric_dict(), kind='std_dev')
 
-    # plt.ylim([0.8, 1])
-    # plt.title('Sequential Forward Selection (w. StdDev)')
-    # plt.grid()
-    # plt.show()
 
+
+num_feats = 10
+num_tests = 2
 
 print("--------- S V C ---------")
-tests(svm.SVC(C=100), True, 5, 5)
+now = timer()
+sorted_freqs, accuracy, old_accuracy, avg_num_features = tests(svm.SVC(C=100), True, num_feats, num_tests)
+time = timer() - now
+
+sorted_freqs["avg_features"] = avg_num_features
+sorted_freqs["accuracy"]= accuracy
+sorted_freqs["initiaL_accuracy"] = old_accuracy
+sorted_freqs["cum_time"] = time
+print(sorted_freqs)
+with open("svm.json", "w") as outfile:
+    json.dump(sorted_freqs, outfile)
 
 
-# dict = {k: 0 for k in range(170)}
-
-# dict =dict.fromkeys(range(170), 0)
-# print("Dict: ", dict)
-# dict[0] += 1
-# print("Dict ", dict)
-# print("=======")
-# for feature in dict:
-#     print(feature, " ", dict[feature])
 
 
 # perform_and_test_feature_selection(svm.SVC(C=100))
-# print("\n \n --------- R F ---------")
-# # Takes a very long time if n = 100 (default).
-# perform_and_test_feature_selection(RandomForestClassifier(n_estimators=5))
-# print("\n \n --------- K N N ---------")
-# perform_and_test_feature_selection(KNeighborsClassifier(n_neighbors=8))
+# Takes a very long time if n = 100 (default).
+print("\n \n --------- R F ---------")
+now = timer()
+sorted_freqs, accuracy, old_accuracy, avg_num_features = tests(RandomForestClassifier(n_estimators=5), True, num_feats, num_tests)
+sorted_freqs["accuracy"]= accuracy
+sorted_freqs["initiaL_accuracy"] = old_accuracy
+time = timer() - now
+sorted_freqs["cum_time"] = time
+print(sorted_freqs)
+with open("rf.json", "w") as outfile:
+    json.dump(sorted_freqs, outfile)
+
+
+
+    
+print("\n \n --------- K N N ---------")
+now = timer()
+sorted_freqs, accuracy, old_accuracy, avg_num_features = tests(KNeighborsClassifier(n_neighbors=8), True, num_feats, num_tests)
+time = timer() - now
+sorted_freqs["accuracy"]= accuracy
+sorted_freqs["initiaL_accuracy"] = old_accuracy
+sorted_freqs["cum_time"] = time
+print(sorted_freqs)
+with open("knn.json", "w") as outfile:
+    json.dump(sorted_freqs, outfile)
+    
+
+
+
+
 # print("\n \n --------- NEURAL NETWORK---------")
-# perform_and_test_feature_selection(MLPClassifier(
-#     hidden_layer_sizes=[8], activation='relu', max_iter=100))
+# sorted_freqs = tests(MLPClassifier(
+#     hidden_layer_sizes=[8], activation='relu', max_iter=100), True, 2, 2)
+# with open("nn.json", "w") as outfile:
+#     json.dump(sorted_freqs, outfile)
 
 
