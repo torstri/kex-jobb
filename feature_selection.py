@@ -164,6 +164,8 @@ def tests(model_function, forwards, num_features, num_tests):
             freqs[feature] += 1
         accuracy += acc  # and accuracy
         print('accuracies: ', accurancies)
+        if (not forwards):
+            accurancies.reverse()
         for j in range(0, len(accurancies)):
             all_accurancies[j] = all_accurancies[j] + accurancies[j]
         number_of_features[i] = len(features)
@@ -252,10 +254,10 @@ def perform_tests(forwards, num_features, num_tests):
     json.dump(nn_results, fp)
 
 
-num_feats=168
+num_feats=1
 num_tests=5
 
-perform_tests(True, num_feats, num_tests)
+perform_tests(False, num_feats, num_tests)
 
 # Fast test
 # perform_tests(True, 5, 2)
