@@ -15,7 +15,6 @@ import json
 
 from sklearn.model_selection import GridSearchCV
 
-
 x = np.load('./dataset/balanced/allFeatures.npy')
 y = np.load('./SIFT/array_data/y.npy')
 
@@ -37,7 +36,7 @@ def perform_and_test_feature_selection(model_function):
     old_accuracy = metrics.accuracy_score(y_test, y_pred)
 
     model = model_function
-    sfs_selector = SequentialFeatureSelector(model, k_features=50,
+    sfs_selector = SequentialFeatureSelector(model, k_features=168,
                                              forward=True,
                                              floating=False,
                                              verbose=2,
@@ -68,6 +67,7 @@ def perform_and_test_feature_selection(model_function):
     model = model_function
     model.fit(x_train, y_train)
     y_pred = model.predict(x_test)
+
     print("Old accuracy: ", old_accuracy)
     print("New accuracy: ", metrics.accuracy_score(y_test, y_pred))
     print('time: ', timer() - now)
