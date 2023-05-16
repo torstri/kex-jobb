@@ -3,3 +3,14 @@
 /dataset/balanced/segmentations
 /dataset/balanced/.DS_Store
 *.DS_Store
+/report/report.aux
+/report/report.log
+/report/report.synctex.gz
+/report/report.bbl
+/report/report.bcf
+/report/report.fdb_latexmk
+/report/report.fls
+/report/report.out
+/report/report.run.xml
+/report/report.toc
+.DS_Store
