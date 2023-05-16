@@ -2,3 +2,4 @@
 /dataset/balanced/images
 /dataset/balanced/segmentations
 /dataset/balanced/.DS_Store
+*.DS_Store
