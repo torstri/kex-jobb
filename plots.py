@@ -95,7 +95,20 @@ def create_big_bar():
 
     print("Sorted_freqs: ",sorted_freqs)
     
-    create_table('big_data.csv', sorted_freqs)
+    # create_table('big_data.csv', sorted_freqs)
+    abcd_features = 0
+    sift_features = 0
+    for key in sorted_freqs:
+        if( int(key) > 149):
+            abcd_features += sorted_freqs.get(key)
+        else:
+            sift_features +=  sorted_freqs.get(key)
+    df_dist = pd.DataFrame(sorted_freqs.items(), columns=['Feature', 'Occurence(s)'])
+    print("df = \n", df_dist)
+    feature_diff = {'ABCD':abcd_features, 'SIFT':sift_features}
+    df_diff = pd.DataFrame(feature_diff.items(), columns=['Feature Type', 'Occurence(s)'])
+    df_diff['Representation'] = [float(abcd_features)/float((169-150)), float(sift_features)/float(150)]
+    print("df_diff =\n", df_diff)
     
     
 def plot_all_graphs():
@@ -224,6 +237,14 @@ def generate_tables():
             averages["rf_SBS"] = sum(empty_list) / len(empty_list)
         
         print("Averages =", averages)
+    print("Final averages =", averages)
+    df = pd.DataFrame(averages.items(), columns=['Selection Method', 'Average Number of Features'])
+    print(df)
+    df.to_csv('average_features_methods.csv', index=False, header=True)
+    
+    
+    
+    
         
         
         
@@ -231,10 +252,10 @@ def generate_tables():
     print("")
 
 
-generate_tables()
+# generate_tables()
 # plot_all_graphs()
 
-# create_big_bar()
+create_big_bar()
 
 # for key in sfs_frequencies:
 #     all_freqs[int(key)] += sfs_frequencies.get(key)
