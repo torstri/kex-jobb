@@ -112,6 +112,8 @@ def create_big_bar():
     sorted_freqs = dict(sorted(all_freqs.items(), key=lambda x:x[1], reverse=True))
 
     print("Sorted_freqs: ",sorted_freqs)
+    
+    create_table('big_data.csv', sorted_freqs)
 
 create_big_bar()
 
