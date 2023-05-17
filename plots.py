@@ -111,11 +111,10 @@ def create_big_bar():
                 probability = float(occurence)/5.0
             
                 df_feature_probs.loc[index] = [feature, occurence, probability]
-            
-                df_feature_probs.to_csv(target_file_names[i]) 
 
                 all_freqs[feature] += frequencies.get(feature)
 
+        df_feature_probs.to_csv(target_file_names[i]) 
 
     fr = [0] * 170
     x = [i for i in range(0,170)]
