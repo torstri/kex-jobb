@@ -72,8 +72,117 @@ def graph_plot(sbs, sfs, x_data, label):
     plt.show()
     
     
+# Första RQ
+def create_probability_tables():
+    
+    # Files to store result
+    target_file_names = ['nn_sfs_probability.csv', 'nn_sbs_probability.csv',
+                         'knn_sfs_probability.csv', 'knn_sbs_probability.csv',
+                         'svm_sfs_probability.csv', 'svm_sbs_probability.csv',
+                         'rf_sfs_probability.csv', 'rf_sbs_probability.csv']
+    
+    # Files to retrieve data from
+    file_names = ['nn_SFS.json', 'nn_SBS.json', 
+                'knn_SFS.json', 'knn_SBS.json', 
+                'svm_SFS.json', 'svm_SBS.json', 
+                'rf_SFS.json', 'rf_SBS.json']
+
+    # Keys in dicts
+    key_names = ['nn_freqs', 'knn_freqs', 'svm_freqs','rf_freqs']
+    
+    
+    j = 0 # key index
+
+    for i in range(0,8):
+        
+        file_name = file_names[i]
+        f = open(file_name, 'r')
+        SFS = json.load(f)
+        key_name = key_names[j]
+        if(i % 2 == 1):
+            j+= 1
+            
+        frequencies = SFS[key_name]
+        df_feature_probs = pd.DataFrame(columns=['Feature', 'Occurence(s)', 'Probability'])
+
+        for index, feature in enumerate(frequencies):
+            
+                occurence = frequencies[feature]
+                probability = float(occurence)/5.0
+            
+                df_feature_probs.loc[index] = [feature, occurence, probability]
+
+
+        df_feature_probs.to_csv(target_file_names[i])     
+    
+    
+# Andra RQ
+# # def create_universal_table():
+# #     print("")
+    
+# #     file_names = ['nn_SFS.json', 'nn_SBS.json', 
+# #                 'knn_SFS.json', 'knn_SBS.json', 
+# #                 'svm_SFS.json', 'svm_SBS.json', 
+# #                 'rf_SFS.json', 'rf_SBS.json']
+
+# #     key_names = ['nn_freqs', 'knn_freqs', 'svm_freqs','rf_freqs']
+# #     all_freqs ={}
+    
+# #     j = 0
+
+# #     for i in range(0,8):
+        
+# #         file_name = file_names[i]
+# #         f = open(file_name, 'r')
+# #         SFS = json.load(f)
+# #         key_name = key_names[j]
+# #         if(i % 2 == 1):
+# #             j+= 1
+# #         frequencies = SFS[key_name]
+        
+
+# #         for index, feature in enumerate(frequencies):
+            
+# #                 occurence = frequencies[feature]
+# #                 probability = float(occurence)/5.0
+            
+
+# #                 all_freqs[feature] += frequencies.get(feature)
+
+# #         df_feature_probs.to_csv(target_file_names[i]) 
+
+# #     fr = [0] * 170
+# #     x = [i for i in range(0,170)]
+# #     for key in all_freqs:
+# #         fr[int(key)] = all_freqs.get(key)
 
     
+# #     all_freqs = dict(sorted(all_freqs.items(), key=lambda x:x[1], reverse=True))
+# #     df_all_probs = pd.DataFrame(columns=['Feature', 'Occurence(s)', 'Probability'])
+# #     abcd_features = 0
+# #     sift_features = 0
+    
+# #     for index, feature in enumerate(all_freqs):
+# #         occurence = all_freqs[feature]
+# #         probability = float(occurence)/40.0
+# #         df_all_probs.loc[index] = [feature, occurence, probability]
+# #         if( int(feature) > 149):
+# #             abcd_features += all_freqs.get(feature)
+# #         else:
+# #             sift_features +=  all_freqs.get(feature)    
+    
+# #     bar_plot(fr, x, 'Occurences for every feature', 'Features', 'Occurences') 
+
+# #     df_all_probs.to_csv('big_data_new.csv')
+
+    
+# #     create_table('big_data.csv', sorted_freqs)
+# #     feature_diff = {'ABCD':abcd_features, 'SIFT':sift_features}
+# #     df_diff = pd.DataFrame(feature_diff.items(), columns=['Feature Type', 'Occurence(s)'])
+# #     df_diff['Representation'] = [float(abcd_features)/float((169-150)), float(sift_features)/float(150)]
+# #     df_diff.to_csv('representation.csv', index=False, header=True)
+    
+
 def create_big_bar():
 
     file_names = ['nn_SFS.json', 'nn_SBS.json', 
@@ -219,6 +328,8 @@ def generate_tables():
         'svm_SFS_num.csv', 'svm_SBS_num.csv', 
         'rf_SFS_num.csv', 'rf_SBS_num.csv']
     
+
+    
     col1 = [""]
     
     j = 0
@@ -266,41 +377,8 @@ def generate_tables():
         
         
     
-
-# generate_tables()
-# plot_all_graphs()
+create_probability_tables()
+generate_tables()
+plot_all_graphs()
 
 create_big_bar()
-
-# for key in sfs_frequencies:
-#     all_freqs[int(key)] += sfs_frequencies.get(key)
-
-# for key in sfs_frequencies:
-#     # print("Feature = ", key, "Value = ", all_freqs[int(key)], " Org Value =", sfs_frequencies.get(key))
-#     if( all_freqs[int(key)] != sfs_frequencies.get(key)):
-#         print("EEEER")
-    
-
-# for i in range(0,170):
-# print("Hello")
-# df = pd.DataFrame({
-#     "strings": ["Adam", "Mike"],
-#     "ints": [1, 3],
-#     "floats": [1.123, 1000.23]
-# })
-# df.style \
-#   .format(precision=3, thousands=".", decimal=",") \
-#   .format_index(str.upper, axis=1)\
-#   .relabel_index(["row 1", "row 2"], axis=0)    
-
-# print("Hello")
-
-# dict = {'Name' : ['Martha', 'Tim', 'Rob', 'Georgia'],
-#         'Maths' : [87, 91, 97, 95],
-#         'Science' : [83, 99, 84, 76]}
-# df = pd.DataFrame(dict)
-
-# display(df)
-
-
-# df.head()
