@@ -136,6 +136,9 @@ def create_big_bar():
     df_diff = pd.DataFrame(feature_diff.items(), columns=['Feature Type', 'Occurence(s)'])
     df_diff['Representation'] = [float(abcd_features)/float((169-150)), float(sift_features)/float(150)]
     print("df_diff =\n", df_diff)
+    df_diff.to_csv('representation.csv', index=False, header=True)
+    
+    
     
     
 def plot_all_graphs():
@@ -280,8 +283,8 @@ def generate_tables():
     print("")
 
 
-generate_tables()
-plot_all_graphs()
+# generate_tables()
+# plot_all_graphs()
 
 create_big_bar()
 
