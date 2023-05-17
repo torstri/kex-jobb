@@ -97,17 +97,20 @@ Lastly, the study is limited by the features which the selection is based in thr
 
 % https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8705277/ bra artikel
 
-During the last  decades the frequency of malignant melanoma in Sweden has been on the rise and the trend does not seem to be going down. Yearly, approximately 60 000 persons are diagnosed with skin cancer and around 500 die from the disease.% (Källa: strålskydds).
-Likewise in the United States, skin cancer is the most common type of cancer to the degree that every fifth american will develop the disease at some time during their lives. The rates of melanoma have on a general trend increased, nearly doubling between 1982-2011. On some levels the rates have decreased, as in for people that are under 30. %(Källa: Usa cancer) 
+
+% Lite upprepning från introduktionen ksk, men fortfarande bra att ha med
+During the last  decades the frequency of malignant melanoma in Sweden has been on the rise and the trend does not seem to be going down. Yearly, approximately 60 000 persons are diagnosed with skin cancer and around 500 die from the disease. \parencite{sverige-hudcancer}
+
+Likewise in the United States, skin cancer is the most common type of cancer to the degree that every fifth american will develop the disease at some time during their lives. The rates of melanoma have on a general trend increased, nearly doubling between 1982-2011. On some levels the rates have decreased, as in for people that are under 30. \parencite{aad-skin-cancer}
 
 Malignant melanoma is a type of skin cancer that is the result of melano\-cyte cells in the skin starting to grow uncontrollably.
-Although melanoma is a less common type of skin cancer, it is at the same time more prone to spreading to other parts of the body therefore making it more dangerous. %(Källa: mel cancer)
-Melanoma skin cancer has five different stages, stage 0-5, where in stage 0 the cancer is contained within the top layer of the skin while in the final stage %(Källa: stage 4) 
-the cancer has spread to other parts of the body. %(Källa: mel stages).
-According to UK researchers the survival rate of patients diagnosed with melanoma differs greatly depending on when during the four different stages the diagnosis is made.%(Källa: mel stats).
-Where if the cancer is detected in the first stage the survival rate is almost 100\%, however if the diagnosis is done in a later stage the survival rate drops to 30\%, although the statistic does not take into account the age of the patients. %(Källa: mel stats)
+Although melanoma is a less common type of skin cancer, it is at the same time more prone to spreading to other parts of the body therefore making it more dangerous. \parencite{aad-skin-cancer}
 
-Recently artificial intelligence (AI) and machine learning (ML) has made great strides within dermatology in areas such as melanoma detection and classification. In one study, a machine learning algorithm was compared against experts, where the ML system outperformed the experts.% (Källa: ml vs expert)
+Melanoma skin cancer has five different stages, stage 0-5, where in stage 0 the cancer is contained within the top layer of the skin while in the final stage the cancer has spread to other parts of the body \parencite{cancerresearchuk-melanoma}.
+According to UK researchers the survival rate of patients diagnosed with melanoma differs greatly depending on when during the four different stages the diagnosis is made \parencite{cancerresearchuk-survival}.
+Where if the cancer is detected in the first stage the survival rate is almost 100\%, however if the diagnosis is done in a later stage the survival rate drops to 30\%, although the statistic does not take into account the age of the patients. \parencite{cancerresearchuk-survival}
+
+Recently artificial intelligence (AI) and machine learning (ML) has made great strides within dermatology in areas such as melanoma detection and classification. In one study, a machine learning algorithm was compared against experts, where the ML system outperformed the experts. \parencite{8030303}
 
 % \subsection{Computer Aided Diagonstics} Might be a good idea to have a section about CAD, but I'm not sure if it's necessary.
 
@@ -115,20 +118,21 @@ Recently artificial intelligence (AI) and machine learning (ML) has made great s
 
 % https://ietresearch.onlinelibrary.wiley.com/doi/full/10.1049/iet-ipr.2015.0385?sid=vendor%3Adatabase (abcd)
 
-Machine learning (ML) is a field of computer science focusing on automated and intelligent data analysis. A ML algorithm is fed problems and answers whereupon the system tries to predict the answer. Based on the response the algorithm then makes adjustments to better give the correct answers. %(Källa: vad e ml).
+Machine learning (ML) is a field of computer science focusing on automated and intelligent data analysis. A ML algorithm is fed problems and answers whereupon the system tries to predict the answer. Based on the response the algorithm then makes adjustments to better give the correct answers. \parencite{das2021machine}
+
 In the case of skin cancer detection, an ML algorithm would receive images with a ground truth for each image, meaning either the skin lesion is malignant or benign. The algorithm would then try to correctly decide if the lesion is cancerogenous thereafter the correct answer would be revealed and the algorithm makes corrections based on whether or not it was successful in the diagnosis.
 
 An ML algorithm consists of four main steps: 1) pre-processing, 2) segmentation, 3) feature extraction and 4) classification. All of the named steps are described below.
 
 \subsection{Pre-processing}
 
-The main goal with pre-processing an image is to improve the quality of the picture. Improvement can be made in many ways but generally the methods can be sorted into either artifact removal or image enhancement. % (källa).
-Artifact removal entails removing misleading objects in the image such as hair pixels and air bubbles which can lead to incorrect segmentation and feature extraction. Image enhancement usually consists of contrast Pre-processing is an essential step in the process since the classification is vastly dependent on the image quality. % källa 
+The main goal with pre-processing an image is to improve the quality of the picture. Improvement can be made in many ways but generally the methods can be sorted into either artifact removal or image enhancement \parencite{8377976}.
+Artifact removal entails removing misleading objects in the image such as hair pixels and air bubbles which can lead to incorrect segmentation and feature extraction. Image enhancement usually consists of contrast Pre-processing is an essential step in the process since the classification is vastly dependent on the image quality. \parencite{jaworek2016automatic}
 
 \subsection{Segmentation}
 
 In the segmentation phase the borders of the lesion are identified. This is done to be able to identify what in the image contains the lesion. Like the pre-processing, segmentation is vital for the classification and feature extraction since parameters such as the lesion’s border cannot be correctly evaluated if the segmentation is poorly executed. At the same time, the segmentation of skin lesions is one of the most challenging steps due mainly to four reasons. Firstly, most lesions do not have a stark contrast between the healthy and unhealthy skin. Secondly, the lesion’s border may be irregular which impedes the segmentation. Thirdly, the color variegation % (huh, typ skilland)
-within the lesion can be vast where multiple colors are present at the same time. Finally, there may be artifacts such as hairs or lens flare present within the image which hinders the segmentation, this is however meant to be removed during the pre-processing. % källa 
+within the lesion can be vast where multiple colors are present at the same time. Finally, there may be artifacts such as hairs or lens flare present within the image which hinders the segmentation, this is however meant to be removed during the pre-processing. \parencite{jaworek2016automatic}
 
 \subsection{Feature Extraction}
 
@@ -136,7 +140,7 @@ Clinical classification is done based on the characteristics of the lesion. Like
 
 \subsubsection{ABCD}
 
-The ABCD-rule is a mimic of the way clinicians determine whether or not a skin lesion is malignant or not based on four features: asymmetry, border, colour and dermoscopic structures or diameter of the lesion. The higher the asymmetry of the lesion, in terms of either shape or colour, the more likely it is to be malign. The border aspect refers to whether the border of the lesion is irregular. The lesion is divided into eight slices and for each slice, if the border is irregular a point is awarded. Regarding the colour, the lesion is scanned for the occurrence of six colours (white, red, light brown, dark brown, blue-grey and black). For each colour a point is awarded. The “D” in ABCD can either be evaluated using the dermoscopic structure or the diameter of the lesion. The dermoscopic structure is evaluated based on the presence of five structures. For each structure a point is awarded, so the values range from zero to five. If instead the diameter is evaluated, all lesions with a diameter greater than 6 mm are considered malignant and given a value of five %(Smaoui N., and Bessassi S.: ‘A developed system for melanoma diagnosis’, Int. J. Comput. Vis. Signal Process., 2013, 3, (1), pp. 10–17).  (Källa för allt? abcd)
+The ABCD-rule is a mimic of the way clinicians determine whether or not a skin lesion is malignant or not based on four features: asymmetry, border, colour and dermoscopic structures or diameter of the lesion. The higher the asymmetry of the lesion, in terms of either shape or colour, the more likely it is to be malign. The border aspect refers to whether the border of the lesion is irregular. The lesion is divided into eight slices and for each slice, if the border is irregular a point is awarded. Regarding the colour, the lesion is scanned for the occurrence of six colours (white, red, light brown, dark brown, blue-grey and black). For each colour a point is awarded. The “D” in ABCD can either be evaluated using the dermoscopic structure or the diameter of the lesion. The dermoscopic structure is evaluated based on the presence of five structures. For each structure a point is awarded, so the values range from zero to five. If instead the diameter is evaluated, all lesions with a diameter greater than 6 mm are considered malignant and given a value of five. \parencite{smaoui2013developed} \parencite{https://doi.org/10.1049/iet-ipr.2015.0385}
 
 \subsubsection{Scale-invariant feature transform (SIFT)}
 
@@ -152,8 +156,9 @@ The classification of the lesions based on the features extracted can be done th
 
 Support vector machines (SVM) are common and effective ML algorithms first introduced in the 1990s. SVM is an extension of the support vector classifier, which in turn is an extension of the maximal margin classifier.
 
-The maximal margin classifier aims to separate data into two classes using a hyperplane. The support vector classifier builds on the same principle, but is more adjusted to the case when the data is not easy to separate. The SVM enlarges the feature space of the data in order to be able to separate data in a non-linear fashion.
+The maximal margin classifier aims to separate data into two classes using a hyperplane. The support vector classifier builds on the same principle, but is more adjusted to the case when the data is not easy to separate. The SVM enlarges the feature space of the data in order to be able to separate data in a non-linear fashion. \parencite{james2013introduction}
 
+%% TODO: Fix references from here. The book above needs paging.
 % Based on: book s.340-341, 344-345, 349-354
 
 % One very good study with accuracy of 97.5\% <- det här är en bra studie för att få ut grejer om feature extraction också, snackar om något som heter hog features
@@ -229,9 +234,10 @@ As mentioned in the background, the two feature extraction methods used were ABC
 
 \subsubsection{ABCD}
 
-The asymmetry and border features are calculated through the method proposed by these dudes and the color features by these dudes. Both computations showed promising results reaching an accuracy of 82% and 83%. The implementation is originally done by this dude.
+The ABCD features were extracted using the open-source software published by [name] availible on GitHub. The software extracts the features based on the method proposed in [this] study. % Källa
 
-To calculate the asymmetry and border features...
+% TODO: Dubbelkolla namn på library
+To calculate the asymmetry and border features the measure library from sci-kit is used, with the \verb|get_region_props| function. The color features are calculated using the color library from sci-kit.
 
 % TODO: Lägg in hur man beräknar grejerna
 
@@ -261,38 +267,60 @@ The dataset used in this study is a variant of the one produced by the ISIC Arch
 
 The dataset was downloaded and structured in order to have every image in the same folder. In order to store the ground truth information indicating whether a given image is malignant or benign, a one-dimensional array was created storing boolean values.
 
-\section{Feature selection}
-
-All feature selection methods used in the study originates from the \verb|Scikit-sklearn| library \verb|feature_selection|.
-
-% TODO: Write that we did the tests five times for each classifier and feature selection method
-
-\section{Evaluation}
-
-% !Observera att detta troligen är utdaterat
-
-To  evaluate which features are the most effective we will perform several tests. Firstly, we will perform tests to see the eventual gain from using feature selection on the different classifiers. This will be done by measuring the accuracy of each classifier without using feature selection. Three tests will then be performed where each of the feature selection methods will be applied to the classifiers. The difference between the original accuracy and the accuracy when feature selection is used is the gain.
-
-The second test that will be performed consists of determining what number of features, and which features, are needed to accomplish optimal accuracy. The feature selection will be performed using the three different methods. Each one of these will return which features are the most effective for each classifier.
-
-
-Every test will be performed ten times and the mean accuracy will be calculated. Since this study includes four classifiers and three feature selection methods, there are 12 groups in total and 120 tests will be performed.
-
-From the first two tests, answers to which feature selection method is the most efficient for each classifier, and which features are the most efficient for each selection method and classifier. Based on this we can deduce both 1) which features are the most efficient for each classifier and 2) which features are the most efficient in general.
-
 \section{Metrics}
 
 \subsection{Accuracy (Balanced accuracy)}
 
-Accuracy is a metric which is widely used and simple to calculate.  It is calculated by dividing the total number of correctly classified images with the total number of images. It therefore measures the probability that the model will classify a given random image correctly. % källa  
+Accuracy is a metric which is widely used and simple to calculate.  
+It is calculated by dividing the total number of correctly classified images with the total number of images. 
+It therefore measures the probability that the model will classify a given random image correctly. källa  
+
+Accuracy was the metric used to determine the performance of the classifiers and the effect of the feature selection methods.
+ % källa  
 
 % ! We do not use balanced atm so maybe remove.
-Balanced accuracy is essentially the same thing as accuracy, but the difference in class sizes are taken into consideration. This is used to get less misguided results and is the most effective when working with unbalanced datasets.
+
+
+\section{Feature selection}
+
+All feature selection methods used in the study originates from the \verb|Scikit-sklearn| library \verb|feature_selection|.
+
+
+The manner in which the feature  selection was performed differs slightly due to the selection method employed. For the SFS, the feature set was initially empty. The method then adds all features, one at a time. For the SBE the feature set at first contained all features, whereupon features were removed one at a time, until the feature set consisted of only one feature. In each iteration, the accuracy and which features constituted the feature set were recorded. 
+This process was repeated five times for every selection method and classifier. Hence, 40 tests were conducted in total.
+% TODO: Write that we did the tests five times for each classifier and feature selection method
+
+\section{Evaluation}
+
+The method for evaluating the three different research questions are stated below.
+
+\subsection{Is there a difference between different models concerning which features are most effective?}
+Furthermore, since in every iteration of the selection methods, the included features were recorded, the features included in the feature set generating the optimal accuracy was determined. Onwards, this feature set will be referred to as the optimal feature set. 
+
+Based on this statistic, the probability that a feature would be included in the optimal feature set, was calculated by dividing the number of times the feature was included in the optimal feature set with the number of tests performed. The features with the highest probability can therefore be seen as the most important.
+
+\subsection{Which features and combinations of features are the most important in terms of classification accuracy?}
+Based on the findings from the previous research question, the results were summarized to give insight on a more general level where the occurrences of each feature in the optimal feature set was divided by the total number of tests performed. This gives an insight into which features are most likely to constitute the optimal feature regardless of the classifier.
+
+\subsection{Are some feature selection methods more efficient in creating better accuracy than others? Which one uses the fewest features?}
+Since multiple tests were performed for every combination of classifier and selection method, it becomes possible to calculate the average accuracy for each number of features in the feature space. Hence the highest average accuracy and the expected number of features needed to achieve this accuracy can be determined. To determine which selection model is the most efficient, the difference between the original accuracy and the highest average accuracy using feature selection, was examined.
+
+
+% !Observera att detta troligen är utdaterat
+
+
 
 
 
 \chapter{Results}
 Placeholder reference in order to test the bibliography: \parencite{einstein2016}
+
+\section{Determining important features for models}
+
+\section{Determining most important features}
+
+\section{Difference between selection methods}
+
 
 And then textcite: \textcite{einstein2016}
 \blindtext
