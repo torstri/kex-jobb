@@ -9,10 +9,10 @@ from IPython.display import display
 plt.close("all")
 
 
-def bar_plot(features,x_data, title, labelx, labely):
+def bar_plot(y_data,x_data, title, labelx, labely):
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    ax.bar(x_data, features)
+    ax.bar(x_data, y_data)
     plt.title(title)
 
     plt.xlabel(labelx)
@@ -64,7 +64,6 @@ def graph_plot(sbs, sfs, x_data, label):
         
         i += 1
         x_points.append(x_points[i - 1] + 10)
-    print(x_points)
     # ax.set_xscale(10, 'linear')
     plt.xticks(x_points)
     plt.axvline(sfs_x, ls=':', c='k')
@@ -83,13 +82,17 @@ def create_big_bar():
                 'rf_SFS.json', 'rf_SBS.json']
 
     key_names = ['nn_freqs', 'knn_freqs', 'svm_freqs','rf_freqs']
+    
+    target_file_names = ['nn_sfs_probability.csv', 'nn_sbs_probability.csv',
+                         'knn_sfs_probability.csv', 'knn_sbs_probability.csv',
+                         'svm_sfs_probability.csv', 'svm_sbs_probability.csv',
+                         'rf_sfs_probability.csv', 'rf_sbs_probability.csv']
 
     all_freqs ={}
     for i in range(0,170):
         all_freqs[str(i)] = 0
     j = 0
 
-    # print("all_freqs)
     for i in range(0,8):
         
         file_name = file_names[i]
@@ -100,9 +103,18 @@ def create_big_bar():
             j+= 1
         frequencies = SFS[key_name]
         
-        print("Freqs = ", frequencies)
-        for key in frequencies:
-            all_freqs[key] += frequencies.get(key)
+        df_feature_probs = pd.DataFrame(columns=['Feature', 'Occurence(s)', 'Probability'])
+
+        for index, feature in enumerate(frequencies):
+            
+                occurence = frequencies[feature]
+                probability = float(occurence)/5.0
+            
+                df_feature_probs.loc[index] = [feature, occurence, probability]
+            
+                df_feature_probs.to_csv(target_file_names[i]) 
+
+                all_freqs[feature] += frequencies.get(feature)
 
 
     fr = [0] * 170
@@ -110,32 +122,30 @@ def create_big_bar():
     for key in all_freqs:
         fr[int(key)] = all_freqs.get(key)
 
-
-    print("x = ",x)
-
-    print("asdf =", all_freqs)
-
-    print("fr = ", fr)
-    bar_plot(fr, x, 'Occurences for every feature', 'Features', 'Occurences') 
-
-    sorted_freqs = dict(sorted(all_freqs.items(), key=lambda x:x[1], reverse=True))
-
-    print("Sorted_freqs: ",sorted_freqs)
     
-    # create_table('big_data.csv', sorted_freqs)
+    all_freqs = dict(sorted(all_freqs.items(), key=lambda x:x[1], reverse=True))
+    df_all_probs = pd.DataFrame(columns=['Feature', 'Occurence(s)', 'Probability'])
     abcd_features = 0
     sift_features = 0
-    for key in sorted_freqs:
-        if( int(key) > 149):
-            abcd_features += sorted_freqs.get(key)
+    
+    for index, feature in enumerate(all_freqs):
+        occurence = all_freqs[feature]
+        probability = float(occurence)/40.0
+        df_all_probs.loc[index] = [feature, occurence, probability]
+        if( int(feature) > 149):
+            abcd_features += all_freqs.get(feature)
         else:
-            sift_features +=  sorted_freqs.get(key)
-    df_dist = pd.DataFrame(sorted_freqs.items(), columns=['Feature', 'Occurence(s)'])
-    print("df = \n", df_dist)
+            sift_features +=  all_freqs.get(feature)    
+    
+    bar_plot(fr, x, 'Occurences for every feature', 'Features', 'Occurences') 
+
+    df_all_probs.to_csv('big_data_new.csv')
+
+    
+    # create_table('big_data.csv', sorted_freqs)
     feature_diff = {'ABCD':abcd_features, 'SIFT':sift_features}
     df_diff = pd.DataFrame(feature_diff.items(), columns=['Feature Type', 'Occurence(s)'])
     df_diff['Representation'] = [float(abcd_features)/float((169-150)), float(sift_features)/float(150)]
-    print("df_diff =\n", df_diff)
     df_diff.to_csv('representation.csv', index=False, header=True)
     
     
@@ -175,15 +185,11 @@ def plot_all_graphs():
         sfs_accuracies.pop('168')
         sbs_accuracies.pop('169')
         sfs_accuracies.pop('169')
-        print("SFS Dict = ", sfs_accuracies)
-        print("SBS Dict = ", sbs_accuracies)
         
         
         i += 2
         sfs_list = [0] *168
         sbs_list = [0] *168
-        print("SFS List = ", sfs_list,"Length = ", len(sfs_list))
-        print("SBS List = ", sbs_list, "Length = ", len(sbs_list))
         
         for key in sfs_accuracies:
             sfs_list[int(key)] = sfs_accuracies.get(key)
@@ -193,20 +199,11 @@ def plot_all_graphs():
 def create_table(filename, y_data, col1, col2):
     
     df = pd.DataFrame.from_dict(y_data, orient='index')
-    print(df)
-    df.reset_index()
     
-    print(df)
-    labels = list(y_data.keys())
-    print("Features: ",labels)
-    values = list(y_data.values())
-    print("Värden: ",values)
     
-    dict = {"Feature": labels, "Occurence(s)": values}
 
     # df = pd.DataFrame.from_dict(dict, orient='index')
     df = pd.DataFrame(y_data.items(), columns=[col1, col2])
-    print("DF =\n",df)
     
     df.to_csv(filename, index=False, header=True)     
         
@@ -231,25 +228,18 @@ def generate_tables():
         file_name = file_names[i]
         key_name = key_names[j]
         target_file = target_files[i]
-        print("File name = ", file_name)
-        print("Key name = ", key_name)
-        print("Target file = ", target_file)
         
         if(i % 2 == 1):
             j += 1
-            print("J += 1")
         f = open(file_name, 'r')
         features = json.load(f)
         num_features = features[key_name]
         
         create_table(target_file, num_features, 'Test', 'Number of features')
-        print(num_features)
         empty_list = [0] * 5
         for key in num_features:
             empty_list[int(key) - 1] = int(num_features.get(key))
 
-        print("Num features = ", num_features)
-        print("Empty list", empty_list)
         if(i == 0):
             averages["nn_SFS"] = sum(empty_list) / len(empty_list)
         elif(i == 1):
@@ -267,10 +257,7 @@ def generate_tables():
         else:
             averages["rf_SBS"] = sum(empty_list) / len(empty_list)
         
-        print("Averages =", averages)
-    print("Final averages =", averages)
     df = pd.DataFrame(averages.items(), columns=['Selection Method', 'Average Number of Features'])
-    print(df)
     df.to_csv('average_features_methods.csv', index=False, header=True)
     
     
@@ -280,13 +267,11 @@ def generate_tables():
         
         
     
-    print("")
-
 
 # generate_tables()
 # plot_all_graphs()
 
-# create_big_bar()
+create_big_bar()
 
 # for key in sfs_frequencies:
 #     all_freqs[int(key)] += sfs_frequencies.get(key)
