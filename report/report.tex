@@ -49,13 +49,14 @@
 
 % TODO: Fix the references
 \chapter{Introduction}
-The frequency of malignant melanoma has in the last decade been on the rise with approximately 60 000 people being diagnosed with the disease yearly. %(källa: strålskydds)
-A similar trend has been observed in the United States where the frequency of people diagnosed with the disease has doubled yearly from 1982-2011.% (källa: USA)
+The frequency of malignant melanoma has in the last decade been on the rise with approximately 60 000 people being diagnosed with the disease yearly \parencite{sverige-hudcancer}.
+A similar trend has been observed in the United States where the frequency of people diagnosed with the disease has doubled yearly from 1982-2011 \parencite{aad-skin-cancer}.
 
+% TODO: Fix the references, could not find the source in Drive
 Skin cancer, although common, has a survival rate of up to 95\% if discovered at an early stage. %(källa)
 This fact makes the diagnosis of malignant melanoma an essential part of the treatment of the disease. In the light of diagnosis, machine learning has become a subject of interest in many medical fields, dermatology included. Multiple studies have been conducted to evaluate the potential of the algorithms’ accuracy and applicability through so called computer aided diagnostics (CAD). Concerning malignant melanoma, some studies have reached an accuracy of up to 90\% which competes with the experts in the field. %(källa). 
 
-The accuracy of machine learning algorithms is however heavily reliant on the feature extraction methods used, where relevant features in an image are extracted and then used in the classification of the skin lesion. An effective feature extraction in turn relies on determining which features to use. Which is the subject of feature selection where different features are compared in terms of their effect on the diagnostic accuracy. It has been shown that effective feature selection make classifiers more effective, accurate and cost-effective %(källa:  bättre)
+The accuracy of machine learning algorithms is however heavily reliant on the feature extraction methods used, where relevant features in an image are extracted and then used in the classification of the skin lesion. An effective feature extraction in turn relies on determining which features to use. Which is the subject of feature selection where different features are compared in terms of their effect on the diagnostic accuracy. It has been shown that effective feature selection make classifiers more effective, accurate and cost-effective. \parencite{KarabulutEsraMahsereci2012Acso}
 
 \section{Research Question}
 In our thesis we will study the effect of two different feature selection methods upon 169 features and using 4 different machine learning models. We aim to answer:
@@ -68,9 +69,10 @@ In our thesis we will study the effect of two different feature selection method
 
 \section{Approach}
 
-To study the proposed research questions both forward and backwards selection will be performed. To further widen the base for comparison four different machine learning models will be used: support vector machine, random forest, k-nearest neighbors and a one-layered neural network. These models are widely used in the research of automatic skin lesion diagnosis which makes them relevant to study. % (källa).  Furthermore, two selection methods will be used, namely sequential forwards selection and sequential backwards selection. 
+To study the proposed research questions both forward and backwards selection will be performed. To further widen the base for comparison four different machine learning models will be used: support vector machine, random forest, k-nearest neighbors and a one-layered neural network. These models are widely used in the research of automatic skin lesion diagnosis which makes them relevant to study. % Källa
+Furthermore, two selection methods will be used, namely sequential forwards selection and sequential backwards selection. 
 
-The features to be used in the feature selection are of two classes: hand-crafted and automatically generated features. The hand crafted features are based on the clinical practice through the ABCD method where a skin lesion is classified based on it’s asymmetry, border irregularity, color and diameter. The ABCD method is widely used when diagnosing skin lesions using ML due to its effectiveness and simplicity to implement. %(källa).
+The features to be used in the feature selection are of two classes: hand-crafted and automatically generated features. The hand crafted features are based on the clinical practice through the ABCD method where a skin lesion is classified based on it’s asymmetry, border irregularity, color and diameter. The ABCD method is widely used when diagnosing skin lesions using ML due to its effectiveness and simplicity to implement. \parencite{JAIN2015735}
 Thus making it relevant to the study. For the automatically generated features, SIFT was chosen as the feature. % It is relevant because … (Is it really necessary to explain why SIFT is relevant here?)
 
 % A little bit outdated.
@@ -291,6 +293,8 @@ Balanced accuracy is essentially the same thing as accuracy, but the difference 
 
 \chapter{Results}
 Placeholder reference in order to test the bibliography: \parencite{einstein2016}
+
+And then textcite: \textcite{einstein2016}
 \blindtext
 
 \chapter{Discussion}
