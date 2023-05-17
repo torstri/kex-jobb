@@ -52,9 +52,11 @@ for i in range(0,170):
 
 
 
-plots.bar_plot(sfs_freq,x_data, True)
-plots.bar_plot(sbs_freq, x_data, False)
-plots.graph_plot(l, sfs_accuracy, x_data)
+# plots.bar_plot(sfs_freq,x_data, True)
+# plots.bar_plot(sbs_freq, x_data, False)
+# plots.graph_plot(l, sfs_accuracy, x_data)
 
-plots.create_table('svm_sfs_table.csv', sfs_frequencies)
+plots.create_table('svm_sfs_table.csv', sfs_frequencies, 'Occurences', 'Feature')
+
+# plots.create_table('svm_sfs_table.csv', sfs_frequencies)
 # plots.create_table('svm_sbs_table.csv', sbs_frequencies)

@@ -286,7 +286,7 @@ def generate_tables():
 # generate_tables()
 # plot_all_graphs()
 
-create_big_bar()
+# create_big_bar()
 
 # for key in sfs_frequencies:
 #     all_freqs[int(key)] += sfs_frequencies.get(key)
