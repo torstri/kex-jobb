@@ -9,16 +9,14 @@ from IPython.display import display
 plt.close("all")
 
 
-def bar_plot(features, x_data, sfs = True):
+def bar_plot(features,x_data, title, labelx, labely):
     fig = plt.figure()
     ax = fig.add_subplot(111)
     ax.bar(x_data, features)
-    if(sfs):
-        plt.title('Appearances for every featur: SFS')
-    else:
-        plt.title('Appearances for every feature: SBS')
-    plt.xlabel('Feature number')
-    plt.ylabel('Appearances')
+    plt.title(title)
+
+    plt.xlabel(labelx)
+    plt.ylabel(labely)
     plt.plot()
     plt.show()
     
@@ -30,19 +28,48 @@ def graph_plot(sbs, sfs, x_data, label):
     sbs_max = max(sbs)
     sfs_x = sfs.index(sfs_max)
     sbs_x = sbs.index(sbs_max)
-    # Add max annotaiton
-    ax.annotate('SFS local max', xy=(sfs_x, sfs_max), xytext=(sfs_x, sfs_max + 0.15),
-                arrowprops=dict(facecolor='red', shrink=0.005),
-                )
-    ax.annotate('SBS local max', xy=(sbs_x, sbs_max), xytext=(sbs_x, sbs_max + 0.1),
-                arrowprops=dict(facecolor='blue', shrink=0.05),
-                )
+
+    ax.annotate('SFS local max',
+             xy=(sfs_x, sfs_max),
+             xytext=(sfs_x, sfs_max + 0.05),
+             arrowprops=dict(arrowstyle='->',shrinkA = 9, shrinkB = 8,
+                             facecolor='red',
+                             edgecolor='red',
+                             linewidth=2.5,
+                             mutation_scale=20),
+             )
+    
+
+                
+                
+    ax.annotate('SBS local max',
+             xy=(sbs_x, sbs_max),
+             xytext=(sbs_x, sbs_max - 0.1),
+             arrowprops=dict(arrowstyle='->',
+                             facecolor='blue',
+                             edgecolor='blue',
+                             linewidth=2.5,
+                             mutation_scale=20),
+             )
     # Create a line plot using Matplotlib
     plt.plot(x_data, sfs, 'r--',x_data, sbs, 'b--')
     plt.xlabel('Number of features')
     plt.ylabel('Accuracy')
     plt.title(label)
     ax.set_ylim(0.55,0.9)
+    ax.set_xlim(0,170)
+    i = 0
+    x_points = [0]
+    while i < 17:
+        
+        i += 1
+        x_points.append(x_points[i - 1] + 10)
+    print(x_points)
+    # ax.set_xscale(10, 'linear')
+    plt.xticks(x_points)
+    plt.axvline(sfs_x, ls=':', c='k')
+    plt.axvline(sbs_x, ls=':', c='k')
+    
     plt.show()
     
     
@@ -89,7 +116,7 @@ def create_big_bar():
     print("asdf =", all_freqs)
 
     print("fr = ", fr)
-    bar_plot(fr,x)    
+    bar_plot(fr, x, 'Occurences for every feature', 'Features', 'Occurences') 
 
     sorted_freqs = dict(sorted(all_freqs.items(), key=lambda x:x[1], reverse=True))
 
@@ -211,6 +238,7 @@ def generate_tables():
         f = open(file_name, 'r')
         features = json.load(f)
         num_features = features[key_name]
+        
         create_table(target_file, num_features, 'Test', 'Number of features')
         print(num_features)
         empty_list = [0] * 5
@@ -252,8 +280,8 @@ def generate_tables():
     print("")
 
 
-# generate_tables()
-# plot_all_graphs()
+generate_tables()
+plot_all_graphs()
 
 create_big_bar()
 
