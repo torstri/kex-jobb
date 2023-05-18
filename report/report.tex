@@ -313,17 +313,53 @@ Since multiple tests were performed for every combination of classifier and sele
 
 
 \chapter{Results}
-Placeholder reference in order to test the bibliography: \parencite{einstein2016}
+
+\section{Determining most important features} % Maybe move this section one step up?
+
+Below are a table showing the features that were included in the optimal set the most. The features are sorted in descending order based on how many times they were included in the optimal feature set.
+
+% TODO: Insert the big_data_new table here, showing the most important features for all classifiers using SFS and SBE
+
+% Dubbelkolla denna paragraf så allt stämmer.
+From the results we can see that the feature that were the most prominent were the extent feature from the ABCD method. The extent feature was included in the optimal feature set in 37 of the 40 tests. The extent feature was also the only feature that was included in the optimal feature set for all classifiers.
+
+Furthermore, we can also compare the two different sets of features, the hand-crafted ABCD features and the automatically generated SIFT features. The results are shown in the table below.
+
+% TODO: Insert ABCD vs SIFT table here
+
 
 \section{Determining important features for models}
 
-\section{Determining most important features}
+To determine which features are important for different classifiers, the optimal feature set was examined in every test to see how many times a feature was included in the set. The results for each classifier is listed in the rubrics below.
+
+\subsection{K-nearest neighbours}
+
+Below are the two tables showing the most important features for KNN using SFS and SBE respectively. The features are sorted in descending order based on how many times they were included in the optimal feature set. 
+
+% TODO: Insert the two tables here, showing the most important features for KNN using SFS and SBE
+
+From the results we can see that the SFS preffered more features than the SBE counter part. Furthermore, there is very little overlap between the preffered features when comparing the two methods. The only feature that has a probaility of 80 percent or more is number 151, which corresponds to an extent feature from the ABCD method.
+
+
+
+\subsection{Neural Network}
+
+% TODO: Insert the two tables here, showing the most important features for NN using SFS and SBE
+
+
+
+\subsection{Random Forest}
+
+% TODO: Insert the two tables here, showing the most important features for RF using SFS and SBE
+
+\subsection{Support Vector Machine}
+
+% TODO: Insert the two tables here, showing the most important features for SVM using SFS and SBE
+
+
 
 \section{Difference between selection methods}
 
-
-And then textcite: \textcite{einstein2016}
-\blindtext
 
 \chapter{Discussion}
 \blindtext

@@ -76,10 +76,10 @@ def graph_plot(sbs, sfs, x_data, label):
 def create_probability_tables():
     
     # Files to store result
-    target_file_names = ['nn_sfs_probability.csv', 'nn_sbs_probability.csv',
-                         'knn_sfs_probability.csv', 'knn_sbs_probability.csv',
-                         'svm_sfs_probability.csv', 'svm_sbs_probability.csv',
-                         'rf_sfs_probability.csv', 'rf_sbs_probability.csv']
+    target_file_names = ['nn_total_probability.csv',
+                         'knn_total_probability.csv',
+                         'svm_total_probability.csv',
+                         'rf_total_probability.csv']
     
     # Files to retrieve data from
     file_names = ['nn_SFS.json', 'nn_SBS.json', 
@@ -92,28 +92,39 @@ def create_probability_tables():
     
     
     j = 0 # key index
-
-    for i in range(0,8):
+    i = 0
+    target_number = 0
+    while i < 8:
         
         file_name = file_names[i]
+        file_name2 = file_names[i+1]
         f = open(file_name, 'r')
+        f2 = open(file_name2, 'r')
         SFS = json.load(f)
+        SBS = json.load(f2)
         key_name = key_names[j]
-        if(i % 2 == 1):
-            j+= 1
             
-        frequencies = SFS[key_name]
-        df_feature_probs = pd.DataFrame(columns=['Feature', 'Occurence(s)', 'Probability'])
+        frequencies_sfs = SFS[key_name]
+        frequencies_sbs = SBS[key_name]
+        df_feature_probs = pd.DataFrame(columns=['Feature', 'Occurence(s)', 'Probability overall', 'Probability in SFS', 'Probability in SBS'])
 
-        for index, feature in enumerate(frequencies):
+        for index, feature in enumerate(frequencies_sfs):
             
-                occurence = frequencies[feature]
-                probability = float(occurence)/5.0
+                occurence_sfs = frequencies_sfs[feature]
+                occurence_sbs = frequencies_sbs[feature]
+                occurence_total = occurence_sbs + occurence_sfs
+
+                probability_sfs = float(occurence_sfs)/5.0
+                probability_sbs = float(occurence_sbs)/5.0
+                probability_total = float(occurence_total)/10.0
             
-                df_feature_probs.loc[index] = [feature, occurence, probability]
+                df_feature_probs.loc[index] = [feature, occurence_total, probability_total, probability_sfs, probability_sbs]
 
 
-        df_feature_probs.to_csv(target_file_names[i])     
+        df_feature_probs.to_csv(target_file_names[target_number])
+        target_number += 1     
+        j += 1
+        i += 2
     
     
 # Andra RQ
@@ -378,7 +389,7 @@ def generate_tables():
         
     
 create_probability_tables()
-generate_tables()
-plot_all_graphs()
+# generate_tables()
+# plot_all_graphs()
 
-create_big_bar()
+# create_big_bar()
