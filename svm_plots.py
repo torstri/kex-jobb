@@ -55,8 +55,27 @@ for i in range(0,170):
 # plots.bar_plot(sfs_freq,x_data, True)
 # plots.bar_plot(sbs_freq, x_data, False)
 # plots.graph_plot(l, sfs_accuracy, x_data)
+# print("Frequencies = ", sfs_frequencies)
+# probs = []
 
-plots.create_table('svm_sfs_table.csv', sfs_frequencies, 'Occurences', 'Feature')
+# df_probs = pd.DataFrame(columns=['Feature', 'Occurence(s)', 'Probability'])
+
+# for index, feature in enumerate(sfs_frequencies):
+    
+#     occurence = sfs_frequencies[feature]
+#     probability = float(occurence)/5.0
+    
+#     print("Index =", index, " Feature =", feature, "Occurence =", occurence)
+#     df_probs.loc[index] = [feature, occurence, probability]
+    
+# print(df_probs)   
+# df_probs.to_csv('svm_sfs_probabilities.csv') 
+
+
+# sfs_frequencies["Probabilities"] = probs
+
+# plots.create_table('svm_sfs_table.csv', sfs_frequencies, 'Occurences', 'Feature')
+
 
 # plots.create_table('svm_sfs_table.csv', sfs_frequencies)
 # plots.create_table('svm_sbs_table.csv', sbs_frequencies)
