@@ -106,7 +106,7 @@ def create_probability_tables():
             
         frequencies_sfs = SFS[key_name]
         frequencies_sbs = SBS[key_name]
-        df_feature_probs = pd.DataFrame(columns=['Feature', 'Occurence(s)', 'Probability overall', 'Probability in SFS', 'Probability in SBS'])
+        df_feature_probs = pd.DataFrame(columns=['Feature', 'Occurence', 'Probability', 'Probability in SFS', 'Probability in SBS'])
 
         for index, feature in enumerate(frequencies_sfs):
             
@@ -120,7 +120,7 @@ def create_probability_tables():
             
                 df_feature_probs.loc[index] = [feature, occurence_total, probability_total, probability_sfs, probability_sbs]
 
-
+        df_feature_probs = df_feature_probs.sort_values(by=['Occurence'], ascending = False)
         df_feature_probs.to_csv(target_file_names[target_number])
         target_number += 1     
         j += 1
