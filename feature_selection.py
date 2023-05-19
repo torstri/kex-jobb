@@ -92,7 +92,7 @@ def get_important_features(subsets, acc, features):
         print("Subset: ", subset)
         accuracy = subsets[subset]['avg_score']
         accurancies.append(accuracy)
-        if (highest_accuracy < accuracy):
+        if (highest_accuracy < accuracy):   # Change if we want less features for sbs
             highest_accuracy = accuracy
             features = subsets[subset]['feature_idx']
 

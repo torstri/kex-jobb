@@ -6,6 +6,9 @@
 \usepackage[style=numeric,sorting=none,backend=biber]{biblatex}
 \addbibresource{references.bib} % The file containing our references, in BibTeX format
 
+\usepackage{pgfplotstable,filecontents}
+\pgfplotsset{compat=1.9}% supress warning
+
 \title{This is the English title}
 \alttitle{Detta är den svenska översättningen av titeln}
 \author{Vilmer Jonsson \\ Tor Strimbold}
@@ -186,6 +189,12 @@ K-nearest-neighbors is another method for classifying. The ground principle is t
 
 % TODO: Fix this section
 Neural networks are a type of machine learning algorithm that is inspired by the human brain. The network consists of several layers of neurons, where each neuron is connected to all neurons in the previous layer. The first layer is the input layer, where the data is fed into the network. The last layer is the output layer, where the final prediction is made. The layers in between are called hidden layers. The hidden layers are the ones that do the actual work of the network. The neurons in the hidden layers are connected to all neurons in the previous layer, and the output of each neuron is calculated by a function. The output of the neurons in the last hidden layer is then fed into the output layer, where the final prediction is made.
+
+
+https://www.ibm.com/topics/neural-networks
+Neural network is a type of machine learning algorithm, inspired by the human brain, and consists of several connected layers of nodes. There are three types of layers, namely input, output and hidden layers. 
+beskriv hur en nod fungerar
+beskriv hur data går igenom alla noder
 % Detta fixade co-pilot lol
 
 \section{Feature selection}
@@ -226,7 +235,7 @@ For removing artifacts such as hairs, the DullRazor® software was used. The sof
 
 \subsection{Segmentation}
 
-The aim of this study was not to develop a new segmentation method, but rather to compare the effect of different feature selection methods on the accuracy of the classification. Therefore, the segmentation was done using open-source software published by [name] availible on GitHub.
+The aim of this study was not to develop a new segmentation method, but rather to compare the effect of different feature selection methods on the accuracy of the classification. Therefore, the segmentation was done using open-source software published by [name] availible on GitHub. 
 
 \subsection{Feature extraction}
 
@@ -316,9 +325,32 @@ Since multiple tests were performed for every combination of classifier and sele
 
 \section{Determining most important features} % Maybe move this section one step up?
 
-Below are a table showing the features that were included in the optimal set the most. The features are sorted in descending order based on how many times they were included in the optimal feature set.
+Below a table showing the features that were included in the optimal set the most. The features are sorted in descending order based on how many times they were included in the optimal feature set.
 
 % TODO: Insert the big_data_new table here, showing the most important features for all classifiers using SFS and SBE
+
+% Fråga inte hur detta funkar.
+\pgfplotstabletypeset[col sep=comma,
+    string type,
+    columns={Feature, Occurence(s), Probability},
+    columns/Feature/.style={column name=Feature, column type={|l|}},
+    columns/Occurence(s)/.style={column name=Occurence(s), column type={l|}},
+    columns/Probability/.style={column name=Probability, column type={l|}},
+    every head row/.style={before row=\hline, after row=\hline},
+    every nth row={1}{before row=\hline},
+    every nth row={13}{before row=\hline\hline},
+    every last row/.style={after row=\hline},
+    row predicate/.code={% display only the first 20 rows
+      \ifnum#1>12\relax
+        \ifnum#1<157\relax
+          \pgfplotstableuserowfalse
+        \fi
+      \fi
+    }
+    ]{../big_data_new.csv}
+
+    In the table it is observable that 
+
 
 % Dubbelkolla denna paragraf så allt stämmer.
 From the results we can see that the feature that were the most prominent were the extent feature from the ABCD method. The extent feature was included in the optimal feature set in 37 of the 40 tests. The extent feature was also the only feature that was included in the optimal feature set for all classifiers.
@@ -328,7 +360,7 @@ Furthermore, we can also compare the two different sets of features, the hand-cr
 % TODO: Insert ABCD vs SIFT table here
 
 
-\section{Determining important features for models}
+\section{Determining important features for each classiifier}
 
 To determine which features are important for different classifiers, the optimal feature set was examined in every test to see how many times a feature was included in the set. The results for each classifier is listed in the rubrics below.
 
@@ -338,7 +370,7 @@ Below are the two tables showing the most important features for KNN using SFS a
 
 % TODO: Insert the two tables here, showing the most important features for KNN using SFS and SBE
 
-From the results we can see that the SFS preffered more features than the SBE counter part. Furthermore, there is very little overlap between the preffered features when comparing the two methods. The only feature that has a probaility of 80 percent or more is number 151, which corresponds to an extent feature from the ABCD method.
+From the results we can see that the SFS preffered more features than the SBE counter part. Furthermore, there is very little overlap between the preffered features when comparing the two methods. The only feature that has a probability of 80 percent or more is number 151, which corresponds to an extent feature from the ABCD method.
 
 
 
@@ -346,20 +378,44 @@ From the results we can see that the SFS preffered more features than the SBE co
 
 % TODO: Insert the two tables here, showing the most important features for NN using SFS and SBE
 
-
+From the results, it becomes apparent that the classifier used a lot of features compared to the other classifiers. The most prominent feature was 81, which is a SIFT feature and was present in the optimal feature set in all tests.
 
 \subsection{Random Forest}
 
 % TODO: Insert the two tables here, showing the most important features for RF using SFS and SBE
 
+Random forest used, similar to Neural Network, a lot of features. The most prominent features were 18, 94, 112, 131, 100, which all are SIFT features and was present in the optimal feature set in all tests except one. In general the classifier seemed to prefer SIFT features where the highest ranked ABCD feature was 151 with a probability of 80 percent.
+
 \subsection{Support Vector Machine}
 
 % TODO: Insert the two tables here, showing the most important features for SVM using SFS and SBE
-
+The SVM differs from the other classifiers, with a preference for ABCD features, where the seven highest ranked features all consisted of ABCD features.
 
 
 \section{Difference between selection methods}
 
+Following are the comparison between the two different selection methods. 
+
+% TODO: Insert average_feature_methods.csv below
+
+
+The results show that the SFS method achieves the highest accuracies using on average more features than the SBE method, in all cases except for the RF classifier. The difference was the biggest in the case of the KNN where the SFS method used more than twice the number of features than the SBS method.
+
+\subsection{K-Nearest Neighbors}
+
+% TODO: Insert the table comparing SFS and SBE for KNN here
+
+\subsection{Neural Network}
+
+% TODO: Insert the table comparing SFS and SBE for NN here
+
+\subsection{Random Forest}
+
+% TODO: Insert the table comparing SFS and SBE for RF here
+
+\subsection{Support Vector Machine}
+
+% TODO: Insert the table comparing SFS and SBE for SVM here
 
 \chapter{Discussion}
 \blindtext
