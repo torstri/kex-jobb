@@ -1,0 +1,9 @@
+Classifier,Selection Method,Average Number of Features
+Neural Network,SFS,126.2
+Neural Network,SBS,98.2
+K-Nearest Neighbors,SFS,43.4
+K-Nearest Neighbors,SBS,21.4
+Support Vector Machine,SFS,32.6
+Support Vector Machine,SBS,25.4
+Random Forest,SFS,86.2
+Random Forest,SBS,106.2

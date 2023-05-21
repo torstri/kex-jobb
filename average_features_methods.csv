@@ -1,9 +1,0 @@
-Selection Method,Average Number of Features
-nn_SFS,126.2
-nn_SBS,98.2
-knn_SFS,43.4
-knn_SBS,21.4
-svm_SFS,32.6
-svm_SBS,25.4
-rf_SFS,86.2
-rf_SBS,106.2

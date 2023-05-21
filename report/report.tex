@@ -8,6 +8,7 @@
 
 \usepackage{pgfplotstable,filecontents}
 \pgfplotsset{compat=1.9}% supress warning
+\usepackage{booktabs,colortbl}
 
 \title{This is the English title}
 \alttitle{Detta är den svenska översättningen av titeln}
@@ -323,14 +324,19 @@ Since multiple tests were performed for every combination of classifier and sele
 
 \chapter{Results}
 
-\section{Determining most important features} % Maybe move this section one step up?
+\section{Determining most important features}
 
-Below a table showing the features that were included in the optimal set the most. The features are sorted in descending order based on how many times they were included in the optimal feature set.
+% Could write more here.
+Below is a table showing the features that were included in the optimal set the most and least amount of times. The features are sorted in descending order based on how many times they were included in the optimal feature set.
 
-% TODO: Insert the big_data_new table here, showing the most important features for all classifiers using SFS and SBE
+% Maybe put in a disclosure like this:
+% It should be noted that some classifiers used more features than others, which explains why...
+
 
 % Fråga inte hur detta funkar.
-\pgfplotstabletypeset[col sep=comma,
+\begin{figure}[h!]
+  \begin{center}
+    \pgfplotstabletypeset[col sep=comma,
     string type,
     columns={Feature, Occurence(s), Probability},
     columns/Feature/.style={column name=Feature, column type={|l|}},
@@ -338,26 +344,47 @@ Below a table showing the features that were included in the optimal set the mos
     columns/Probability/.style={column name=Probability, column type={l|}},
     every head row/.style={before row=\hline, after row=\hline},
     every nth row={1}{before row=\hline},
-    every nth row={13}{before row=\hline\hline},
+    every nth row={13}{before row=\hline\hline}, % Cut in the table
     every last row/.style={after row=\hline},
     row predicate/.code={% display only the first 20 rows
-      \ifnum#1>12\relax
-        \ifnum#1<157\relax
-          \pgfplotstableuserowfalse
-        \fi
-      \fi
+    \ifnum#1>12\relax
+    \ifnum#1<157\relax
+    \pgfplotstableuserowfalse
+    \fi
+    \fi
     }
     ]{../big_data_new.csv}
+    \caption{The most and least prominent features in all 40 tests.}
+  \end{center}
+\end{figure}
+\newpage
+In the table it is observable that two features stand out: number 151 and 160. These are both morphological features.% ABCD eller morphological? 
+Feature 151 is called "Extent" and measure how many of the pixels in an image are inside the lesion. % inside?
+Feature 160 is a color feature... % Fortsätt
 
-    In the table it is observable that 
-
+We can also see that there is a large spread, only two features are in the optimal feature set less than 25\% of the tests.
 
 % Dubbelkolla denna paragraf så allt stämmer.
-From the results we can see that the feature that were the most prominent were the extent feature from the ABCD method. The extent feature was included in the optimal feature set in 37 of the 40 tests. The extent feature was also the only feature that was included in the optimal feature set for all classifiers.
+From the results we can see that the feature that were the most prominent were the extent feature from the ABCD method. The extent feature was included in the optimal feature set in 35 of the 40 tests. The extent feature was also the only feature that was included in the optimal feature set for all classifiers.
 
-Furthermore, we can also compare the two different sets of features, the hand-crafted ABCD features and the automatically generated SIFT features. The results are shown in the table below.
+Furthermore, we can also compare the two different sets of features, the hand-crafted ABCD features and the automatically generated SIFT features.
 
-% TODO: Insert ABCD vs SIFT table here
+\begin{figure}[h!]
+  \pgfplotstabletypeset[ col sep=comma,
+    string type,
+    columns={Feature Type, Number of Features, Occurence(s),Representation},
+    columns/Feature Type/.style={column name=Feature Type, column type={|l|}},
+    columns/Number of Features/.style={column name=Feature count, column type={l|}},
+    columns/Occurence(s)/.style={column name=Occurences, column type={l|}},
+    columns/Representation/.style={column name=Average Occurences, column type={l|}},
+    every head row/.style={before row=\hline, after row=\hline},
+    every nth row={1}{before row=\hline},
+    every last row/.style={after row=\hline}
+  ]{../representation.csv}
+  \caption{Average number of occurences in optimal set for ABCD and SIFT features.}
+\end{figure}
+
+Here we can see that ABCD features are on average more prominent in optimal feature set. 
 
 
 \section{Determining important features for each classiifier}
@@ -368,27 +395,107 @@ To determine which features are important for different classifiers, the optimal
 
 Below are the two tables showing the most important features for KNN using SFS and SBE respectively. The features are sorted in descending order based on how many times they were included in the optimal feature set. 
 
-% TODO: Insert the two tables here, showing the most important features for KNN using SFS and SBE
+\begin{figure}[h!]
+  \begin{center}
+    \pgfplotstabletypeset[col sep=comma,
+    string type,
+    columns={Feature, Occurence(s), Probability},
+    columns/Feature/.style={column name=Feature, column type={|l|}},
+    columns/Occurence(s)/.style={column name=Occurence(s), column type={l|}},
+    columns/Probability/.style={column name=Probability, column type={l|}},
+    every head row/.style={before row=\hline, after row=\hline},
+    every nth row={1}{before row=\hline},
+    every last row/.style={after row=\hline},
+    row predicate/.code={% display only the first 20 rows
+    \ifnum#1>6\relax
+      \pgfplotstableuserowfalse
+    \fi
+    }
+    ]{../knn_total_probability.csv}
+    \caption{The features with at least 5 occurences in the 10 tests.}
+  \end{center}
+\end{figure}
 
 From the results we can see that the SFS preffered more features than the SBE counter part. Furthermore, there is very little overlap between the preffered features when comparing the two methods. The only feature that has a probability of 80 percent or more is number 151, which corresponds to an extent feature from the ABCD method.
 
+% There were XX features with zero occurences.
 
+% New page in order to not have the tables on the same page.
+\newpage
 
 \subsection{Neural Network}
 
-% TODO: Insert the two tables here, showing the most important features for NN using SFS and SBE
+\begin{figure}[h!]
+  \begin{center}
+    \pgfplotstabletypeset[col sep=comma,
+    string type,
+    columns={Feature, Occurence(s), Probability},
+    columns/Feature/.style={column name=Feature, column type={|l|}},
+    columns/Occurence(s)/.style={column name=Occurence(s), column type={l|}},
+    columns/Probability/.style={column name=Probability, column type={l|}},
+    every head row/.style={before row=\hline, after row=\hline},
+    every nth row={1}{before row=\hline},
+    every last row/.style={after row=\hline},
+    row predicate/.code={% display only the first 20 rows
+    \ifnum#1>18\relax
+      \pgfplotstableuserowfalse
+    \fi
+    }
+    ]{../nn_total_probability.csv}
+    \caption{The features with at least 9 occurences in the 10 tests.}
+  \end{center}
+\end{figure}
 
-From the results, it becomes apparent that the classifier used a lot of features compared to the other classifiers. The most prominent feature was 81, which is a SIFT feature and was present in the optimal feature set in all tests.
+From the results, it becomes apparent that the classifier used a lot of features compared to the other classifiers. The most prominent feature was 80, which is a SIFT feature and was present in the optimal feature set in all tests.
 
 \subsection{Random Forest}
 
-% TODO: Insert the two tables here, showing the most important features for RF using SFS and SBE
+\begin{figure}[h!]
+  \begin{center}
+    \pgfplotstabletypeset[col sep=comma,
+    string type,
+    columns={Feature, Occurence(s), Probability},
+    columns/Feature/.style={column name=Feature, column type={|l|}},
+    columns/Occurence(s)/.style={column name=Occurence(s), column type={l|}},
+    columns/Probability/.style={column name=Probability, column type={l|}},
+    every head row/.style={before row=\hline, after row=\hline},
+    every nth row={1}{before row=\hline},
+    every last row/.style={after row=\hline},
+    row predicate/.code={% display only the first 20 rows
+    \ifnum#1>15\relax
+      \pgfplotstableuserowfalse
+    \fi
+    }
+    ]{../rf_total_probability.csv}
+    \caption{The features with at least 8 occurences in the 10 tests.}
+  \end{center}
+\end{figure}
 
 Random forest used, similar to Neural Network, a lot of features. The most prominent features were 18, 94, 112, 131, 100, which all are SIFT features and was present in the optimal feature set in all tests except one. In general the classifier seemed to prefer SIFT features where the highest ranked ABCD feature was 151 with a probability of 80 percent.
 
 \subsection{Support Vector Machine}
 
-% TODO: Insert the two tables here, showing the most important features for SVM using SFS and SBE
+\begin{figure}[h!]
+  \begin{center}
+    \pgfplotstabletypeset[col sep=comma,
+    string type,
+    columns={Feature, Occurence(s), Probability},
+    columns/Feature/.style={column name=Feature, column type={|l|}},
+    columns/Occurence(s)/.style={column name=Occurence(s), column type={l|}},
+    columns/Probability/.style={column name=Probability, column type={l|}},
+    every head row/.style={before row=\hline, after row=\hline},
+    every nth row={1}{before row=\hline},
+    every last row/.style={after row=\hline},
+    row predicate/.code={% display only the first 20 rows
+    \ifnum#1>10\relax
+      \pgfplotstableuserowfalse
+    \fi
+    }
+    ]{../svm_total_probability.csv}
+    \caption{The features with at least 5 occurences in the 10 tests.}
+  \end{center}
+\end{figure}
+
 The SVM differs from the other classifiers, with a preference for ABCD features, where the seven highest ranked features all consisted of ABCD features.
 
 
@@ -396,26 +503,61 @@ The SVM differs from the other classifiers, with a preference for ABCD features,
 
 Following are the comparison between the two different selection methods. 
 
-% TODO: Insert average_feature_methods.csv below
+% TODO: Vill man plåga sig lite kan man försöka färga raderna.
 
+\begin{figure}[h!]
+  \begin{center}
+    \pgfplotstabletypeset[col sep=comma,
+    string type,
+    columns={Classifier, Selection Method, Average Number of Features},
+    columns/Classifier/.style={column name=Classifier, column type={|l|}},
+    columns/Selection Method/.style={column name=Selection Method, column type={l|}},
+    columns/Average Number of Features/.style={column name=Average Number of Features, column type={l|}},
+    every head row/.style={before row=\hline, after row=\hline},
+    every nth row={1}{before row=\hline},
+    every last row/.style={after row=\hline},
+    ]{../features_methods.csv}
+  \end{center}
+\end{figure}
 
 The results show that the SFS method achieves the highest accuracies using on average more features than the SBE method, in all cases except for the RF classifier. The difference was the biggest in the case of the KNN where the SFS method used more than twice the number of features than the SBS method.
 
 \subsection{K-Nearest Neighbors}
 
-% TODO: Insert the table comparing SFS and SBE for KNN here
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.8]{./figures/Figure_2.png}
+    \caption{Bla bla bla}
+  \end{center}
+\end{figure}
 
 \subsection{Neural Network}
 
-% TODO: Insert the table comparing SFS and SBE for NN here
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.8]{./figures/Figure_1.png}
+    \caption{Bla bla bla}
+  \end{center}
+\end{figure}
+
 
 \subsection{Random Forest}
 
-% TODO: Insert the table comparing SFS and SBE for RF here
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.8]{./figures/Figure_4.png}
+    \caption{Bla bla bla}
+  \end{center}
+\end{figure}
 
 \subsection{Support Vector Machine}
 
-% TODO: Insert the table comparing SFS and SBE for SVM here
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.8]{./figures/Figure_3.png}
+    \caption{Bla bla bla}
+  \end{center}
+\end{figure}
 
 \chapter{Discussion}
 \blindtext
