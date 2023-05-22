@@ -189,24 +189,24 @@ K-nearest-neighbors is another method for classifying. The ground principle is t
 \subsection{Neural Network (NN)}
 
 % TODO: Fix this section
-Neural networks are a type of machine learning algorithm that is inspired by the human brain. The network consists of several layers of neurons, where each neuron is connected to all neurons in the previous layer. The first layer is the input layer, where the data is fed into the network. The last layer is the output layer, where the final prediction is made. The layers in between are called hidden layers. The hidden layers are the ones that do the actual work of the network. The neurons in the hidden layers are connected to all neurons in the previous layer, and the output of each neuron is calculated by a function. The output of the neurons in the last hidden layer is then fed into the output layer, where the final prediction is made.
+Neural networks are a type of machine learning algorithm that is inspired by the human brain. The network consists of several layers of neurons, where each neuron is connected to all neurons in the previous layer. The first layer is the input layer, where the data is fed into the network. The last layer is the output layer, where the final prediction is made. The layers in between are called hidden layers. The hidden layers are the ones that do the actual work of the network. The neurons in the hidden layers are connected to all neurons in the previous layer, and the output of each neuron is calculated by a function. The output of the neurons in the last hidden layer is then fed into the output layer, where the final prediction is made. \parencite{ibmWhatNeural}
 
 
-https://www.ibm.com/topics/neural-networks
-Neural network is a type of machine learning algorithm, inspired by the human brain, and consists of several connected layers of nodes. There are three types of layers, namely input, output and hidden layers. 
-beskriv hur en nod fungerar
-beskriv hur data går igenom alla noder
-% Detta fixade co-pilot lol
+% Neural network is a type of machine learning algorithm, inspired by the human brain, and consists of several connected layers of nodes. There are three types of layers, namely input, output and hidden layers. 
+% beskriv hur en nod fungerar
+% beskriv hur data går igenom alla noder
+% Detta fixade co-pilot lol, men är väl versionen ovan som gäller?
 
 \section{Feature selection}
 
 % https://www.jmlr.org/papers/volume3/guyon03a/guyon03a.pdf
+% ! Inte tillagd i referenslistan
 
-Feature selection is a process where the different extracted features are ranked in order of importance for the results of the classification. Some features may be irrelevant and thus confusing for the model. The goal for feature selection may vary, but it is commonly used to find the most important features, features that harm the results and synergies between features. In short, reducing the number of features utilized, improves performance and accuracy. % (källa) 
+Feature selection is a process where the different extracted features are ranked in order of importance for the results of the classification. Some features may be irrelevant and thus confusing for the model. The goal for feature selection may vary, but it is commonly used to find the most important features, features that harm the results and synergies between features. In short, reducing the number of features utilized, improves performance and accuracy. \parencite{chaganti2022thyroid}
 
 In this study the greedy methods Sequential Backward Selection (SBS) and Sequential Forward Selection (SFS) will be used.
 
-Sequential backward selection is a process that involves multiple iterations in which a feature is eliminated during each cycle. In the initial iteration, the feature that results in the worst performance, according to some metric, when removed is excluded from the set. The process is then repeated with the updated set of features. This process is continued until the desired number of features are left. % (källa)
+Sequential backward selection is a process that involves multiple iterations in which a feature is eliminated during each cycle. In the initial iteration, the feature that results in the worst performance, according to some metric, when removed is excluded from the set. The process is then repeated with the updated set of features. This process is continued until the desired number of features are left. \parencite{chaganti2022thyroid}
 
 Forward selection shares the same underlying concept as backward selection, but instead begins with a smaller feature set and adds one feature during each iteration, resulting in an increased set of features rather than a reduced one.
 
@@ -214,12 +214,15 @@ Forward selection shares the same underlying concept as backward selection, but 
 \section{Related Works}
 
 % TODO: Fix the references in this section. E.g. "Första" corresponds to a specific reference
+% Note that "andra" were not used.
+
+% ! I won't fix more of this now as it will be changed
 
 The automatic classification of skin lesions as being either malignant or benign has been a subject of great interest and there is a plethora of publications investigating the manner. Hence, there are several studies focused around classifying lesions, using the feature set and ML models which this thesis aims to investigate. However, there is not such an abundant pool of studies which focus on feature selection methods and exploration of which types of features are the most important. 
 
-Första studied the minimal number of necessary features for effective and accurate skin lesion classification using a KNN-model.  The features that were studies were based on the geometric (A), color (C)  and boundary (B) aspects of the ABCD rule of melanoma.(Första) A feature selection method which implemented the Sequential Backward Selection (SBS) was used. When all features (15 in total) were used, the average accuracy was around 78\%. The highest accuracy of 91\% was obtained when there were only 6, 8 and 9 features. Hence, Första showed that an effective feature selection method both improves the accuracy of the classifier as well as the computation and storage cost. Though they did not highlight which of these features were abundant and which were important to include. Additionally they only limited the study to one type of ML model, namely the KNN. 
+\parencite{MustafaSuleiman2017Fsus} studied the minimal number of necessary features for effective and accurate skin lesion classification using a KNN-model.  The features that were studies were based on the geometric (A), color (C)  and boundary (B) aspects of the ABCD rule of melanoma.(\parencite{MustafaSuleiman2017Fsus}) A feature selection method which implemented the Sequential Backward Selection (SBS) was used. When all features (15 in total) were used, the average accuracy was around 78\%. The highest accuracy of 91\% was obtained when there were only 6, 8 and 9 features. Hence, \parencite{MustafaSuleiman2017Fsus} showed that an effective feature selection method both improves the accuracy of the classifier as well as the computation and storage cost. Though they did not highlight which of these features were abundant and which were important to include. Additionally they only limited the study to one type of ML model, namely the KNN. 
 
-Tre studied the effect of feature selection using the NCA method with an M-SVM on three different data sets. Like Första their method showed an increase in accuracy and runtime. However, as well as Första, they did not investigate which features were the ones leading to the increased accuracy. Furthermore, only one classifier was used with the M-SVM and therefore no results were generated using some other type of classifier. 
+Tre studied the effect of feature selection using the NCA method with an M-SVM on three different data sets. Like \parencite{MustafaSuleiman2017Fsus} their method showed an increase in accuracy and runtime. However, as well as \parencite{MustafaSuleiman2017Fsus}, they did not investigate which features were the ones leading to the increased accuracy. Furthermore, only one classifier was used with the M-SVM and therefore no results were generated using some other type of classifier. 
 
 Fyra used ECNA feature selection to gain succesful results. The highest accuracy reached was 94.73\% using a KNN and second best was using an SVM with and accuracy of 93.83\%. They however, used deep features instead of the hand crafted features which will be used in this study.
 
@@ -230,7 +233,7 @@ Fyra used ECNA feature selection to gain succesful results. The highest accuracy
 
 \subsection{Preprocessing}
 
-For removing artifacts such as hairs, the DullRazor® software was used. The software is created by Tim Lee, Vincent Ng, RIchard Gallagher, Andrew Coldman and David Mclean and is used frequently for preprocessing of skin lesion images. The method removes the hairs in two steps: 1) using generalized grayscale morphological closing operations, it identifies the dark hair locations, 2) verifies the shape of the hair pixels as long and thin, whereafter it replaces the verified pixels by bilinear interpolation and lastly 3) smooths the replaced hair pixels. % (källa)
+For removing artifacts such as hairs, the DullRazor® software was used. The software is created by Tim Lee, Vincent Ng, RIchard Gallagher, Andrew Coldman and David Mclean and is used frequently for preprocessing of skin lesion images. The method removes the hairs in two steps: 1) using generalized grayscale morphological closing operations, it identifies the dark hair locations, 2) verifies the shape of the hair pixels as long and thin, whereafter it replaces the verified pixels by bilinear interpolation and lastly 3) smooths the replaced hair pixels. \parencite{dermwebDullRazor} % den här källan är ksk lite scuffed. Fanns en referens på själva sidan vi kanske borde ta istället.
 
 % TODO: Download and insert the images from the google drive
 
@@ -242,21 +245,22 @@ The aim of this study was not to develop a new segmentation method, but rather t
 
 As mentioned in the background, the two feature extraction methods used were ABCD and SIFT.
 
-\subsubsection{ABCD}
+\subsubsection{ABCD} % morphological ?
 
-The ABCD features were extracted using the open-source software published by [name] availible on GitHub. The software extracts the features based on the method proposed in [this] study. % Källa
+The asymmetry and border features are calculated through the method proposed by \parencite{inproceedings} and the color features by \parencite{celebi2008automatic}. Both computations showed promising results reaching an accuracy of 82\% and 83\%. Furthermore, other morphological features are calculated using the scikit skimage measure package. The implementation is originally done in the way described in this Github repository \parencite{melanoma-classifier}.
 
-% TODO: Dubbelkolla namn på library
-To calculate the asymmetry and border features the measure library from sci-kit is used, with the \verb|get_region_props| function. The color features are calculated using the color library from sci-kit.
+% TODO: Dubbelkolla namn på library. Det är fel
+To calculate the asymmetry and border features the measure library from sci-kit is used, with the \verb|get_region_props| function.
+The color features are calculated using a numpy array to represent the image's RGB value.
 
-% TODO: Lägg in hur man beräknar grejerna
+% TODO: Lägg in hur man beräknar grejerna, eller ska det ens in?
 
 % Hur de beräknas
 % github repot
 
 \subsubsection{SIFT}
 
-The SIFT features are extracted using the OpenCV class SIFT which implements the algorithm by David G. Lowe. %(källa1) (källa).
+The SIFT features are extracted using the OpenCV class SIFT which implements the algorithm by David G. Lowe. \parencite{sift-opencv} \parencite{lowe2004distinctive}.
 After that...
 
 % Vilket bibliotek
@@ -264,9 +268,9 @@ After that...
 
 \subsection{Classification}
 
-All classifiers used in this study are from the Scikit-sklearn library which is a free-to-use library for machine learning in Python.% (källa)
+All classifiers used in this study are from the Scikit-sklearn library which is a free-to-use library for machine learning in Python \parencite{scikit-learn-doc}.
 
-% Nedanstående stämmer typ inte längre. Ska vi skriva något om parameter sweep? Vi gjorde ju lite.
+% ! Nedanstående stämmer typ inte längre. Ska vi skriva något om parameter sweep? Vi gjorde ju lite.
 Although all ML models’ parameters can be fine-tuned to optimize performance and run-time, the default parameters will be used since it is not the aim of the study to create an optimal implementation. The focus is instead on the feature selection’s effect on the performance of the classifiers.
 
 % (källa ?)
@@ -279,22 +283,18 @@ The dataset was downloaded and structured in order to have every image in the sa
 
 \section{Metrics}
 
-\subsection{Accuracy (Balanced accuracy)}
+\subsection{Accuracy}
 
 Accuracy is a metric which is widely used and simple to calculate.  
 It is calculated by dividing the total number of correctly classified images with the total number of images. 
-It therefore measures the probability that the model will classify a given random image correctly. källa  
+It therefore measures the probability that the model will classify a given random image correctly. \parencite{takiddin2021artificial}
 
 Accuracy was the metric used to determine the performance of the classifiers and the effect of the feature selection methods.
- % källa  
-
-% ! We do not use balanced atm so maybe remove.
 
 
 \section{Feature selection}
 
 All feature selection methods used in the study originates from the \verb|Scikit-sklearn| library \verb|feature_selection|.
-
 
 The manner in which the feature  selection was performed differs slightly due to the selection method employed. For the SFS, the feature set was initially empty. The method then adds all features, one at a time. For the SBS the feature set at first contained all features, whereupon features were removed one at a time, until the feature set consisted of only one feature. In each iteration, the accuracy and which features constituted the feature set were recorded. 
 This process was repeated five times for every selection method and classifier. Hence, 40 tests were conducted in total.
@@ -314,12 +314,6 @@ Based on the findings from the previous research question, the results were summ
 
 \subsection{Are some feature selection methods more efficient in creating better accuracy than others? Which one uses the fewest features?}
 Since multiple tests were performed for every combination of classifier and selection method, it becomes possible to calculate the average accuracy for each number of features in the feature space. Hence the highest average accuracy and the expected number of features needed to achieve this accuracy can be determined. To determine which selection model is the most efficient, the difference between the original accuracy and the highest average accuracy using feature selection, was examined.
-
-
-% !Observera att detta troligen är utdaterat
-
-
-
 
 
 \chapter{Results}
@@ -597,7 +591,8 @@ The discussion is separated into three subsection on the same theme as the resul
 
 \section{Most important features}
 
-As mentioned in the result section, the morphological features were overrepresented in terms of being included in the optimal set. Similar results were achieved by DE DÄR ANDRA GRABBARNA ET AL who compared deep features generated by a convoluted neural network against SIFT descriptors. They obtained the highest accuracy using only deep feauters. While mixing deep and SIFT features, the accuracy was decreased. Finally only using SIFT features resulted in the worst observed performance. 
+As mentioned in the result section, the morphological features were overrepresented in terms of being included in the optimal set. Similar results were achieved by DE DÄR ANDRA GRABBARNA ET AL % Refererar vi till dem i Simila works?
+who compared deep features generated by a convoluted neural network against SIFT descriptors. They obtained the highest accuracy using only deep feauters. While mixing deep and SIFT features, the accuracy was decreased. Finally only using SIFT features resulted in the worst observed performance. 
 
 % Feature 151
 As mentioned in the results, the most prominent feature was feature 151, which is a morphological feature. The feature measures the extent of the lesion, i.e. how many of the pixels in the image are within the lesion. This might be due to the way the tests were conducted. In the forward selection, if a feature is selected early, then it is likely to be contained in the optimal set. Thus the fact that the feature was so common might be an indicator that it was chosen early in the process. However, the feature was common in both SBS and SFS, thus it might simply be an effective indicator of malignant melanoma.
