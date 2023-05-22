@@ -204,7 +204,7 @@ beskriv hur data går igenom alla noder
 
 Feature selection is a process where the different extracted features are ranked in order of importance for the results of the classification. Some features may be irrelevant and thus confusing for the model. The goal for feature selection may vary, but it is commonly used to find the most important features, features that harm the results and synergies between features. In short, reducing the number of features utilized, improves performance and accuracy. % (källa) 
 
-In this study the greedy methods Sequential Backward Elimination (SBE) and Sequential Forward Selection (SFS) will be used.
+In this study the greedy methods Sequential Backward Selection (SBS) and Sequential Forward Selection (SFS) will be used.
 
 Sequential backward selection is a process that involves multiple iterations in which a feature is eliminated during each cycle. In the initial iteration, the feature that results in the worst performance, according to some metric, when removed is excluded from the set. The process is then repeated with the updated set of features. This process is continued until the desired number of features are left. % (källa)
 
@@ -296,7 +296,7 @@ Accuracy was the metric used to determine the performance of the classifiers and
 All feature selection methods used in the study originates from the \verb|Scikit-sklearn| library \verb|feature_selection|.
 
 
-The manner in which the feature  selection was performed differs slightly due to the selection method employed. For the SFS, the feature set was initially empty. The method then adds all features, one at a time. For the SBE the feature set at first contained all features, whereupon features were removed one at a time, until the feature set consisted of only one feature. In each iteration, the accuracy and which features constituted the feature set were recorded. 
+The manner in which the feature  selection was performed differs slightly due to the selection method employed. For the SFS, the feature set was initially empty. The method then adds all features, one at a time. For the SBS the feature set at first contained all features, whereupon features were removed one at a time, until the feature set consisted of only one feature. In each iteration, the accuracy and which features constituted the feature set were recorded. 
 This process was repeated five times for every selection method and classifier. Hence, 40 tests were conducted in total.
 % TODO: Write that we did the tests five times for each classifier and feature selection method
 
@@ -324,18 +324,23 @@ Since multiple tests were performed for every combination of classifier and sele
 
 \chapter{Results}
 
+Note that complete tables are found in the appendix. Only partial tables are presented in this chapter.
+
 \section{Determining most important features}
 
 % Could write more here.
 Below is a table showing the features that were included in the optimal set the most and least amount of times. The features are sorted in descending order based on how many times they were included in the optimal feature set.
+
+In the following table the thirteen most prominent, and twelve least prominent features are presented, overall. 
 
 % Maybe put in a disclosure like this:
 % It should be noted that some classifiers used more features than others, which explains why...
 
 
 % Fråga inte hur detta funkar.
-\begin{figure}[h!]
+\begin{table}[h!]
   \begin{center}
+    \caption{The most and least prominent features in all 40 tests.}
     \pgfplotstabletypeset[col sep=comma,
     string type,
     columns={Feature, Occurence(s), Probability},
@@ -354,22 +359,24 @@ Below is a table showing the features that were included in the optimal set the 
     \fi
     }
     ]{../big_data_new.csv}
-    \caption{The most and least prominent features in all 40 tests.}
   \end{center}
-\end{figure}
+\end{table}
 \newpage
 In the table it is observable that two features stand out: number 151 and 160. These are both morphological features.% ABCD eller morphological? 
-Feature 151 is called "Extent" and measure how many of the pixels in an image are inside the lesion. % inside?
-Feature 160 is a color feature... % Fortsätt
 
-We can also see that there is a large spread, only two features are in the optimal feature set less than 25\% of the tests.
+Feature 151 is called "Extent" and measure how many of the pixels in an image are within the lesion.
+The extent feature was also the only feature that was included in the optimal feature set for all classifiers.
 
-% Dubbelkolla denna paragraf så allt stämmer.
-From the results we can see that the feature that were the most prominent were the extent feature from the ABCD method. The extent feature was included in the optimal feature set in 35 of the 40 tests. The extent feature was also the only feature that was included in the optimal feature set for all classifiers.
+Feature 160 is a color feature that measures the red color of the image. It calculates the mean of the red color within the lesion and divides it by the mean of the red color in the parts of the image outside the lesion.
+
+We can also see that there is a large spread, only two features are in the optimal feature set less than 25\% of the tests.Furthermore, the occurences quickly deteriorate where the most prominent feature has 35 occurences whereas the seventh most prominent feature only has 22 occurences, which is a total difference of 13 occurences. The downwards trend does however flatten out quickly as there are 52 features that have the occurence of 20-17 occurences. Lastly, the final span of 17 to 8 occurences entails all of the remaining features. 
+
 
 Furthermore, we can also compare the two different sets of features, the hand-crafted ABCD features and the automatically generated SIFT features.
 
-\begin{figure}[h!]
+% ! Fråga Kevin om detta är rätt
+\begin{table}[h!]
+  \caption{Average number of occurences in optimal set for ABCD and SIFT features.}
   \pgfplotstabletypeset[ col sep=comma,
     string type,
     columns={Feature Type, Number of Features, Occurence(s),Representation},
@@ -381,11 +388,9 @@ Furthermore, we can also compare the two different sets of features, the hand-cr
     every nth row={1}{before row=\hline},
     every last row/.style={after row=\hline}
   ]{../representation.csv}
-  \caption{Average number of occurences in optimal set for ABCD and SIFT features.}
-\end{figure}
+\end{table}
 
-Here we can see that ABCD features are on average more prominent in optimal feature set. 
-
+From the results, it is observable that the SIFT features have more occurences overall than the morphological features. However, if the distribution between the two types is considered, the morphological features have a higher occurence rate per feature than the SIFT features, which can imply that the morphological features are more likely to be included in the optimal set.
 
 \section{Determining important features for each classiifier}
 
@@ -393,16 +398,19 @@ To determine which features are important for different classifiers, the optimal
 
 \subsection{K-nearest neighbours}
 
-Below are the two tables showing the most important features for KNN using SFS and SBE respectively. The features are sorted in descending order based on how many times they were included in the optimal feature set. 
+Below are the two tables showing the most important features for KNN using SFS and SBS respectively. The features are sorted in descending order based on how many times they were included in the optimal feature set.
 
-\begin{figure}[h!]
+\begin{table}[h!]
   \begin{center}
+    \caption{The features with at least 5 occurences in the 10 tests.}
     \pgfplotstabletypeset[col sep=comma,
     string type,
-    columns={Feature, Occurence(s), Probability},
+    columns={Feature, Occurence(s), Probability, Probability in SFS, Probability in SBS},
     columns/Feature/.style={column name=Feature, column type={|l|}},
     columns/Occurence(s)/.style={column name=Occurence(s), column type={l|}},
     columns/Probability/.style={column name=Probability, column type={l|}},
+    columns/Probability in SFS/.style={column name=Probability in SFS, column type={l|}},
+    columns/Probability in SBS/.style={column name=Probability in SBS, column type={l|}},
     every head row/.style={before row=\hline, after row=\hline},
     every nth row={1}{before row=\hline},
     every last row/.style={after row=\hline},
@@ -412,27 +420,28 @@ Below are the two tables showing the most important features for KNN using SFS a
     \fi
     }
     ]{../knn_total_probability.csv}
-    \caption{The features with at least 5 occurences in the 10 tests.}
   \end{center}
-\end{figure}
+\end{table}
 
-From the results we can see that the SFS preffered more features than the SBE counter part. Furthermore, there is very little overlap between the preffered features when comparing the two methods. The only feature that has a probability of 80 percent or more is number 151, which corresponds to an extent feature from the ABCD method.
+The results show that the SFS preferred more features than the SBS counterpart. Furthermore, there is very little overlap between the preffered features when comparing the two methods. The only feature that has a probability of 80 percent or more is number 151, which were the most preferred across all classifiers. However, apart from the most common feature, the probability that a feature is included in the optimal set, is at most 50\%. Furthermore, this probability is shared by the following six features. Lastly, there was very little overlap in which features were included for the two methods.
 
-% There were XX features with zero occurences.
 
 % New page in order to not have the tables on the same page.
 \newpage
 
 \subsection{Neural Network}
 
-\begin{figure}[h!]
+\begin{table}[h!]
   \begin{center}
+    \caption{The features with at least 9 occurences in the 10 tests.}
     \pgfplotstabletypeset[col sep=comma,
     string type,
-    columns={Feature, Occurence(s), Probability},
+    columns={Feature, Occurence(s), Probability, Probability in SFS, Probability in SBS},
     columns/Feature/.style={column name=Feature, column type={|l|}},
     columns/Occurence(s)/.style={column name=Occurence(s), column type={l|}},
     columns/Probability/.style={column name=Probability, column type={l|}},
+    columns/Probability in SFS/.style={column name=Probability in SFS, column type={l|}},
+    columns/Probability in SBS/.style={column name=Probability in SBS, column type={l|}},
     every head row/.style={before row=\hline, after row=\hline},
     every nth row={1}{before row=\hline},
     every last row/.style={after row=\hline},
@@ -442,22 +451,24 @@ From the results we can see that the SFS preffered more features than the SBE co
     \fi
     }
     ]{../nn_total_probability.csv}
-    \caption{The features with at least 9 occurences in the 10 tests.}
   \end{center}
-\end{figure}
+\end{table}
 
-From the results, it becomes apparent that the classifier used a lot of features compared to the other classifiers. The most prominent feature was 80, which is a SIFT feature and was present in the optimal feature set in all tests.
+The results show that the classifier included more features in the optimal set compared to other classifiers. The most prominent feature was 80, which is a SIFT feature which occured in the optimal feature set in all tests. Furthermore, every feature was present in at least three of the tests. This can be seen in the appendix where the full table is presented.
 
 \subsection{Random Forest}
 
-\begin{figure}[h!]
+\begin{table}[h!]
   \begin{center}
+    \caption{The features with at least 8 occurences in the 10 tests.}
     \pgfplotstabletypeset[col sep=comma,
     string type,
-    columns={Feature, Occurence(s), Probability},
+    columns={Feature, Occurence(s), Probability, Probability in SFS, Probability in SBS},
     columns/Feature/.style={column name=Feature, column type={|l|}},
     columns/Occurence(s)/.style={column name=Occurence(s), column type={l|}},
     columns/Probability/.style={column name=Probability, column type={l|}},
+    columns/Probability in SFS/.style={column name=Probability in SFS, column type={l|}},
+    columns/Probability in SBS/.style={column name=Probability in SBS, column type={l|}},
     every head row/.style={before row=\hline, after row=\hline},
     every nth row={1}{before row=\hline},
     every last row/.style={after row=\hline},
@@ -467,22 +478,24 @@ From the results, it becomes apparent that the classifier used a lot of features
     \fi
     }
     ]{../rf_total_probability.csv}
-    \caption{The features with at least 8 occurences in the 10 tests.}
   \end{center}
-\end{figure}
+\end{table}
 
-Random forest used, similar to Neural Network, a lot of features. The most prominent features were 18, 94, 112, 131, 100, which all are SIFT features and was present in the optimal feature set in all tests except one. In general the classifier seemed to prefer SIFT features where the highest ranked ABCD feature was 151 with a probability of 80 percent.
+Random forest, similar to Neural Network, included a lot of features in the tests. The most prominent features were 18, 94, 112, 131 and 100, which were SIFT features. They were present in the optimal feature set in all tests except one. In general the classifier seemed to prefer SIFT features where the highest ranked ABCD feature was 151 with a probability of 80\%.
 
 \subsection{Support Vector Machine}
 
-\begin{figure}[h!]
+\begin{table}[h!]
   \begin{center}
+    \caption{The features with at least 5 occurences in the 10 tests.}
     \pgfplotstabletypeset[col sep=comma,
     string type,
-    columns={Feature, Occurence(s), Probability},
+    columns={Feature, Occurence(s), Probability, Probability in SFS, Probability in SBS},
     columns/Feature/.style={column name=Feature, column type={|l|}},
     columns/Occurence(s)/.style={column name=Occurence(s), column type={l|}},
     columns/Probability/.style={column name=Probability, column type={l|}},
+    columns/Probability in SFS/.style={column name=Probability in SFS, column type={l|}},
+    columns/Probability in SBS/.style={column name=Probability in SBS, column type={l|}},
     every head row/.style={before row=\hline, after row=\hline},
     every nth row={1}{before row=\hline},
     every last row/.style={after row=\hline},
@@ -492,21 +505,23 @@ Random forest used, similar to Neural Network, a lot of features. The most promi
     \fi
     }
     ]{../svm_total_probability.csv}
-    \caption{The features with at least 5 occurences in the 10 tests.}
   \end{center}
-\end{figure}
+\end{table}
 
-The SVM differs from the other classifiers, with a preference for ABCD features, where the seven highest ranked features all consisted of ABCD features.
+The SVM differs from the other classifiers, with a preference for morphological features. Consequently, all except number 151 were color features from the ABCD method. Furthermore, the occurences of features decrease quite rapidly where the seventh to eleventh most prominent features only have a probability of 50\% of being present in the optimal set. 
 
 
-\section{Difference between selection methods}
+\section{Difference selection methods}
+
+To examine eventual differences between the methods, two type of results were gathered. Firtly, the average number of features included in the optimal set. This was calculated by recording the number of features present in the optimal set for every test and then calculating the average of these. Secondly, the average difference in performance between the methods for every classifier. This was done by calculating the average accuracy of every iteration in the tests. The results are then plotted for every classifier. 
 
 Following are the comparison between the two different selection methods. 
 
 % TODO: Vill man plåga sig lite kan man försöka färga raderna.
 
-\begin{figure}[h!]
+\begin{table}[h!]
   \begin{center}
+    \caption{The average number of features in the optimal set for the different classifiers and selection methods.}
     \pgfplotstabletypeset[col sep=comma,
     string type,
     columns={Classifier, Selection Method, Average Number of Features},
@@ -518,49 +533,91 @@ Following are the comparison between the two different selection methods.
     every last row/.style={after row=\hline},
     ]{../features_methods.csv}
   \end{center}
-\end{figure}
+\end{table}
 
-The results show that the SFS method achieves the highest accuracies using on average more features than the SBE method, in all cases except for the RF classifier. The difference was the biggest in the case of the KNN where the SFS method used more than twice the number of features than the SBS method.
+The results show that the SFS method used on average more features than the SBS method in all cases except for the Random Forest classifier. The biggest relative difference was in the case of the KNN classifier where the SFS method used more than twice the number of features than the SBS method. However, no test used all of the available features to achieve the highest accuracy.
 
-\subsection{K-Nearest Neighbors}
 
-\begin{figure}
+% TODO: Hitta på bättre namn?
+\subsection{Difference in performance between selection methods}
+
+Following are the results related to the difference in performance between the two methods for every classifier.
+\subsubsection{K-Nearest Neighbors}
+
+\begin{figure}[h!]
   \begin{center}
     \includegraphics[scale=0.8]{./figures/Figure_2.png}
-    \caption{Bla bla bla}
+    \caption{Difference in performance for the KNN classifier}
   \end{center}
 \end{figure}
 
-\subsection{Neural Network}
+The results show that the SFS achieved a greater increase in accuracy compared to the SBS method with an accuracy of about 78\% compared to 70\%. However, the SBS utilized less than half of the number of features compared to the SFS, where the former used around 35 features compared to the 65 features for the SFS.
 
-\begin{figure}
+
+\subsubsection{Neural Network}
+
+\begin{figure}[h!]
   \begin{center}
     \includegraphics[scale=0.8]{./figures/Figure_1.png}
-    \caption{Bla bla bla}
+    \caption{Difference in performance for the NN classifier}
+    \label{fig:nn}  % Used to add reference in text
   \end{center}
 \end{figure}
 
+Figure \ref{fig:nn} shows that the two methods had similar results for the neural network, both in terms of performance and number of features used. None of the methods resulted in any major gains in term of performance.
 
-\subsection{Random Forest}
+\subsubsection{Random Forest}
 
-\begin{figure}
+\begin{figure}[h!]
   \begin{center}
     \includegraphics[scale=0.8]{./figures/Figure_4.png}
-    \caption{Bla bla bla}
+    \caption{Difference in performance for the RF classifier}
   \end{center}
 \end{figure}
 
-\subsection{Support Vector Machine}
+Similarly to the neural network, the difference between the two methods is not vast in terms of performance. The difference lies however within the number of features used where the SFS used fewer features than the SBS method. Furthermore, it is observable that there is minimal gain for the SFS method when using over 100 features compared to using between 30 and 10 features.
 
-\begin{figure}
+\newpage
+
+\subsubsection{Support Vector Machine}
+
+\begin{figure}[h!]
   \begin{center}
     \includegraphics[scale=0.8]{./figures/Figure_3.png}
-    \caption{Bla bla bla}
+    \caption{Difference in performance for the SVM classifier}
+    \label{fig:svm}
   \end{center}
 \end{figure}
 
+\ref{fig:svm} shows that they are a significant difference between the two selection methods for the SVM. The SFS method achieved an accuracy of over 80\% while the SBS method never achieved an accuracy of over 75\%. Furthermore, the SFS method used less features than the SBS method.
+
 \chapter{Discussion}
-\blindtext
+
+The discussion is separated into three subsection on the same theme as the results.
+
+\section{Most important features}
+
+As mentioned in the result section, the morphological features were overrepresented in terms of being included in the optimal set. Similar results were achieved by DE DÄR ANDRA GRABBARNA ET AL who compared deep features generated by a convoluted neural network against SIFT descriptors. They obtained the highest accuracy using only deep feauters. While mixing deep and SIFT features, the accuracy was decreased. Finally only using SIFT features resulted in the worst observed performance. 
+
+% Feature 151
+As mentioned in the results, the most prominent feature was feature 151, which is a morphological feature. The feature measures the extent of the lesion, i.e. how many of the pixels in the image are within the lesion. This might be due to the way the tests were conducted. In the forward selection, if a feature is selected early, then it is likely to be contained in the optimal set. Thus the fact that the feature was so common might be an indicator that it was chosen early in the process. However, the feature was common in both SBS and SFS, thus it might simply be an effective indicator of malignant melanoma.
+
+% Feature 160
+The second most prominent feature was feature 160, which is a color feature. As stated in the results, the feature measures the quotient of the average amount of red colour within the lesion over the amount of red colour in the surronding skin. Thus a high or low value indicates a contrast in terms of red colours between the lesion and the surronding skin. The prominence of this feature might indicate that a contrast in terms of red colour between the surronding skin and the lesion is a common indicator of malignant melanoma. % Stödjer några källor att just färgen röd är viktigare än blå och grön?
+
+% Allmänt abcd vs sift
+
+
+\section{Most important features for each classifier}
+
+% Vi tar upp mest intressant istället för att skriva om allt
+
+The KNN classifier stood out with a difference between which feautres were selected depending on which selection method were used. % Grammatiken är kastad genom fönstret
+
+
+\section{Difference between selection methods}
+
+
 
 \chapter{Conclusions}
 \blindtext
