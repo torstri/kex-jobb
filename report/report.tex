@@ -168,7 +168,7 @@ The classification of the lesions based on the features extracted can be done th
 
 \subsection{K-Nearest Neighbors (KNN)}
 
-K-nearest-neighbors is another method for classifying. The ground principle is to find the nearest neighboring data points from the training set for all the test data points. Similarly to random forest, it performs a majority voting and then chooses the most occurring class from neighbors as the final prediction.
+K-nearest-neighbors is another method commonly  useed for classifying data points. The ground principle is to find the nearest neighboring data points from the training set for all the test data points. This is based on the idea that similar data points can be found close to one another. Similarly to random forest, it performs a majority voting and then chooses the most occurring class from neighbors as the final prediction. \parencite{ibmknn}
 
 % book  s.39-41
 % Image on p. 40 in the book
@@ -186,7 +186,7 @@ Neural networks are a type of machine learning algorithm that is inspired by the
 
 \subsection{Random Forest (RF)}
 
-Random forest is a tree-based method. The model consists of several decision trees taking different factors into consideration. When classifying, all individual trees try to classify the data. Then, the class that most of the trees predicted is chosen as the final classification.
+Random forest is a tree-based method. The model consists of several decision trees taking different factors into consideration. When classifying, all individual trees try to classify the data. Then, the class that most of the trees predicted is chosen as the final classification. \parencite{ibmrforest}
 
 % book s. 319-321
 % s. 319-321
@@ -203,13 +203,12 @@ The maximal margin classifier aims to separate data into two classes using a hyp
 % https://www.jmlr.org/papers/volume3/guyon03a/guyon03a.pdf
 % ! Inte tillagd i referenslistan
 
-Feature selection is a process where the different extracted features are ranked in order of importance for the results of the classification. Some features may be irrelevant and thus confusing for the model. The goal for feature selection may vary, but it is commonly used to find the most important features, features that harm the results and synergies between features. In short, reducing the number of features utilized, improves performance and accuracy. \parencite{chaganti2022thyroid}
+Feature selection is a process which aims to reduce the number of features, or detect the most important features, passed to the classifier. Reducing the number of features results in a short runtime and some features may be irrelevant and thus confusing for the model which impedes the performance.\parencite{chaganti2022thyroid}
 
 In this study the greedy methods Sequential Backward Selection (SBS) and Sequential Forward Selection (SFS) will be used.
 
-Sequential backward selection is a process that involves multiple iterations in which a feature is eliminated during each cycle. In the initial iteration, the feature that results in the worst performance, according to some metric, when removed is excluded from the set. The process is then repeated with the updated set of features. This process is continued until the desired number of features are left. \parencite{chaganti2022thyroid}
-
-Forward selection shares the same underlying concept as backward selection, but instead begins with a smaller feature set and adds one feature during each iteration, resulting in an increased set of features rather than a reduced one.
+In SBS, the features are removed one by one to determine. The performance is measured and the feature which had the smallest impact on the accuracy is removed. This is then repeated with the updated feature set, until some criterion is met or until there are no features left.
+SFS is essentially the opposite of SBS. At first the feature set is empty. Every feature is then evaluated separately and the one with the greatest positive impact on the accuracy is added. \parencite{chaganti2022thyroid}
 
 
 \section{Related Works}
