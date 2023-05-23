@@ -309,15 +309,19 @@ This process was repeated five times for every selection method and classifier. 
 The method for evaluating the three different research questions are stated below.
 
 \subsection{Is there a difference between different models concerning which features are most effective?}
-Furthermore, since in every iteration of the selection methods, the included features were recorded, the features included in the feature set generating the optimal accuracy was determined. Onwards, this feature set will be referred to as the optimal feature set. 
+Since in every iteration of the selection methods, the included features were recorded, the features included in the feature set generating the optimal accuracy was determined. Onwards, this feature set will be referred to as the optimal feature set. 
 
 Based on this statistic, the probability that a feature would be included in the optimal feature set, was calculated by dividing the number of times the feature was included in the optimal feature set with the number of tests performed. The features with the highest probability can therefore be seen as the most important.
 
-\subsection{Which features and combinations of features are the most important in terms of classification accuracy?}
-Based on the findings from the previous research question, the results were summarized to give insight on a more general level where the occurrences of each feature in the optimal feature set was divided by the total number of tests performed. This gives an insight into which features are most likely to constitute the optimal feature regardless of the classifier.
+\subsection{Which features are the most important in terms of classification accuracy?}
+Based on the findings from the previous research question, the results were summarized to give insight on a more general level where the occurrences of each feature in the optimal feature set was divided by the total number of tests performed. This gives an insight into which features are most likely to constitute the optimal feature regardless of the classifier. Furthermore the two different types of features can be compared which gives insight into which type of features is more important.
 
-\subsection{Are some feature selection methods more efficient in creating better accuracy than others? Which one uses the fewest features?}
-Since multiple tests were performed for every combination of classifier and selection method, it becomes possible to calculate the average accuracy for each number of features in the feature space. Hence the highest average accuracy and the expected number of features needed to achieve this accuracy can be determined. To determine which selection model is the most efficient, the difference between the original accuracy and the highest average accuracy using feature selection, was examined.
+\subsection{Is there a difference between selection methods in terms of performance enhancement?}
+
+To determine the performance of a selection method two aspects needs to be considered. First and foremost, the eventual gain in accuracy a method gives a classifier. This can be evaluated by calculating the average accuracy in every iteration for a selection method and classifier. For the a selection method and a classifier this would entail calculating the average accuracy when the feature set consisted of one feature, two features and so on. For the same classifier, the same process is done for the other selection method. These two lists of averages can then be plotted and the difference in performance can be observed. From this plot the highest average accuracy can be determined. 
+
+
+The second aspect is the average number of features used to obtain the highest accuracy. This can be calculated by first calculating the highest accuracy in every test and the number of features that were in the feature set. This information is then used to calculate the average number of features used to achieve the highest accuracy. 
 
 
 \chapter{Results}
