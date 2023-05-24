@@ -10,8 +10,8 @@
 \pgfplotsset{compat=1.9}% supress warning
 \usepackage{booktabs,colortbl}
 
-\title{This is the English title}
-\alttitle{Detta är den svenska översättningen av titeln}
+\title{Determining Important Features for Melanoma Classification Through Feature Selection}
+\alttitle{Värdering av attribut för klassificering av hudcancer}
 \author{Vilmer Jonsson \\ Tor Strimbold}
 \supervisor{Kevin Smith}
 \examiner{Pawel Herman} 
@@ -31,15 +31,17 @@
 \titlepage
 
 \begin{abstract}
-  English abstract goes here.
-
-  \blindtext
+  Skin cancer is a common disease in both Sweden and the United States. Although common, the survival rate of melanoma patients is high if the diagnosis is made at an early stage. Computer aided diagnostics has been shown to have potential in accurately diagnosing the disease utilizing machine learning. Thus, machine learning algorithms can be used to effectively classify a skin lesions as either benign or malignant. These algorithms can be made more accurate and efficient by applying feature selection since it decreases the dimensionality of the feature space. The aim of this study is to apply feature selection on four different classifiers to compare morphological and SIFT features in order to determine which features are important for classifying melanoma.
+  
+  The results show that morphological features in general increased the accuracy more than the SIFT features, although it varied between different classifiers. Furthermore, forward selection was more effective than backward selection in terms of accuracy for two of the classifiers. Lastly, certain features were more effective than others, the most effective feature was "Solidity".
 \end{abstract}
 
 
 \begin{otherlanguage}{swedish}
   \begin{abstract}
-    abstract på svenska.
+    Hudcancer är en vanligt förekommande sjukdom i både Sverige och USA. Dock är sannolikheten att en patient kan botas från sjukdomen hög om diagnosen sker i ett tidigt stadium. Datordriven diagnostisering har visat sig kunna diagnostisera sjukdomen på ett effektivt och med hög säkerhet genom att tillämpa maskininlärning. På så vis kan maskininlärningsalgoritmer användas för att klassificera hudutslag som godartade eller inte. Dessa algoritmer kan effektiviseras genom att utföra attributurvalsmetoder då det minskar antalet dimensioner som behöver beräknas. Syftet med denna studie är att undersöka vilka attribut som är viktiga för klassificeringen. Detta gjordes genom att tillämpa attributurvalsmetoderna Sekventiell Framåt- och Bakåtselektion på fyra olika maskininlärningsalgoritmer med indata i form av morfologiska och SIFT-attribut.
+    
+    Resultaten visar att morfologiska attribut generellt föredrogs i större utsträckning än SIFT-attribut, detta varierade dock mellan olika klassificeringsmodeller. Vidare var Framåtselektion mer effektiv än bakåtselektion sett till träffsäkerhet för två av klassificeringsmodellerna. Slutligen var vissa attribut mer effektiva än andra, det mest effektiva attributet var "Soliditet".
   \end{abstract}
 \end{otherlanguage}
 
@@ -124,7 +126,7 @@ This process consists of four main steps: 1) pre-processing, 2) segmentation, 3)
 \subsection{Pre-processing}
 
 The main goal with pre-processing is to improve the quality of the images. Improvement can be made in many ways, but one common method is artifact removal \parencite{8377976}.
-In general, artifact removal entails removing misleading objects in the image such as hair pixels and air bubbles which can lead to incorrect segmentation and feature extraction, and thus the quality of the classification. \parencite{jaworek2016automatic}
+In general, artifact removal entails removing misleading objects in the image such as hair pixels and air bubbles which can lead to inaccurate segmentation and feature extraction, and thus harming the quality of the classification. \parencite{jaworek2016automatic}
 
 \subsection{Segmentation}
 
@@ -133,26 +135,25 @@ within the lesion can be vast where multiple colors are present at the same time
 
 \subsection{Feature Extraction}
 
-Clinical classification is done based on the characteristics of the lesion. Likewise, for an algorithm to be able to classify a lesion, the features needs to be quantified, which is the goal of feature extraction. Which features to consider relevant depends on the base of classification, the same holds for the way to extract the features.
+Clinical classification is done based on the characteristics of the lesion. Likewise, for an algorithm to be able to classify a lesion, the features needs to be quantified, which is the goal of feature extraction. Which features to consider relevant depends on the base of classification, the same holds for the way to extract the features. The two different types of features used in this study are Scale-invariant Transform Features (SIFT) and morphological features.
 
 \subsubsection{Morphological features}
 
-A common way to describe a lesion using its morphological features is the ABCD-rule which is a mimic of the clinical practice. The method is based on four different aspects of a lesion: the asymmetry, border, color and diameter of the lesion.
-The higher the asymmetry of the lesion, in terms of either shape or color, the more likely it is to be malign. The border aspect refers to whether the border of the lesion is irregular. The lesion is divided into eight slices and for each slice, if the border is irregular a point is awarded.
+Morphological features describe the physical attributes of the lesion.
+A common way to describe a lesion using its morphological features is the ABCD-rule which is a mimic of the clinical practice related to diagnosing melanoma. The method is based on four different aspects of a lesion: the asymmetry, border, color and diameter of the lesion.
+The higher the asymmetry of the lesion, in terms of either shape or color, the more likely it is to be malignant. The border aspect refers to whether the border of the lesion is irregular. One way to compute this is by dividing the lesion into eight slices and for each slice, if the border is irregular a point is awarded.
 Regarding the color, the lesion is scanned for the occurrence of six colors (white, red, light brown, dark brown, blue-grey and black). For each color a point is awarded \parencite{https://doi.org/10.1049/iet-ipr.2015.0385}.
-The last aspect is often evaluated using measurements in the images. However, our dataset do not have any measure present in the images, therefore the diameter is not evaluated. However, other morphological features used in this study that we evaluate can be seen as a substitute for the diameter. For example the 'extent' or 'size' of the lesion, meaning the quotient between the area of the lesion and the area of the image \parencite{sanchez-reyes2020highaccuracy}.
+The last aspect is often evaluated using measurements in the images. However, our dataset do not have any measure present in the images, therefore the diameter is not explicitly evaluated. However, other morphological features used in this study can be seen as a substitute for the diameter. For example the ``extent''  of the lesion, meaning the quotient between the area of the lesion and the area of the image \parencite{sanchez-reyes2020highaccuracy}.
 \parencite{smaoui2013developed}
 
 \subsubsection{Scale-invariant feature transform (SIFT)}
 
-% TODO: Fixa en källa
-
-Scale-invariant feature transform (SIFT) is a popular method to extract key points out of an image. These key points are detected by an algorithm and given descriptors based on why the points were considered important. These descriptors can then be used in a classifier. \parencite{lowe2004distinctive}
-Although SIFT descriptors have a  wide scope of application, the research where the features are used to classify melanoma is quite limited.
+Scale-invariant feature transform (SIFT) is a popular method to extract key points out of an image. These key points are detected by an algorithm and given descriptors based on the pixels near the key point. These descriptors can then be used in a classifier. \parencite{lowe2004distinctive}
+Although SIFT descriptors have a wide scope of application, the research where the features are used to classify melanoma is quite limited.
 
 \section{Classification}
 
-The classification of the lesions based on the features extracted can be done through several machine learning algorithms. The ones used in this study are listed below.
+The classification of the lesions is based on the features extracted and can be done through several machine learning algorithms. The ones used in this study are listed below.
 
 
 %% TODO: Fix references from here. The book above needs paging.
@@ -168,15 +169,14 @@ The classification of the lesions based on the features extracted can be done th
 
 \subsection{K-Nearest Neighbors (KNN)}
 
-K-nearest-neighbors is another method commonly  useed for classifying data points. The ground principle is to find the nearest neighboring data points from the training set for all the test data points. This is based on the idea that similar data points can be found close to one another. Similarly to random forest, it performs a majority voting and then chooses the most occurring class from neighbors as the final prediction. \parencite{ibmknn}
+K-nearest-neighbors is used for classifying data points. The ground principle is to find the nearest neighboring data points from the training set for all the test data points. This is based on the idea that similar data points can be found close to one another. Similarly to random forest, it performs a majority voting and then chooses the most occurring class from neighbors as the final prediction. \parencite{ibmknn}
 
 % book  s.39-41
 % Image on p. 40 in the book
 
 \subsection{Neural Network (NN)}
 
-% TODO: Fix this section
-Neural networks are a type of machine learning algorithm that is inspired by the human brain. The network consists of several layers of neurons, where each neuron is connected to all neurons in the previous layer. The first layer is the input layer, where the data is fed into the network. The last layer is the output layer, where the final prediction is made. The layers in between are called hidden layers. The hidden layers are the ones that do the actual work of the network. The neurons in the hidden layers are connected to all neurons in the previous layer, and the output of each neuron is calculated by a function. The output of the neurons in the last hidden layer is then fed into the output layer, where the final prediction is made. \parencite{ibmWhatNeural}
+Neural networks are a type of machine learning algorithm that is inspired by the human brain. The network consists of several layers of nodes, where each node is connected to all nodes in the previous layer. The first layer is the input layer, where the data is fed into the network. The last layer is the output layer, where the final prediction is made. The layers in between are called hidden layers. The nodes in the hidden layers are connected to all nodes in the previous layer, and the output of each neuron is calculated by a function. The output of the neurons in the last hidden layer is then fed into the output layer, where the final prediction is made. \parencite{ibmWhatNeural}
 
 
 % Neural network is a type of machine learning algorithm, inspired by the human brain, and consists of several connected layers of nodes. There are three types of layers, namely input, output and hidden layers. 
@@ -193,9 +193,9 @@ Random forest is a tree-based method. The model consists of several decision tre
 
 \subsection{Support Vector Machine (SVM)}
 
-Support vector machines (SVM) are common and effective ML algorithms first introduced in the 1990s. SVM is an extension of the support vector classifier, which in turn is an extension of the maximal margin classifier.
+Support vector machines are common and effective ML algorithms first introduced in the 1990s. SVM is an extension of the support vector classifier, which in turn is an extension of the maximal margin classifier.
 
-The maximal margin classifier aims to separate data into two classes using a hyperplane. The support vector classifier builds on the same principle, but is more adjusted to the case when the data is not easy to separate. The SVM enlarges the feature space of the data in order to be able to separate data in a non-linear fashion. \parencite{james2013introduction}
+The maximal margin classifier aims to separate data into two classes using a hyperplane. The support vector classifier builds on the same principle, but is more adjusted to the case when the data is not easy to separate. Lastly, the SVM enlarges the feature space of the data in order to be able to separate data in a non-linear fashion. \parencite{james2013introduction}
 
 
 \section{Feature selection}
@@ -203,12 +203,11 @@ The maximal margin classifier aims to separate data into two classes using a hyp
 % https://www.jmlr.org/papers/volume3/guyon03a/guyon03a.pdf
 % ! Inte tillagd i referenslistan
 
-Feature selection is a process which aims to reduce the number of features, or detect the most important features, passed to the classifier. Reducing the number of features results in a short runtime and some features may be irrelevant and thus confusing for the model which impedes the performance.\parencite{chaganti2022thyroid}
+Feature selection is a process which aims to reduce the number of features, or detect the most important features, passed to the classifier. Reducing the number of features results in a shorter runtime and some features may be irrelevant and thus confusing for the model which impedes the performance.\parencite{chaganti2022thyroid}
 
-In this study the greedy methods Sequential Backward Selection (SBS) and Sequential Forward Selection (SFS) will be used.
+In this study the greedy methods Sequential Backward Selection (SBS) and Sequential Forward Selection (SFS) were used.
 
-In SBS, the features are removed one by one to determine. The performance is measured and the feature which had the smallest impact on the accuracy is removed. This is then repeated with the updated feature set, until some criterion is met or until there are no features left.
-SFS is essentially the opposite of SBS. At first the feature set is empty. Every feature is then evaluated separately and the one with the greatest positive impact on the accuracy is added. \parencite{chaganti2022thyroid}
+In both methods the goal is to determine the subset of features which leads to the best performance. In SBS this subset includes all of the features in the feature space. The process then consists of removing each feature individually which creates several subsets. These subsets are then evaluated and the one with the best performance is considered the new subset. This procedure is continued until only one feature is left or until some criterion is met. In SFS the opposite process is performed. At first the subset is empty and each feature in the original feature set is evaluated. The feature with the best performance is then added to the subset, then the each of the remaining features are evaluated together with the added feature. This is repeated until all features are added or until som criterion is met.\parencite{chaganti2022thyroid}
 
 
 \section{Related Works}
@@ -216,15 +215,11 @@ SFS is essentially the opposite of SBS. At first the feature set is empty. Every
 % TODO: Fix the references in this section. E.g. "Första" corresponds to a specific reference
 % Note that "andra" were not used.
 
-% ! I won't fix more of this now as it will be changed
-
 The automatic classification of skin lesions as being either malignant or benign has been a subject of great interest and there is a plethora of publications investigating the manner. Hence, there are several studies focused around classifying lesions, using the feature set and ML models which this thesis aims to investigate. However, there is not such an abundant pool of studies which focus on feature selection methods and exploration of which types of features are the most important. 
 
 \parencite{MustafaSuleiman2017Fsus} studied the minimal number of necessary features for effective and accurate skin lesion classification using a KNN-model.  The features that were studies were based on the geometric (A), color (C)  and boundary (B) aspects of the ABCD rule of melanoma.(\parencite{MustafaSuleiman2017Fsus}) A feature selection method which implemented the Sequential Backward Selection (SBS) was used. When all features (15 in total) were used, the average accuracy was around 78\%. The highest accuracy of 91\% was obtained when there were only 6, 8 and 9 features. Hence, \parencite{MustafaSuleiman2017Fsus} showed that an effective feature selection method both improves the accuracy of the classifier as well as the computation and storage cost. Though they did not highlight which of these features were abundant and which were important to include. Additionally they only limited the study to one type of ML model, namely the KNN. 
 
-Tre studied the effect of feature selection using the NCA method with an M-SVM on three different data sets. Like \parencite{MustafaSuleiman2017Fsus} their method showed an increase in accuracy and runtime. However, as well as \parencite{MustafaSuleiman2017Fsus}, they did not investigate which features were the ones leading to the increased accuracy. Furthermore, only one classifier was used with the M-SVM and therefore no results were generated using some other type of classifier. 
-
-Fyra used ECNA feature selection to gain succesful results. The highest accuracy reached was 94.73\% using a KNN and second best was using an SVM with and accuracy of 93.83\%. They however, used deep features instead of the hand crafted features which will be used in this study.
+\parencite{MustafaSuleiman2017Fsus} studied the effect of feature selection using the NCA method with an M-SVM on three different data sets. Like \parencite{MustafaSuleiman2017Fsus} their method showed an increase in accuracy and runtime. However, as well as \parencite{MustafaSuleiman2017Fsus}, they did not investigate which features were the ones leading to the increased accuracy. Furthermore, only one classifier was used with the M-SVM and therefore no results were generated using some other type of classifier. 
 
 
 \chapter{Methods}
@@ -254,7 +249,7 @@ As mentioned in the background, the two feature extraction methods used were ABC
 The asymmetry and border features are calculated through the method proposed by \parencite{inproceedings} and the color features by \parencite{celebi2008automatic}. Both computations showed promising results reaching an accuracy of 82\% and 83\%. Furthermore, other morphological features are calculated using the scikit skimage measure package. The implementation is originally done in the way described in this Github repository \parencite{melanoma-classifier}.
 
 % TODO: Dubbelkolla namn på library. Det är fel
-To calculate the asymmetry and border features the measure library from sci-kit is used, with the \verb|get_region_props| function.
+To calculate the asymmetry and border features the measure library from sci-kit is used, with the \verb|regionprops_table| function.
 The color features are calculated using a numpy array to represent the image's RGB value.
 
 % TODO: Lägg in hur man beräknar grejerna, eller ska det ens in? Hänvisa till studie t.o.m peer review
@@ -327,7 +322,7 @@ The second aspect is the average number of features used to obtain the highest a
 
 \chapter{Results}
 
-Note that complete tables are found in the appendix. Only partial tables are presented in this chapter.
+% Note that full tables can be found in the appendix, only partial tables are presented in this chapter.
 
 \section{Determining most important features}
 
@@ -393,19 +388,19 @@ Furthermore, we can also compare the two different sets of features, the handcra
   ]{../representation.csv}
 \end{table}
 
-From the results, it is observable that the SIFT features have more occurences overall than the morphological features. However, if the distribution between the two types is considered, the morphological features have a higher occurence rate per feature than the SIFT features, which can imply that the morphological features are more likely to be included in the optimal set.
+From the results, it is observable that the SIFT features have more occurrences overall than the morphological features. However, if the distribution between the two types is considered, the morphological features have a higher occurrence rate per feature than the SIFT features, which can imply that the morphological features are more likely to be included in the optimal set.
 
-\section{Determining important features for each classiifier}
+\section{Determining important features for each classifier}
 
 To determine which features are important for different classifiers, the optimal feature set was examined in every test to see how many times a feature was included in the set. The results for each classifier is listed in the rubrics below.
 
-\subsection{K-nearest neighbours}
+\subsection{K-nearest neighbors}
 
 Below are the two tables showing the most important features for KNN using SFS and SBS respectively. The features are sorted in descending order based on how many times they were included in the optimal feature set.
 
 \begin{table}[h!]
   \begin{center}
-    \caption{The features with at least 5 occurences in the 10 tests.}
+    \caption{The features with at least 5 occurrences in the 10 tests.}
     \pgfplotstabletypeset[col sep=comma,
     string type,
     columns={Feature, Occurence(s), Probability, Probability in SFS, Probability in SBS},
@@ -425,6 +420,8 @@ Below are the two tables showing the most important features for KNN using SFS a
     ]{../knn_total_probability.csv}
   \end{center}
 \end{table}
+
+\newpage
 
 The results show that the SFS preferred more features than the SBS counterpart. Furthermore, there is very little overlap between the preferred features when comparing the two methods. The only feature that has a probability of 80 percent or more is number 151, which were the most preferred across all classifiers. However, apart from the most common feature, the probability that a feature is included in the optimal set, is at most 50\%. Furthermore, this probability is shared by the following six features. Lastly, there was very little overlap in which features were included for the two methods.
 
@@ -459,6 +456,8 @@ The results show that the SFS preferred more features than the SBS counterpart. 
 
 The results show that the classifier included more features in the optimal set compared to other classifiers. The most prominent feature was 80, which is a SIFT feature which occurred in the optimal feature set in all tests. Furthermore, every feature was present in at least three of the tests. This can be seen in the appendix where the full table is presented.
 
+\newpage
+
 \subsection{Random Forest}
 
 \begin{table}[h!]
@@ -485,6 +484,8 @@ The results show that the classifier included more features in the optimal set c
 \end{table}
 
 Random forest, similar to Neural Network, included a lot of features in the tests. The most prominent features were 18, 94, 112, 131 and 100, which were SIFT features. They were present in the optimal feature set in all tests except one. In general the classifier seemed to prefer SIFT features where the highest ranked ABCD feature was 151 with a probability of 80\%.
+
+\newpage
 
 \subsection{Support Vector Machine}
 
@@ -513,8 +514,9 @@ Random forest, similar to Neural Network, included a lot of features in the test
 
 The SVM differs from the other classifiers, with a preference for morphological features. Consequently, all except number 151 were color features from the ABCD method. Furthermore, the occurences of features decrease quite rapidly where the seventh to eleventh most prominent features only have a probability of 50\% of being present in the optimal set. 
 
+\newpage
 
-\section{Difference selection methods}
+\section{Difference between selection methods}
 
 To examine eventual differences between the methods, two type of results were gathered. Firtly, the average number of features included in the optimal set. This was calculated by recording the number of features present in the optimal set for every test and then calculating the average of these. Secondly, the average difference in performance between the methods for every classifier. This was done by calculating the average accuracy of every iteration in the tests. The results are then plotted for every classifier. 
 
@@ -540,6 +542,7 @@ Following are the comparison between the two different selection methods.
 
 The results show that the SFS method used on average more features than the SBS method in all cases except for the Random Forest classifier. The biggest relative difference was in the case of the KNN classifier where the SFS method used more than twice the number of features than the SBS method. However, no test used all of the available features to achieve the highest accuracy.
 
+\newpage
 
 % TODO: Hitta på bättre namn?
 \subsection{Difference in performance between selection methods}
@@ -556,6 +559,7 @@ Following are the results related to the difference in performance between the t
 
 The results show that the SFS achieved a greater increase in accuracy compared to the SBS method with an accuracy of about 78\% compared to 70\%. However, the SBS utilized less than half of the number of features compared to the SFS, where the former used around 35 features compared to the 65 features for the SFS.
 
+\newpage
 
 \subsubsection{Neural Network}
 
@@ -567,7 +571,9 @@ The results show that the SFS achieved a greater increase in accuracy compared t
   \end{center}
 \end{figure}
 
-Figure \ref{fig:nn} shows that the two methods had similar results for the neural network, both in terms of performance and number of features used. None of the methods resulted in any major gains in term of performance.
+Figure \ref{fig:nn} shows that the two methods had similar results for the neural network, both in terms of performance and number of features used. None of the methods resulted in any major gains in terms of performance.
+
+\newpage
 
 \subsubsection{Random Forest}
 
@@ -596,8 +602,8 @@ Figure \ref{fig:svm} shows that they are a significant difference between the tw
 
 \chapter{Discussion}
 
-As mentioned in the result section, the morphological features were overrepresented in terms of being included in the optimal set. Similar results were achieved by DE DÄR ANDRA GRABBARNA ET AL % Refererar vi till dem i Similar works?
-who compared deep features generated by a convoluted neural network against SIFT descriptors. They obtained the highest accuracy using only deep featuers. While mixing deep and SIFT features, the accuracy was decreased. Finally only using SIFT features resulted in the worst observed performance. 
+As mentioned in the result section, the morphological features were overrepresented in terms of being included in the optimal set. Similar results were achieved by \parencite{Zhang}
+who compared deep features generated by a convoluted neural network against SIFT descriptors. They obtained the highest accuracy using only deep features. While mixing deep and SIFT features, the accuracy was decreased. Finally, only using SIFT features resulted in the worst observed performance. 
 
 % Feature 151
 As mentioned in the results, the most prominent feature was feature 151, which is a morphological feature. The feature measures the extent of the lesion, i.e. how many of the pixels in the image are within the lesion. This might be due to the way the tests were conducted. In the forward selection, if a feature is selected early, then it is likely to be contained in the optimal set. Thus the fact that the feature was so common might be an indicator that it was chosen early in the process. Which in turn indicates that the feature is a strong indicator on its own. However, the feature was common in both SBS and SFS, thus it might simply be an effective indicator of malignant melanoma.
@@ -632,9 +638,7 @@ SBS used fewer features for all models except NN, but SFS achieved better accura
 % Print the bibliography (and make it appear in the table of contents)
 \printbibliography[heading=bibintoc]
 
-\appendix
-
-\chapter{Something Extra}
+% \appendix
 
 % Tailmatter inserts the back cover page (if enabled)
 \tailmatter
