@@ -233,7 +233,7 @@ Fyra used ECNA feature selection to gain succesful results. The highest accuracy
 
 \subsection{Preprocessing}
 
-For removing artifacts such as hairs, the DullRazor® software was used. The software is created by Tim Lee, Vincent Ng, RIchard Gallagher, Andrew Coldman and David Mclean and is used frequently for preprocessing of skin lesion images. The method removes the hairs in two steps: 1) using generalized grayscale morphological closing operations, it identifies the dark hair locations, 2) verifies the shape of the hair pixels as long and thin, thereafter it replaces the verified pixels by bilinear interpolation and lastly 3) smooths the replaced hair pixels. \parencite{dermwebDullRazor} % den här källan är ksk lite scuffed. Fanns en referens på själva sidan vi kanske borde ta istället.
+For removing artifacts such as hairs, the DullRazor® software was used. The software is created by Tim Lee, Vincent Ng, Richard Gallagher, Andrew Coldman and David Mclean and is used frequently for preprocessing of skin lesion images. The method removes the hairs in two steps: 1) using generalized grayscale morphological closing operations, it identifies the dark hair locations, 2) verifies the shape of the hair pixels as long and thin, thereafter it replaces the verified pixels by bilinear interpolation and lastly 3) smooths the replaced hair pixels. \parencite{dermwebDullRazor} % den här källan är ksk lite scuffed. Fanns en referens på själva sidan vi kanske borde ta istället.
 
 % TODO: Download and insert the images from the google drive
 
@@ -308,13 +308,14 @@ This process was repeated five times for every selection method and classifier. 
 
 The method for evaluating the three different research questions are stated below.
 
+\subsection{Which features are the most important in terms of classification accuracy?}
+Based on the findings from the previous research question, the results were summarized to give insight on a more general level where the occurrences of each feature in the optimal feature set was divided by the total number of tests performed. This gives an insight into which features are most likely to constitute the optimal feature regardless of the classifier. Furthermore the two different types of features can be compared which gives insight into which type of features is more important.
+
 \subsection{Is there a difference between different models concerning which features are most effective?}
 Since in every iteration of the selection methods, the included features were recorded, the features included in the feature set generating the optimal accuracy was determined. Onwards, this feature set will be referred to as the optimal feature set. 
 
 Based on this statistic, the probability that a feature would be included in the optimal feature set, was calculated by dividing the number of times the feature was included in the optimal feature set with the number of tests performed. The features with the highest probability can therefore be seen as the most important.
 
-\subsection{Which features are the most important in terms of classification accuracy?}
-Based on the findings from the previous research question, the results were summarized to give insight on a more general level where the occurrences of each feature in the optimal feature set was divided by the total number of tests performed. This gives an insight into which features are most likely to constitute the optimal feature regardless of the classifier. Furthermore the two different types of features can be compared which gives insight into which type of features is more important.
 
 \subsection{Is there a difference between selection methods in terms of performance enhancement?}
 
