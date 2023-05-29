@@ -52,7 +52,7 @@ def perform_and_test_feature_selection(model_function):
     highest_accuracy = old_accuracy
 
     features, _, highest_accuracy = get_important_features(sfs_selector.subsets_, sfs_selector.subsets_[
-                                                        1]['avg_score'], sfs_selector.subsets_[1]['feature_idx'])
+        1]['avg_score'], sfs_selector.subsets_[1]['feature_idx'])
     print("\n================================ Important features ======================================")
 
     print("Highest accuracy: ", highest_accuracy)
@@ -84,7 +84,7 @@ def perform_and_test_feature_selection(model_function):
 # print(res, " shape: ", res.shape)
 # print('time: ', timer() - now)
 
-def get_important_features(subsets, acc, features):
+def get_important_features(subsets, acc, features, forward):
     highest_accuracy = acc
     accurancies = []
 
@@ -92,7 +92,8 @@ def get_important_features(subsets, acc, features):
         print("Subset: ", subset)
         accuracy = subsets[subset]['avg_score']
         accurancies.append(accuracy)
-        if (highest_accuracy < accuracy):   # Change if we want less features for sbs
+        # Change if we want less features for sbs
+        if ((forward and highest_accuracy < accuracy) or (not forward and highest_accuracy <= accuracy)):
             highest_accuracy = accuracy
             features = subsets[subset]['feature_idx']
 
@@ -101,7 +102,7 @@ def get_important_features(subsets, acc, features):
 
 def test_model(model_function):
     x_train, x_test, y_train, y_test = train_test_split(
-    x, y, test_size=0.2)  # Too much training data for sfs
+        x, y, test_size=0.2)  # Too much training data for sfs
 
     model = model_function
     model.fit(x_train, y_train)
@@ -117,7 +118,7 @@ def test_model(model_function):
 
 def perform_feature_selection(model_function, forwards, num_features):
     x_train, x_test, y_train, y_test = train_test_split(
-    x, y, test_size=0.2)  # Too much training data for sfs
+        x, y, test_size=0.2)  # Too much training data for sfs
 
     model = model_function
     sfs_selector = SequentialFeatureSelector(model, k_features=num_features,
@@ -140,9 +141,10 @@ def tests(model_function, forwards, num_features, num_tests):
     old_accuracy = test_model(model_function)  # Get initial accuracy
 
     accuracy = 0  # max accuracy for feature selection
-    all_accurancies = {k: 0 for k in range(0, 170)}
+    all_accurancies = {k: 0 for k in range(num_tests)}
     freqs = {k: 0 for k in range(170)}  # Dictionary for feature frequency
     number_of_features = {}
+    all_subset = {k: 0 for k in range(num_tests)}
     # Perform tests
     i = 1
     index = 1
@@ -157,7 +159,9 @@ def tests(model_function, forwards, num_features, num_tests):
 
         # Get best accuracy and important features
         features, accurancies, acc = get_important_features(sfs_selector.subsets_, sfs_selector.subsets_[
-                                               index]['avg_score'], sfs_selector.subsets_[index]['feature_idx'])
+            index]['avg_score'], sfs_selector.subsets_[index]['feature_idx'], forwards)
+
+        all_subset[i-1] = sfs_selector.subsets_
 
         # Update frequencies
         for feature in features:
@@ -166,8 +170,7 @@ def tests(model_function, forwards, num_features, num_tests):
         print('accuracies: ', accurancies)
         if (not forwards):
             accurancies.reverse()
-        for j in range(0, len(accurancies)):
-            all_accurancies[j] = all_accurancies[j] + accurancies[j]
+        all_accurancies[i-1] = accurancies
         number_of_features[i] = len(features)
         i += 1
 
@@ -175,11 +178,17 @@ def tests(model_function, forwards, num_features, num_tests):
     # sort frequency list
     sorted_freqs = dict(
         sorted(freqs.items(), key=lambda x: x[1], reverse=True))
-    
-    for i in range(0, len(all_accurancies)):
-        all_accurancies[i] = all_accurancies[i] / num_tests
 
-    return sorted_freqs, accuracy, old_accuracy, number_of_features, all_accurancies
+    return sorted_freqs, accuracy, old_accuracy, number_of_features, all_accurancies, all_subset
+
+
+def convert_ndarray_to_list(obj):
+    if isinstance(obj, np.ndarray):
+        return obj.tolist()
+    elif isinstance(obj, dict):
+        for key, value in obj.items():
+            obj[key] = convert_ndarray_to_list(value)
+    return obj
 
 
 def perform_tests(forwards, num_features, num_tests):
@@ -190,7 +199,7 @@ def perform_tests(forwards, num_features, num_tests):
 
     print("-------------------------------- SVM --------------------------------")
     now = timer()
-    svm_freqs, svm_accuracy, svm_old_accuracy, svm_num_features, all_accs = tests(
+    svm_freqs, svm_accuracy, svm_old_accuracy, svm_num_features, all_accs, all_subset = tests(
         svm.SVC(C=100), forwards=forwards, num_features=num_features, num_tests=num_tests)
     time = timer() - now
 
@@ -200,10 +209,12 @@ def perform_tests(forwards, num_features, num_tests):
     svm_results["svm_num_features"] = svm_num_features
     svm_results["svm_cum_time"] = time
     svm_results["all_accs"] = all_accs
+    svm_results["all_subset"] = convert_ndarray_to_list(all_subset)
+
 
     print("-------------------------------- RF --------------------------------")
     now = timer()
-    rf_freqs, rf_accuracy, rf_old_accuracy, rf_num_features, all_accs = tests(RandomForestClassifier(
+    rf_freqs, rf_accuracy, rf_old_accuracy, rf_num_features, all_accs, all_subset = tests(RandomForestClassifier(
         n_estimators=5), forwards=forwards, num_features=num_features, num_tests=num_tests)
     time = timer() - now
 
@@ -213,10 +224,11 @@ def perform_tests(forwards, num_features, num_tests):
     rf_results["rf_num_features"] = rf_num_features
     rf_results["rf_cum_time"] = time
     rf_results["all_accs"] = all_accs
+    rf_results["all_subset"] = convert_ndarray_to_list(all_subset)
 
     print("-------------------------------- KNN --------------------------------")
     now = timer()
-    knn_freqs, knn_accuracy, knn_old_accuracy, knn_num_features, all_accs = tests(KNeighborsClassifier(
+    knn_freqs, knn_accuracy, knn_old_accuracy, knn_num_features, all_accs, all_subset = tests(KNeighborsClassifier(
         n_neighbors=8), forwards=forwards, num_features=num_features, num_tests=num_tests)
     time = timer() - now
 
@@ -226,10 +238,11 @@ def perform_tests(forwards, num_features, num_tests):
     knn_results["knn_num_features"] = knn_num_features
     knn_results["knn_cum_time"] = time
     knn_results["all_accs"] = all_accs
+    knn_results["all_subset"] = convert_ndarray_to_list(all_subset)
 
     print("-------------------------------- NEURAL NETWORK --------------------------------")
     now = timer()
-    nn_freqs, nn_accuracy, nn_old_accuracy, nn_num_features, all_accs = tests(MLPClassifier(hidden_layer_sizes=[8], activation='relu', max_iter=100), forwards = forwards, num_features = num_features, num_tests = num_tests)
+    nn_freqs, nn_accuracy, nn_old_accuracy, nn_num_features, all_accs, all_subset = tests(MLPClassifier(hidden_layer_sizes=[8], activation='relu', max_iter=100), forwards = forwards, num_features = num_features, num_tests = num_tests)
     time=timer() - now
 
     nn_results["nn_freqs"]=nn_freqs
@@ -238,26 +251,33 @@ def perform_tests(forwards, num_features, num_tests):
     nn_results["nn_num_features"]=nn_num_features
     nn_results["nn_cum_time"]=time
     nn_results["all_accs"] = all_accs
+    nn_results["all_subset"] = convert_ndarray_to_list(all_subset)
 
     # Write to json files
-    filenames=["svm_SFS.json", "rf_SFS.json", "knn_SFS.json", "nn_SFS.json"]
+    filenames = ["new_svm_SFS.json", "new_rf_SFS.json",
+                 "new_knn_SFS.json", "new_nn_SFS.json"]
     if (not forwards):
-        filenames=["svm_SBS.json", "rf_SBS.json", "knn_SBS.json", "nn_SBS.json"]
+        filenames = ["new_svm_SBS.json", "new_rf_SBS.json",
+                     "new_knn_SBS.json", "new_nn_SBS.json"]
 
-    fp_svm=open(filenames[0], "w")
+    fp_svm = open(filenames[0], "w")
     json.dump(svm_results, fp_svm)
-    fp=open(filenames[1], "w")
+    fp = open(filenames[1], "w")
     json.dump(rf_results, fp)
-    fp=open(filenames[2], "w")
+    fp = open(filenames[2], "w")
     json.dump(knn_results, fp)
     fp=open(filenames[3], "w")
     json.dump(nn_results, fp)
 
 
-num_feats=1
-num_tests=5
+num_feats = 1
+num_tests = 5
 
 perform_tests(False, num_feats, num_tests)
+
+num_feats = 168
+
+perform_tests(True, num_feats, num_tests)
 
 # Fast test
 # perform_tests(True, 5, 2)
@@ -276,8 +296,6 @@ perform_tests(False, num_feats, num_tests)
 #     json.dump(sorted_freqs, outfile)
 
 
-
-
 # # perform_and_test_feature_selection(svm.SVC(C=100))
 # # Takes a very long time if n = 100 (default).
 # print("\n \n --------- R F ---------")
@@ -292,8 +310,6 @@ perform_tests(False, num_feats, num_tests)
 #     json.dump(sorted_freqs, outfile)
 
 
-
-
 # print("\n \n --------- K N N ---------")
 # now = timer()
 # sorted_freqs, accuracy, old_accuracy, avg_num_features = tests(KNeighborsClassifier(n_neighbors=8), True, num_feats, num_tests)
@@ -304,9 +320,6 @@ perform_tests(False, num_feats, num_tests)
 # print(sorted_freqs)
 # with open("knn.json", "w") as outfile:
 #     json.dump(sorted_freqs, outfile)
-
-
-
 
 
 # print("\n \n --------- NEURAL NETWORK---------")
