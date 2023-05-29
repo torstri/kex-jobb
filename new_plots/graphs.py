@@ -26,6 +26,7 @@ svm_sbs = json.load(fp)
 
 
 def plot_graph(sfs, sbs):
+    figure = plt.figure()
     sfs_averages = [0]*168
     sbs_averages = [0]*168
     
@@ -38,12 +39,12 @@ def plot_graph(sfs, sbs):
     
     x_space = range(0,168)
     
-    plt.plot(x_space,sfs["0"] , 'lightgreen') # plotting t, a separately 
-    plt.plot(x_space,sfs["1"], 'lightgreen') # plotting t, b separately 
-    plt.plot(x_space, sfs["2"], 'lightgreen') # plotting t, c separately 
-    plt.plot(x_space, sfs["3"], 'lightgreen') # plotting t, c separately 
-    plt.plot(x_space, sfs["4"], 'lightgreen') # plotting t, c separately 
-    plt.plot(x_space, sfs_averages, 'green') # plotting t, c separately     
+    plt.plot(x_space,sfs["0"] , c='b', alpha =0.3) # plotting t, a separately 
+    plt.plot(x_space,sfs["1"], c='b', alpha =0.3) # plotting t, b separately 
+    plt.plot(x_space, sfs["2"], c='b', alpha =0.3) # plotting t, c separately 
+    plt.plot(x_space, sfs["3"], c='b', alpha =0.3) # plotting t, c separately 
+    plt.plot(x_space, sfs["4"], c='b', alpha =0.3) # plotting t, c separately 
+    plt.plot(x_space, sfs_averages, 'b') # plotting t, c separately     
     
     
     print(sfs["0"])
@@ -51,19 +52,20 @@ def plot_graph(sfs, sbs):
     print(sbs["0"])
     print(len(sbs["0"]))
     
-    plt.plot(x_space, sbs["0"] , 'lightcoral') # plotting t, a separately 
-    plt.plot(x_space, sbs["1"], 'lightcoral') # plotting t, b separately 
-    plt.plot(x_space, sbs["2"], 'lightcoral') # plotting t, c separately 
-    plt.plot(x_space, sbs["3"], 'lightcoral') # plotting t, c separately 
-    plt.plot(x_space, sbs["4"], 'lightcoral') # plotting t, c separately 
+    plt.plot(x_space, sbs["0"] , c='r', alpha = 0.3) # plotting t, a separately 
+    plt.plot(x_space, sbs["1"], c='r', alpha = 0.3) # plotting t, b separately 
+    plt.plot(x_space, sbs["2"], c='r', alpha = 0.3) # plotting t, c separately 
+    plt.plot(x_space, sbs["3"], c='r', alpha = 0.3) # plotting t, c separately 
+    plt.plot(x_space, sbs["4"], c='r', alpha = 0.3) # plotting t, c separately 
     plt.plot(x_space, sbs_averages, 'r') # plotting t, c separately
+    return figure
  
  
         
-svm_sfs_accuracies = svm_sfs["all_accs"]
-averages_sfs = [0] * 168
-for i in range(0,168):
-    averages_sfs[i] = (svm_sfs["all_accs"]["0"][i] + svm_sfs["all_accs"]["1"][i] + svm_sfs["all_accs"]["2"][i] + svm_sfs["all_accs"]["3"][i] + svm_sfs["all_accs"]["4"][i] ) / 5
+# svm_sfs_accuracies = svm_sfs["all_accs"]
+# averages_sfs = [0] * 168
+# for i in range(0,168):
+#     averages_sfs[i] = (svm_sfs["all_accs"]["0"][i] + svm_sfs["all_accs"]["1"][i] + svm_sfs["all_accs"]["2"][i] + svm_sfs["all_accs"]["3"][i] + svm_sfs["all_accs"]["4"][i] ) / 5
     
     
 # x_space = range(0,168)
@@ -74,6 +76,30 @@ for i in range(0,168):
 # plt.plot(x_space, svm_sfs["all_accs"]["4"], 'g--') # plotting t, c separately 
 # plt.plot(x_space, averages_sfs, 'lime') # plotting t, c separately 
 
-plot_graph(svm_sfs["all_accs"], svm_sbs["all_accs"])
+knn_graph  = plot_graph(knn_sfs["all_accs"], knn_sbs["all_accs"])
+knn_graph.suptitle('KNN feature selection performance')
 
-plt.show()
+plt.xlabel("Number of features")
+plt.ylabel("Accuracy")
+nn_graph  = plot_graph(nn_sfs["all_accs"], nn_sbs["all_accs"])
+nn_graph.suptitle('NN feature selection performance')
+
+plt.xlabel("Number of features")
+plt.ylabel("Accuracy")
+
+rf_graph  = plot_graph(rf_sfs["all_accs"], rf_sbs["all_accs"])
+rf_graph.suptitle('RF feature selection performance')
+
+plt.xlabel("Number of features")
+plt.ylabel("Accuracy")
+
+svm_graph  = plot_graph(svm_sfs["all_accs"], svm_sbs["all_accs"])
+svm_graph.suptitle('SVM feature selection performance')
+
+plt.xlabel("Number of features")
+plt.ylabel("Accuracy")
+knn_graph.show()
+nn_graph.show()
+rf_graph.show()
+svm_graph.show()
+input()
