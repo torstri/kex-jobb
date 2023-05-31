@@ -28,7 +28,7 @@ def perform_and_test_feature_selection(model_function):
     now = timer()
 
     x_train, x_test, y_train, y_test = train_test_split(
-        x, y, test_size=0.2)  # Too much training data for sfs
+        x, y, test_size=0.35)  # Too much training data for sfs
 
     model = model_function
     model.fit(x_train, y_train)
@@ -118,7 +118,7 @@ def test_model(model_function):
 
 def perform_feature_selection(model_function, forwards, num_features):
     x_train, x_test, y_train, y_test = train_test_split(
-        x, y, test_size=0.2)  # Too much training data for sfs
+        x, y, test_size=0.4)  # Too much training data for sfs
 
     model = model_function
     sfs_selector = SequentialFeatureSelector(model, k_features=num_features,

@@ -1,0 +1,1 @@
+{"rule":"COMMA_COMPOUND_SENTENCE_2","sentence":"^\\QHowever, there is a variance inside the morphological feature set and the best accuracy were achieved with a combination of morphological and SIFT features.\\E$"}
