@@ -113,7 +113,7 @@ With the development of artificial intelligence (AI) and machine learning (ML), 
 
 % \subsection{Computer Aided Diagonstics} Might be a good idea to have a section about CAD, but I'm not sure if it's necessary.
 
-\section{Computer Aided Diagnostics}
+\section{Computer Aided Diagnostics} % Hette ML förut så borde skriva om grejer
 
 % https://ietresearch.onlinelibrary.wiley.com/doi/full/10.1049/iet-ipr.2015.0385?sid=vendor%3Adatabase (abcd)
 
@@ -128,10 +128,14 @@ This process consists of four main steps: 1) pre-processing, 2) segmentation, 3)
 The main goal with pre-processing is to improve the quality of the images. Improvement can be made in many ways, but one common method is artifact removal \parencite{8377976}.
 In general, artifact removal entails removing misleading objects in the image such as hair pixels and air bubbles which can lead to inaccurate segmentation and feature extraction, and thus harming the quality of the classification. \parencite{jaworek2016automatic}
 
+% TODO: Bild?
+
 \subsection{Segmentation}
 
-In the segmentation phase the borders of the lesion are identified. This is done to be able to identify which pixels in the image constitutes the lesion. Similar to pre-processing, segmentation is vital for the classification and feature extraction since parameters such as the lesion’s border cannot be correctly evaluated if the segmentation is poorly executed. At the same time, the segmentation of skin lesions is one of the most challenging steps due mainly to four reasons. Firstly, most lesions do not have a stark contrast compared to the surrounding skin. Secondly, the lesion’s border may be irregular. Thirdly, the color variegation % (huh, typ skilland)
+In the segmentation phase the pixels that constitute the lesion are identified. The result of the segmentation is a binary image where white pixels represent the lesion and black pixels represent the surrounding skin. Similar to pre-processing, segmentation is vital for the classification and feature extraction since parameters such as the lesion’s border cannot be correctly evaluated if the segmentation is poorly executed. At the same time, the segmentation of skin lesions is one of the most challenging steps due mainly to four reasons. Firstly, most lesions do not have a stark contrast compared to the surrounding skin. Secondly, the lesion’s border may be irregular. Thirdly, the color variegation % (huh, typ skilland)
 within the lesion can be vast where multiple colors are present at the same time. Finally, there may be artifacts such as hairs or lens flare present within the image which hinders the segmentation, this is however meant to be removed during the pre-processing. \parencite{jaworek2016automatic}
+
+% TODO: Bild?
 
 \subsection{Feature Extraction}
 
@@ -207,7 +211,7 @@ Feature selection is a process which aims to reduce the number of features, or d
 
 In this study the greedy methods Sequential Backward Selection (SBS) and Sequential Forward Selection (SFS) were used.
 
-In both methods the goal is to determine the subset of features which leads to the best performance. In SBS this subset includes all of the features in the feature space. The process then consists of removing each feature individually which creates several subsets. These subsets are then evaluated and the one with the best performance is considered the new subset. This procedure is continued until only one feature is left or until some criterion is met. In SFS the opposite process is performed. At first the subset is empty and each feature in the original feature set is evaluated. The feature with the best performance is then added to the subset, then the each of the remaining features are evaluated together with the added feature. This is repeated until all features are added or until som criterion is met.\parencite{chaganti2022thyroid}
+In both methods the goal is to determine the subset of features which leads to the best performance. In SBS this subset includes all the features in the feature space. The process then consists of removing each feature individually which creates several subsets. These subsets are then evaluated and the one with the best performance is considered the new subset. This procedure is continued until only one feature is left or until some criterion is met. In SFS the opposite process is performed. At first the subset is empty and each feature in the original feature set is evaluated. The feature with the best performance is then added to the subset, then each of the remaining features are evaluated together with the added feature. This is repeated until all features are added or until some criterion is met.\parencite{chaganti2022thyroid}
 
 
 \section{Related Works}
@@ -284,7 +288,7 @@ The dataset was downloaded and structured in order to have every image in the sa
 
 \subsection{Accuracy}
 
-Accuracy is a metric which is widely used and simple to calculate.  
+Accuracy is a metric which is widely used and simple to calculate.
 It is calculated by dividing the total number of correctly classified images with the total number of images. 
 It therefore measures the probability that the model will classify a given random image correctly. \parencite{takiddin2021artificial}
 
@@ -349,7 +353,7 @@ In the following table the thirteen most prominent, and twelve least prominent f
     every nth row={1}{before row=\hline},
     every nth row={13}{before row=\hline\hline}, % Cut in the table
     every last row/.style={after row=\hline},
-    row predicate/.code={% display only the first 20 rows
+    row predicate/.code={% display only the first x and last y rows
     \ifnum#1>12\relax
     \ifnum#1<157\relax
     \pgfplotstableuserowfalse
@@ -372,7 +376,6 @@ We can also see that there is a large spread, only two features are in the optim
 
 Furthermore, we can also compare the two different sets of features, the handcrafted ABCD features and the automatically generated SIFT features.
 
-% ! Fråga Kevin om detta är rätt
 \begin{table}[h!]
   \caption{Average number of occurrences in optimal set for ABCD and SIFT features.}
   \pgfplotstabletypeset[ col sep=comma,
