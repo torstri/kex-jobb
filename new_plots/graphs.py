@@ -37,7 +37,7 @@ def plot_graph(sfs, sbs):
                            sbs["4"][i] ) / 5
     
     
-    x_space = range(0,168)
+    x_space = range(1,169)
     
     plt.plot(x_space,sfs["0"] , c='b', alpha =0.3) # plotting t, a separately 
     plt.plot(x_space,sfs["1"], c='b', alpha =0.3) # plotting t, b separately 
@@ -47,10 +47,10 @@ def plot_graph(sfs, sbs):
     plt.plot(x_space, sfs_averages, 'b') # plotting t, c separately     
     
     
-    print(sfs["0"])
-    print(len(sfs["0"]))
-    print(sbs["0"])
-    print(len(sbs["0"]))
+    # print(sfs["0"])
+    # print(len(sfs["0"]))
+    # print(sbs["0"])
+    # print(len(sbs["0"]))
     
     plt.plot(x_space, sbs["0"] , c='r', alpha = 0.3) # plotting t, a separately 
     plt.plot(x_space, sbs["1"], c='r', alpha = 0.3) # plotting t, b separately 
@@ -60,6 +60,9 @@ def plot_graph(sfs, sbs):
     plt.plot(x_space, sbs_averages, 'r') # plotting t, c separately
     return figure
  
+ 
+ # Find average number of features and average accuracy
+# def find_averages(accuracies, features):
  
         
 # svm_sfs_accuracies = svm_sfs["all_accs"]
@@ -76,19 +79,35 @@ def plot_graph(sfs, sbs):
 # plt.plot(x_space, svm_sfs["all_accs"]["4"], 'g--') # plotting t, c separately 
 # plt.plot(x_space, averages_sfs, 'lime') # plotting t, c separately 
 
+print("KNN SBS length =", len(knn_sbs["all_accs"]["0"]),"KNN SFS length =", len(knn_sfs["all_accs"]["0"] ))
+print("KNN SBS length =", len(knn_sbs["all_accs"]["1"]),"KNN SFS length =", len(knn_sfs["all_accs"]["1"] ))
+print("KNN SBS length =", len(knn_sbs["all_accs"]["2"]),"KNN SFS length =", len(knn_sfs["all_accs"]["2"] ))
+print("KNN SBS length =", len(knn_sbs["all_accs"]["3"]),"KNN SFS length =", len(knn_sfs["all_accs"]["3"] ))
+print("KNN SBS length =", len(knn_sbs["all_accs"]["4"]),"KNN SFS length =", len(knn_sfs["all_accs"]["4"] ))
+
 knn_graph  = plot_graph(knn_sfs["all_accs"], knn_sbs["all_accs"])
 knn_graph.suptitle('KNN feature selection performance')
 
+print("NN SBS length =", len(nn_sbs["all_accs"]),"NN SFS length =", len(nn_sfs["all_accs"] ))
+
+print("NN SBS length =", len(nn_sbs["all_accs"]["0"]),"NN SFS length =", len(nn_sfs["all_accs"]["0"] ))
+print("NN SBS length =", len(nn_sbs["all_accs"]["1"]),"NN SFS length =", len(nn_sfs["all_accs"]["1"] ))
+print("NN SBS length =", len(nn_sbs["all_accs"]["2"]),"NN SFS length =", len(nn_sfs["all_accs"]["2"] ))
+print("NN SBS length =", len(nn_sbs["all_accs"]["3"]),"NN SFS length =", len(nn_sfs["all_accs"]["3"] ))
+print("NN SBS length =", len(nn_sbs["all_accs"]["4"]),"NN SFS length =", len(nn_sfs["all_accs"]["4"] ))
 plt.xlabel("Number of features")
 plt.ylabel("Accuracy")
 nn_graph  = plot_graph(nn_sfs["all_accs"], nn_sbs["all_accs"])
 nn_graph.suptitle('NN feature selection performance')
+
+print("RF SBS length =", len(rf_sbs["all_accs"]),"RF SFS length =", len(rf_sfs["all_accs"] ))
 
 plt.xlabel("Number of features")
 plt.ylabel("Accuracy")
 
 rf_graph  = plot_graph(rf_sfs["all_accs"], rf_sbs["all_accs"])
 rf_graph.suptitle('RF feature selection performance')
+print("SVM SBS length =", len(svm_sbs["all_accs"]),"SVM SFS length =", len(svm_sfs["all_accs"] ))
 
 plt.xlabel("Number of features")
 plt.ylabel("Accuracy")
