@@ -113,7 +113,7 @@ With the development of artificial intelligence (AI) and machine learning (ML), 
 
 % \subsection{Computer Aided Diagonstics} Might be a good idea to have a section about CAD, but I'm not sure if it's necessary.
 
-\section{Machine Learning}
+\section{Computer Aided Diagnostics}
 
 % https://ietresearch.onlinelibrary.wiley.com/doi/full/10.1049/iet-ipr.2015.0385?sid=vendor%3Adatabase (abcd)
 
@@ -417,7 +417,7 @@ Below are the two tables showing the most important features for KNN using SFS a
       \pgfplotstableuserowfalse
     \fi
     }
-    ]{../knn_total_probability.csv}
+    ]{../new_plots/knn_total_probability.csv}
   \end{center}
 \end{table}
 
@@ -450,7 +450,7 @@ The results show that the SFS preferred more features than the SBS counterpart. 
       \pgfplotstableuserowfalse
     \fi
     }
-    ]{../nn_total_probability.csv}
+    ]{../new_plots/nn_total_probability.csv}
   \end{center}
 \end{table}
 
@@ -479,7 +479,7 @@ The results show that the classifier included more features in the optimal set c
       \pgfplotstableuserowfalse
     \fi
     }
-    ]{../rf_total_probability.csv}
+    ]{../new_plots/rf_total_probability.csv}
   \end{center}
 \end{table}
 
@@ -508,7 +508,7 @@ Random forest, similar to Neural Network, included a lot of features in the test
       \pgfplotstableuserowfalse
     \fi
     }
-    ]{../svm_total_probability.csv}
+    ]{../new_plots/svm_total_probability.csv}
   \end{center}
 \end{table}
 
@@ -552,7 +552,7 @@ Following are the results related to the difference in performance between the t
 
 \begin{figure}[h!]
   \begin{center}
-    \includegraphics[scale=0.8]{./figures/Figure_2.png}
+    \includegraphics[scale=0.8]{../new_plots/knn_graph.png}
     \caption{Difference in performance for the KNN classifier}
   \end{center}
 \end{figure}
@@ -565,7 +565,7 @@ The results show that the SFS achieved a greater increase in accuracy compared t
 
 \begin{figure}[h!]
   \begin{center}
-    \includegraphics[scale=0.8]{./figures/Figure_1.png}
+    \includegraphics[scale=0.8]{../new_plots/nn_graph.png}
     \caption{Difference in performance for the NN classifier}
     \label{fig:nn}  % Used to add reference in text
   \end{center}
@@ -579,7 +579,7 @@ Figure \ref{fig:nn} shows that the two methods had similar results for the neura
 
 \begin{figure}[h!]
   \begin{center}
-    \includegraphics[scale=0.8]{./figures/Figure_4.png}
+    \includegraphics[scale=0.8]{../new_plots/rf_graph.png}
     \caption{Difference in performance for the RF classifier}
   \end{center}
 \end{figure}
@@ -592,7 +592,7 @@ Similarly to the neural network, the difference between the two methods is not v
 
 \begin{figure}[h!]
   \begin{center}
-    \includegraphics[scale=0.8]{./figures/Figure_3.png}
+    \includegraphics[scale=0.8]{../new_plots/svm_graph.png}
     \caption{Difference in performance for the SVM classifier}
     \label{fig:svm}
   \end{center}

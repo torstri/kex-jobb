@@ -117,8 +117,10 @@ svm_graph.suptitle('SVM feature selection performance')
 
 plt.xlabel("Number of features")
 plt.ylabel("Accuracy")
-knn_graph.show()
-nn_graph.show()
-rf_graph.show()
-svm_graph.show()
-input()
+
+# save all graphs to files
+knn_graph.savefig("knn_graph.png")
+nn_graph.savefig("nn_graph.png")
+rf_graph.savefig("rf_graph.png")
+svm_graph.savefig("svm_graph.png")
+# input()
