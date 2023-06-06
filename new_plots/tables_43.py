@@ -26,6 +26,12 @@ fp = open('new_svm_SBS.json')
 svm_sbs = json.load(fp)
 
 
+def get_feature_frequencies(fil_sfs,fil_sbs, classifier):
+    frequencies = {}
+    for key in fil_sfs[classifier]:
+        frequencies[int(key)] = fil_sfs[classifier].get(key) + fil_sbs[classifier].get(key)
+    return frequencies 
+
 
 def get_average_num_features(fil, classifier_features, classifier_accuracy):
     data = fil[classifier_features]
@@ -43,7 +49,7 @@ def get_average_num_features(fil, classifier_features, classifier_accuracy):
 
     
 
-
+# Get average number of features for each model and method
 knn_sfs_average_features, knn_sfs_average_accuracy = get_average_num_features(knn_sfs, "knn_num_features", "knn_accuracy")
 knn_sbs_average_features, knn_sbs_average_accuracy  = get_average_num_features(knn_sbs, "knn_num_features", "knn_accuracy")
 
@@ -58,13 +64,7 @@ svm_sbs_average_features, svm_sbs_average_accuracy  = get_average_num_features(s
 
 
 
-
-
-print("SVM")
-print("Average num features SFS = ", svm_sfs_average_features, "Average accuracy SFS =", svm_sfs_average_accuracy)
-print("Average num features SBS = ", svm_sbs_average_features, "Average accuracy SBS =", svm_sbs_average_accuracy)
-
-
+# Open and write files
 csv_knn = open('./csv_files/knn_selection_methods.csv', 'w')
 knn_write = csv.writer(csv_knn)
 
@@ -77,19 +77,96 @@ rf_write = csv.writer(csv_rf)
 csv_svm = open('./csv_files/svm_selection_methods.csv', 'w')
 svm_write = csv.writer(csv_svm)
 
-header = ['Classifier','Selection Method', 'Average Number of Features', 'Average Accuracy']
-knn_write.writerow(header)
-knn_write.writerows([["KNN", "SFS", knn_sfs_average_features, knn_sfs_average_accuracy]])
-knn_write.writerows([["KNN", "SFS", knn_sbs_average_features, knn_sbs_average_accuracy]])
+# header = ['Classifier','Selection Method', 'Average Number of Features', 'Average Accuracy']
+# knn_write.writerow(header)
+# knn_write.writerows([["KNN", "SFS", knn_sfs_average_features, knn_sfs_average_accuracy]])
+# knn_write.writerows([["KNN", "SFS", knn_sbs_average_features, knn_sbs_average_accuracy]])
 
-nn_write.writerow(header)
-nn_write.writerows([["NN", "SFS", nn_sfs_average_features, nn_sfs_average_accuracy]])
-nn_write.writerows([["NN", "SFS", nn_sbs_average_features, nn_sbs_average_accuracy]])
+# nn_write.writerow(header)
+# nn_write.writerows([["NN", "SFS", nn_sfs_average_features, nn_sfs_average_accuracy]])
+# nn_write.writerows([["NN", "SFS", nn_sbs_average_features, nn_sbs_average_accuracy]])
 
-rf_write.writerow(header)
-rf_write.writerows([["RF", "SFS", rf_sfs_average_features, rf_sfs_average_accuracy]])
-rf_write.writerows([["RF", "SFS", rf_sbs_average_features, rf_sbs_average_accuracy]])
+# rf_write.writerow(header)
+# rf_write.writerows([["RF", "SFS", rf_sfs_average_features, rf_sfs_average_accuracy]])
+# rf_write.writerows([["RF", "SFS", rf_sbs_average_features, rf_sbs_average_accuracy]])
 
-svm_write.writerow(header)
-svm_write.writerows([["SVM", "SFS", svm_sfs_average_features, svm_sfs_average_accuracy]])
-svm_write.writerows([["SVM", "SFS", svm_sbs_average_features, svm_sbs_average_accuracy]])
+# svm_write.writerow(header)
+# svm_write.writerows([["SVM", "SFS", svm_sfs_average_features, svm_sfs_average_accuracy]])
+# svm_write.writerows([["SVM", "SFS", svm_sbs_average_features, svm_sbs_average_accuracy]])
+
+
+
+knn_features = get_feature_frequencies(knn_sfs, knn_sbs, "knn_freqs")
+nn_features = get_feature_frequencies(nn_sfs, nn_sbs, "nn_freqs")
+rf_features = get_feature_frequencies(rf_sfs, rf_sbs, "rf_freqs")
+svm_features = get_feature_frequencies(svm_sfs, svm_sbs, "svm_freqs")
+
+knn_features = dict(sorted(knn_features.items(), key=lambda x:x[1], reverse=True))
+nn_features = dict(sorted(nn_features.items(), key=lambda x:x[1], reverse=True))
+rf_features = dict(sorted(rf_features.items(), key=lambda x:x[1], reverse=True))
+svm_features = dict(sorted(svm_features.items(), key=lambda x:x[1], reverse=True))
+
+
+
+
+
+# if key in sorted_frequencies is > 149, then it is an ABCD feature. Else, it is a SIFT feature. Make the bar color red if ABCD, blue if SIFT. Keep the current order of the features.
+i = 0
+for key in knn_features:
+    if(int(key) > 149):
+        plt.bar(i, knn_features.get(key), color='r')
+    else:
+        plt.bar(i, knn_features.get(key), color='y')
+    i += 1
+# sort the values in the bar chart, but keep the color
+plt.xticks([])
+plt.xlabel('Feature Index')
+plt.ylabel('Frequency')
+plt.title('Feature Frequency for KNN')
+# plt.savefig('feature_frequency.png')
+plt.show()
+
+i = 0
+for key in nn_features:
+    if(int(key) > 149):
+        plt.bar(i, nn_features.get(key), color='r')
+    else:
+        plt.bar(i, nn_features.get(key), color='y')
+    i += 1
+# sort the values in the bar chart, but keep the color
+plt.xticks([])
+plt.xlabel('Feature Index')
+plt.ylabel('Frequency')
+plt.title('Feature Frequency for NN')
+# plt.savefig('feature_frequency.png')
+plt.show()
+
+i = 0
+for key in rf_features:
+    if(int(key) > 149):
+        plt.bar(i, rf_features.get(key), color='r')
+    else:
+        plt.bar(i, rf_features.get(key), color='y')
+    i += 1
+# sort the values in the bar chart, but keep the color
+plt.xticks([])
+plt.xlabel('Feature Index')
+plt.ylabel('Frequency')
+plt.title('Feature Frequency for RF')
+# plt.savefig('feature_frequency.png')
+plt.show()
+
+i = 0
+for key in svm_features:
+    if(int(key) > 149):
+        plt.bar(i, svm_features.get(key), color='r')
+    else:
+        plt.bar(i, svm_features.get(key), color='y')
+    i += 1
+# sort the values in the bar chart, but keep the color
+plt.xticks([])
+plt.xlabel('Feature Index')
+plt.ylabel('Frequency')
+plt.title('Feature Frequency for SVM')
+# plt.savefig('feature_frequency.png')
+plt.show()
