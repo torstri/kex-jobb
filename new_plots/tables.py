@@ -42,7 +42,7 @@ def get_frequencies (fil, filename, frequencies):
     temp_freqs = fil[filename]
     print(temp_freqs)
     for index in temp_freqs:
-        print("Index =", index, "Value =", temp_freqs.get(index))
+        # print("Index =", index, "Value =", temp_freqs.get(index))
         frequencies[int(index)] += temp_freqs.get(index)
     return frequencies
 
@@ -105,7 +105,7 @@ frequencies = {}
 for i in range(0,169):
     frequencies[i] = 0
 
-print("Frequencies =", frequencies)
+# print("Frequencies =", frequencies)
 
 
 
