@@ -1,0 +1,5 @@
+Classifier,Morphological Occurences,Occurences per Morphological Feature,SIFT Occurences, Occurences per SIFT Feature
+KNN, 32, 1.7, 232, 1.5
+NN,118, 6.2, 792, 5.3
+RF, 95, 5.0, 933, 6.2
+SVM, 86, 4.5, 200, 1.3
