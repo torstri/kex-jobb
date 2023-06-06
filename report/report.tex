@@ -258,9 +258,49 @@ As mentioned in the background, the two feature extraction methods used were ABC
   \end{tabular}
   \end{table}
 
-\subsubsection{Morphological} % morphological ?
+  
+  \subsubsection{Morphological} % morphological ?
+  
+  % TODO: Snacka lite mer om morphological features o inte bara ABCD
+  The morphological features consist of four different categories: morphological formulas, and three of the aspects of ABCD, namely the asymmetry, border and color aspects.
+  The morphological formulas are presented in table \ref{feature_description}
+  
+  The indexes 150 - 156 are morphological formulas that describe the lesion in different ways. %Förtdyliga det här
 
-% TODO: Snacka lite mer om morphological features o inte bara ABCD
+  
+  Index 157 and 158 describe the asymmetry of the lesion where a high value indicates high asymmetry.
+
+  The remaining features are based on the research of \parencite{celebi2008automatic} which utilizes relative color values. Index 159 to 162 describe the ratio of the average lesion pixel color (\(R_L, G_L, B_L\)) and the average pixel color of the surronding skin (\(R_S, G_S, B_S\)), in terms of red, green and blue respectively. In referens, these features are refered to as the Chromacicity Coordinates. An advantage in using these relative values is that it compensates for differences in illumination between pictures. 
+
+  The features 163 to 165 describe the difference of the pixels of the lesion and the pixels of the surronding skin in terms of the average red, green and blue values.
+
+
+  \begin{table}[]
+    \begin{tabular}{|l|l|}
+    \hline
+    Index in feature set & Description \\ \hline
+    150                  &    \( \textrm{Area of the lesion} / \textrm{Area of bounding rectangle} \)        \\ \hline
+    151                  &       \( \textrm{Area of lesion } / \textrm{Area of the lesion's convex hull} \)      \\ \hline
+    152                  &      \(d / D\)       \\ \hline
+    153                  &       \(4A/  (\pi d^2)  \)      \\ \hline
+    154                  &       \(\pi d /P\)      \\ \hline
+    155                  &       \(4\pi A/P^2\)      \\ \hline
+    156                  &       \(P/(\pi D)\)      \\ \hline
+    157                  &       \(min(A_x , A_y) /A\)      \\ \hline
+    158                  &       \((A_x + A_y)/A\)      \\ \hline
+    159                  &       \(P*(1/d - 1/D)\)      \\ \hline
+    160                  &       \(F_4 = R_L /R_S\)      \\ \hline
+    161                  &       \(F_5 = G_L / G_S\)      \\ \hline
+    162                  &       \(F_6 = B_L / R_S\)      \\ \hline
+    163                  &       \(F_{10} = R_L - R_S\)      \\ \hline
+    164                  &       \(F_{11} = G_L - G_S\)      \\ \hline
+    165                  &       \(F_{12} =B_L - B_S\)      \\ \hline
+    166                  &       \(F_{13} =F_{10} / (F_{10} + F_{11} + F_{12})\)      \\ \hline
+    167                  &       \(F_{14} =F_{11} / (F_{10} + F_{11} + F_{12})\)      \\ \hline
+    168                  &       \(F_{15} =F_{12} / (F_{10} + F_{11} + F_{12})\)      \\ \hline
+    \end{tabular}
+    \label{feature_description}
+    \end{table}
 
 The asymmetry and border features are calculated through the method proposed by \parencite{inproceedings} and the color features by \parencite{celebi2008automatic}. Both computations showed promising results reaching an accuracy of 82\% and 83\%. Furthermore, other morphological features are calculated using the scikit skimage measure package. The implementation is originally done in the way described in this Github repository \parencite{melanoma-classifier}.
 
