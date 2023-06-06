@@ -76,16 +76,16 @@ nn_total_frequencies = dict(sorted(nn_total_frequencies.items(), key=lambda x:x[
 rf_total_frequencies = dict(sorted(rf_total_frequencies.items(), key=lambda x:x[1], reverse=True))
 svm_total_frequencies = dict(sorted(svm_total_frequencies.items(), key=lambda x:x[1], reverse=True))
 
-csv_knn = open('knn.csv', 'w')
+csv_knn = open('./csv_files/knn.csv', 'w')
 knn_write = csv.writer(csv_knn)
 
-csv_nn = open('nn.csv', 'w')
+csv_nn = open('./csv_files/nn.csv', 'w')
 nn_write = csv.writer(csv_nn)
 
-csv_rf = open('rf.csv', 'w')
+csv_rf = open('./csv_files/rf.csv', 'w')
 rf_write = csv.writer(csv_rf)
 
-csv_svm = open('svm.csv', 'w')
+csv_svm = open('./csv_files/svm.csv', 'w')
 svm_write = csv.writer(csv_svm)
 
 header = ['Feature','Total Frequency', 'Frequency using SFS', 'Frequency using SBS']
