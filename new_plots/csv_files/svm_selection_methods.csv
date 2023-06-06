@@ -1,0 +1,3 @@
+Classifier,Selection Method,Average Number of Features,Average Accuracy
+SVM,SFS,45.8,0.8137632201930763
+SVM,SFS,11.4,0.7742482936727539

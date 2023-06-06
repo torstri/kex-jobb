@@ -1,0 +1,3 @@
+Classifier,Selection Method,Average Number of Features,Average Accuracy
+KNN,SFS,47.4,0.7564805847629589
+KNN,SFS,5.4,0.7118551312795917
