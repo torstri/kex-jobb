@@ -208,11 +208,11 @@ The maximal margin classifier aims to separate data into two classes using a hyp
 % https://www.jmlr.org/papers/volume3/guyon03a/guyon03a.pdf
 % ! Inte tillagd i referenslistan
 
-Feature selection is a process which aims to reduce the number of features, or detect the most important features, passed to the classifier. Reducing the number of features results in a shorter runtime and some features may be irrelevant and thus confusing for the model which impedes the performance.\parencite{chaganti2022thyroid}
+Feature selection is a process which aims to reduce the number of features, or detect the most important features, passed to the classifier. Reducing the number of features results in a shorter runtime and some features may be irrelevant and thus confusing for the model which impedes the performance. \parencite{chaganti2022thyroid}
 
 In this study the greedy methods Sequential Backward Selection (SBS) and Sequential Forward Selection (SFS) were used.
 
-In both methods the goal is to determine the subset of features which leads to the best performance. In SBS this subset includes all the features in the feature space. The process then consists of removing each feature individually which creates several subsets. These subsets are then evaluated and the one with the best performance is considered the new subset. This procedure is continued until only one feature is left or until some criterion is met. In SFS the opposite process is performed. At first the subset is empty and each feature in the original feature set is evaluated. The feature with the best performance is then added to the subset, then each of the remaining features are evaluated together with the added feature. This is repeated until all features are added or until some criterion is met.\parencite{chaganti2022thyroid}
+In both methods the goal is to determine the subset of features which leads to the best performance. In SBS this subset includes all the features in the feature space. The process then consists of removing each feature individually which creates several subsets. These subsets are then evaluated and the one with the best performance is considered the new subset. This procedure is continued until only one feature is left or until some criterion is met. In SFS the opposite process is performed. At first the subset is empty and each feature in the original feature set is evaluated. The feature with the best performance is then added to the subset, then each of the remaining features are evaluated together with the added feature. This is repeated until all features are added or until some criterion is met. \parencite{chaganti2022thyroid}
 
 In this study, the subset of features that lead to the highest accuracy is considered the \emph{optimal feature set}.
 
@@ -224,7 +224,7 @@ In this study, the subset of features that lead to the highest accuracy is consi
 
 The automatic classification of skin lesions as being either malignant or benign has been a subject of great interest and there is a plethora of publications investigating the manner. Hence, there are several studies focused around classifying lesions, using the feature set and ML models which this thesis aims to investigate. However, there is not such an abundant pool of studies which focus on feature selection methods and exploration of which types of features are the most important. 
 
-\parencite{MustafaSuleiman2017Fsus} studied the minimal number of necessary features for effective and accurate skin lesion classification using a KNN-model.  The features that were studies were based on the geometric (A), color (C)  and boundary (B) aspects of the ABCD rule of melanoma.(\parencite{MustafaSuleiman2017Fsus}) A feature selection method which implemented the Sequential Backward Selection (SBS) was used. When all features (15 in total) were used, the average accuracy was around 78\%. The highest accuracy of 91\% was obtained when there were only 6, 8 and 9 features. Hence, \parencite{MustafaSuleiman2017Fsus} showed that an effective feature selection method both improves the accuracy of the classifier as well as the computation and storage cost. Though they did not highlight which of these features were abundant and which were important to include. Additionally they only limited the study to one type of ML model, namely the KNN. 
+\parencite{MustafaSuleiman2017Fsus} studied the minimal number of necessary features for effective and accurate skin lesion classification using a KNN-model.  The features that were studies were based on the geometric (A), color (C)  and boundary (B) aspects of the ABCD rule of melanoma.(\parencite{MustafaSuleiman2017Fsus}) A feature selection method which implemented the Sequential Backward Selection (SBS) was used. When all features (15 in total) were used, the average accuracy was around 78\%. The highest accuracy of 91\% was obtained when there were only 6, 8 and 9 features. Hence, \parencite{MustafaSuleiman2017Fsus} showed that an effective feature selection method both improves the accuracy of the classifier and the computation and storage cost. Though they did not highlight which of these features were abundant and which were important to include. Additionally, they only limited the study to one type of ML model, namely the KNN. 
 
 \parencite{MustafaSuleiman2017Fsus} studied the effect of feature selection using the NCA method with an M-SVM on three different data sets. Like \parencite{MustafaSuleiman2017Fsus} their method showed an increase in accuracy and runtime. However, as well as \parencite{MustafaSuleiman2017Fsus}, they did not investigate which features were the ones leading to the increased accuracy. Furthermore, only one classifier was used with the M-SVM and therefore no results were generated using some other type of classifier. 
 
@@ -270,12 +270,13 @@ As mentioned in the background, the two feature extraction methods used were ABC
   
   Index 157 and 158 describe the asymmetry of the lesion where a high value indicates high asymmetry.
 
-  The remaining features are based on the research of \parencite{celebi2008automatic} which utilizes relative color values. Index 159 to 162 describe the ratio of the average lesion pixel color (\(R_L, G_L, B_L\)) and the average pixel color of the surronding skin (\(R_S, G_S, B_S\)), in terms of red, green and blue respectively. In referens, these features are refered to as the Chromacicity Coordinates. An advantage in using these relative values is that it compensates for differences in illumination between pictures. 
+  The remaining features are based on the research of \parencite{celebi2008automatic} which utilizes relative color values. Index 159 to 162 describe the ratio of the average lesion pixel color (\(R_L, G_L, B_L\)) and the average pixel color of the surrounding skin (\(R_S, G_S, B_S\)), in terms of red, green and blue respectively. In reference, these features are referred to as the Chromaticity Coordinates. An advantage in using these relative values is that it compensates for differences in illumination between pictures. 
 
-  The features 163 to 165 describe the difference of the pixels of the lesion and the pixels of the surronding skin in terms of the average red, green and blue values.
+  The features 163 to 165 describe the difference of the pixels of the lesion and the pixels of the surrounding skin in terms of the average red, green and blue values.
 
 
-  \begin{table}[]
+  \begin{table}[h!]
+    \caption{Description of the morphological features}
     \begin{tabular}{|l|l|}
     \hline
     Index in feature set & Description \\ \hline
@@ -301,6 +302,8 @@ As mentioned in the background, the two feature extraction methods used were ABC
     \end{tabular}
     \label{feature_description}
     \end{table}
+  
+\newpage
 
 The asymmetry and border features are calculated through the method proposed by \parencite{inproceedings} and the color features by \parencite{celebi2008automatic}. Both computations showed promising results reaching an accuracy of 82\% and 83\%. Furthermore, other morphological features are calculated using the scikit skimage measure package. The implementation is originally done in the way described in this Github repository \parencite{melanoma-classifier}.
 
@@ -373,7 +376,7 @@ Based on this statistic, the probability that a feature would be included in the
 
 \subsection{Is there a difference between selection methods in terms of performance enhancement?}
 
-To determine the performance of a selection method two aspects needs to be considered. First and foremost, the eventual gain in accuracy a method gives a classifier. This can be evaluated by calculating the average accuracy in every iteration for a selection method and classifier. For the a selection method and a classifier this would entail calculating the average accuracy when the feature set consisted of one feature, two features and so on. For the same classifier, the same process is done for the other selection method. These two lists of averages can then be plotted and the difference in performance can be observed. From this plot the highest average accuracy can be determined. 
+To determine the performance of a selection method two aspects needs to be considered. First and foremost, the eventual gain in accuracy a method gives a classifier. This can be evaluated by calculating the average accuracy in every iteration for a selection method and classifier. For a selection method and a classifier this would entail calculating the average accuracy when the feature set consisted of one feature, two features and so on. For the same classifier, the same process is done for the other selection method. These two lists of averages can then be plotted and the difference in performance can be observed. From this plot the highest average accuracy can be determined. 
 
 
 The second aspect is the average number of features used to obtain the highest accuracy. This can be calculated by first calculating the highest accuracy in every test and the number of features that were in the feature set. This information is then used to calculate the average number of features used to achieve the highest accuracy. 
@@ -388,7 +391,7 @@ In this chapter, the results obtained are presented in the order of the research
 \section{Determining the most important features}
 
 % Could write more here.
-In this section the overall results are presented which describes a ranking of all of the features, as well as the difference between SIFT and morphological features. The reuslts concerning the overall difference between features are presented below in figure \ref{fig:all_freq}.
+In this section the overall results are presented which describes a ranking of all the features, as well as the difference between SIFT and morphological features. The results concerning the overall difference between features are presented below in figure \ref{fig:all_freq}.
 
 % Maybe put in a disclosure like this:
 % It should be noted that some classifiers used more features than others, which explains why...
@@ -511,7 +514,7 @@ The results show that the feature 'Solidity' (index 151) was prominent in the KN
 
 \newpage
 
-From figure \ref{freq_nn} it is observable that the classifier had a quite even distribution overall where almost all features were present in the optimal set at least once. Furthermore the distribution between the morphological and SIFT features was slightly in the favour of the first-mentioned.  
+From figure \ref{fig:freq_nn} it is observable that the classifier had a quite even distribution overall where almost all features were present in the optimal set at least once. Furthermore, the distribution between the morphological and SIFT features was slightly in the favor of the first-mentioned.  
 
 
 \begin{table}[h!]
@@ -555,7 +558,7 @@ The RF classifier preferred the SIFT features which is presented in table \ref{c
 \newpage
 
 \begin{table}[h!]
-  \caption{The features with at least 9 occurences in the 10 tests.}
+  \caption{The features with at least 9 occurrences in the 10 tests.}
   \begin{center}
     \pgfplotstabletypeset[col sep=comma,
     string type,
@@ -591,7 +594,7 @@ Random forest, similar to Neural Network, utilized several features to a high de
   \label{fig:freq_svm}
 \end{figure}
 
-The SVM classifier preferred the morphological features which was shown in table \ref{class_sift_vs_abcd} which is observable in figure \ref{fig:freq_svm} where almost all of the morphological features had more occurences than the SIFT features. 
+The SVM classifier preferred the morphological features which was shown in table \ref{class_sift_vs_abcd} which is observable in figure \ref{fig:freq_svm} where almost all the morphological features had more occurrences than the SIFT features. 
 
 \newpage
 
@@ -728,7 +731,7 @@ Furthermore, the graphs depicting the average performance of the selection metho
 For example, in the case of the SVM classifier, the SFS used on average 32,6 features and the SBS 25,4 features to obtain the highest accuracy. Meanwhile, the graph shows that the SFS obtained the highest accuracy around 24 features and the SBS around 42 features. This difference  is most likely due to the method for obtaining the results. In the former case, the accuracy of every iteration of every test was recorded. The average accuracy for every iteration was then calculated, and the graph was plotted. In the latter case, the maximum accuracy and which features constituted the optimal set was recorded. The features were then counted and the average number of features used could hence be calculated. The difference between the two test might be reduced if the number of tests performed was increased. 
 
 % Man kan egentligen stanna tidigare än max max accuracy
-Lastly, the graphs  show that for all of the methods, there is an early gain in terms of accuracy which then plateaus to then steadily decline when more and more features are added. The maximum accuracy is usually obtained towards the end of this plateau which results in a marginal gain in accuracy but a vast increase of features which increases the runtime of the algorithms. This is especially true for the KNN classifier using the SFS method, where the accuracy plateaus at around 15 features but the maximum is achieved at around 65 features. There might therefore be an interest in instead of solely measuring the accuracy, to instead introduce a two-factor system where the selection method also takes into account the increase of the feature space. Thus, the method can balance the optimal number of features dependent on both performance and runtime.
+Lastly, the graphs show that for all the methods, there is an early gain in terms of accuracy which then plateaus to then steadily decline when more and more features are added. The maximum accuracy is usually obtained towards the end of this plateau which results in a marginal gain in accuracy but a vast increase of features which increases the runtime of the algorithms. This is especially true for the KNN classifier using the SFS method, where the accuracy plateaus at around 15 features but the maximum is achieved at around 65 features. There might therefore be an interest in instead of solely measuring the accuracy, to instead introduce a two-factor system where the selection method also takes into account the increase of the feature space. Thus, the method can balance the optimal number of features dependent on both performance and runtime.
 
 
 \chapter{Conclusions}
