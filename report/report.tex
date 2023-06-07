@@ -262,51 +262,50 @@ As mentioned in the background, the two feature extraction methods used were ABC
   \subsubsection{Morphological} % morphological ?
   
   % TODO: Snacka lite mer om morphological features o inte bara ABCD
-  The morphological features consist of four different categories: morphological formulas, and three of the aspects of ABCD, namely the asymmetry, border and color aspects.
-  The morphological formulas are presented in table \ref{feature_description}
+  The morphological features could be divided into four different categories: morphological formulas, and three of the aspects of ABCD, namely the asymmetry, border and color aspects.
+  The calculations for each feature is presented in table \ref{feature_description}
   
   The indexes 150 - 156 are morphological formulas that describe the lesion in different ways. %Förtdyliga det här
 
   
-  Index 157 and 158 describe the asymmetry of the lesion where a high value indicates high asymmetry.
+  Index 157 through 159 were based on the research of \parencite{inproceedings}. The first two (index 157 and 158) describe the asymmetry of the lesion where a high value indicates high asymmetry. In table \ref{feature_description}, \(A_x, A_y \textrm{ and } A\) denotes the asymmetry along the x- and y-axis and the area of the lesion respectively. The third, index 159, describes the border irregularity where \(P\) denotes the perimeter of the lesion, and \(d \textrm{ and } D\) denotes the minor and major diameter of the lesion.
 
-  The remaining features are based on the research of \parencite{celebi2008automatic} which utilizes relative color values. Index 159 to 162 describe the ratio of the average lesion pixel color (\(R_L, G_L, B_L\)) and the average pixel color of the surronding skin (\(R_S, G_S, B_S\)), in terms of red, green and blue respectively. In referens, these features are refered to as the Chromacicity Coordinates. An advantage in using these relative values is that it compensates for differences in illumination between pictures. 
+  The remaining features are based on the research of \parencite{celebi2008automatic} and describe the colour attributes of the lesion. These are based on the RGB-values of the pixels in the lesion and draws either comparisons to the lesion itself or to the surronding skin. 
+  The indices 160-162 describe the relative R, G and B ratio. In table \ref{feature_description}, \(R_L, G_L \textrm{ and } B_L\) describe the average value of red, green and blue in the surronding skin's pixels and \(R_L, G_L \textrm{ and } B_L\) denotes the average red, green and blue values of the lesion's pixels. Hence these features measure the contrast between the lesion and the surronding skin terms of the three colors. The indices 163-165 measure the relative R, G and B difference between the lesion and the surronding skin, the same notations are used. Lastly, features 165-168 measure the  normalized relative R,G and B differences between the surronding skin and the lesion. \parencite{celebi2008automatic}
 
-  The features 163 to 165 describe the difference of the pixels of the lesion and the pixels of the surronding skin in terms of the average red, green and blue values.
+
+\begin{table}[]
+  \begin{tabular}{|l|l|}
+  \hline
+  Index in feature set & Description \\ \hline
+  150                  &    \( \textrm{Area of the lesion} / \textrm{Area of bounding rectangle} \)        \\ \hline
+  151                  &       \( \textrm{Area of lesion } / \textrm{Area of the lesion's convex hull} \)      \\ \hline
+  152                  &      \(d / D\)       \\ \hline
+  153                  &       \(4A/  (\pi d^2)  \)      \\ \hline
+  154                  &       \(\pi d /P\)      \\ \hline
+  155                  &       \(4\pi A/P^2\)      \\ \hline
+  156                  &       \(P/(\pi D)\)      \\ \hline
+  157                  &       \(min(A_x , A_y) /A\)      \\ \hline
+  158                  &       \((A_x + A_y)/A\)      \\ \hline
+  159                  &       \(P*(1/d - 1/D)\)      \\ \hline
+  160                  &       \(F_4 = R_L /R_S\)      \\ \hline
+  161                  &       \(F_5 = G_L / G_S\)      \\ \hline
+  162                  &       \(F_6 = B_L / R_S\)      \\ \hline
+  163                  &       \(F_{10} = R_L - R_S\)      \\ \hline
+  164                  &       \(F_{11} = G_L - G_S\)      \\ \hline
+  165                  &       \(F_{12} =B_L - B_S\)      \\ \hline
+  166                  &       \(F_{13} =F_{10} / (F_{10} + F_{11} + F_{12})\)      \\ \hline
+  167                  &       \(F_{14} =F_{11} / (F_{10} + F_{11} + F_{12})\)      \\ \hline
+  168                  &       \(F_{15} =F_{12} / (F_{10} + F_{11} + F_{12})\)      \\ \hline
+  \end{tabular}
+  \label{feature_description}
+  \end{table}
 
 
-  \begin{table}[]
-    \begin{tabular}{|l|l|}
-    \hline
-    Index in feature set & Description \\ \hline
-    150                  &    \( \textrm{Area of the lesion} / \textrm{Area of bounding rectangle} \)        \\ \hline
-    151                  &       \( \textrm{Area of lesion } / \textrm{Area of the lesion's convex hull} \)      \\ \hline
-    152                  &      \(d / D\)       \\ \hline
-    153                  &       \(4A/  (\pi d^2)  \)      \\ \hline
-    154                  &       \(\pi d /P\)      \\ \hline
-    155                  &       \(4\pi A/P^2\)      \\ \hline
-    156                  &       \(P/(\pi D)\)      \\ \hline
-    157                  &       \(min(A_x , A_y) /A\)      \\ \hline
-    158                  &       \((A_x + A_y)/A\)      \\ \hline
-    159                  &       \(P*(1/d - 1/D)\)      \\ \hline
-    160                  &       \(F_4 = R_L /R_S\)      \\ \hline
-    161                  &       \(F_5 = G_L / G_S\)      \\ \hline
-    162                  &       \(F_6 = B_L / R_S\)      \\ \hline
-    163                  &       \(F_{10} = R_L - R_S\)      \\ \hline
-    164                  &       \(F_{11} = G_L - G_S\)      \\ \hline
-    165                  &       \(F_{12} =B_L - B_S\)      \\ \hline
-    166                  &       \(F_{13} =F_{10} / (F_{10} + F_{11} + F_{12})\)      \\ \hline
-    167                  &       \(F_{14} =F_{11} / (F_{10} + F_{11} + F_{12})\)      \\ \hline
-    168                  &       \(F_{15} =F_{12} / (F_{10} + F_{11} + F_{12})\)      \\ \hline
-    \end{tabular}
-    \label{feature_description}
-    \end{table}
 
-The asymmetry and border features are calculated through the method proposed by \parencite{inproceedings} and the color features by \parencite{celebi2008automatic}. Both computations showed promising results reaching an accuracy of 82\% and 83\%. Furthermore, other morphological features are calculated using the scikit skimage measure package. The implementation is originally done in the way described in this Github repository \parencite{melanoma-classifier}.
+The implementation is originally done by \parencite{melanoma-classifier}, the documentation is available in the GitHub repository.
 
 % TODO: Dubbelkolla namn på library. Det är fel
-To calculate the asymmetry and border features the measure library from sci-kit is used, with the \verb|regionprops_table| function.
-The color features are calculated using a numpy array to represent the image's RGB value.
 
 % TODO: Lägg in hur man beräknar grejerna, eller ska det ens in? Hänvisa till studie t.o.m peer review
 
@@ -317,7 +316,7 @@ The color features are calculated using a numpy array to represent the image's R
 
 The SIFT features are extracted using the OpenCV class SIFT which implements the algorithm by David G. Lowe. \parencite{sift-opencv} \parencite{lowe2004distinctive}.
 
-The implementation is based on a GitHub repository which uses the ´´Bag of Words'' technique to transform the key points descriptors into 150 different features \parencite{SIFT-repo}. The Bag of Words technique aims to capture the presence or absence of specific patterns or visual cues within the lesion images that are indicative of melanoma \parencite{9960177}.
+The implementation is based on a GitHub repository which uses the ''Bag of Words'' technique to transform the key points descriptors into 150 different features \parencite{SIFT-repo}. The Bag of Words technique aims to capture the presence or absence of specific patterns or visual cues within the lesion images that are indicative of melanoma \parencite{9960177}.
 
 % Vilket bibliotek
 % opencv
