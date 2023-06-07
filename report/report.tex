@@ -226,8 +226,10 @@ The automatic classification of skin lesions as being either malignant or benign
 
 \parencite{MustafaSuleiman2017Fsus} studied the minimal number of necessary features for effective and accurate skin lesion classification using a KNN-model.  The features that were studies were based on the geometric (A), color (C)  and boundary (B) aspects of the ABCD rule of melanoma.(\parencite{MustafaSuleiman2017Fsus}) A feature selection method which implemented the Sequential Backward Selection (SBS) was used. When all features (15 in total) were used, the average accuracy was around 78\%. The highest accuracy of 91\% was obtained when there were only 6, 8 and 9 features. Hence, \parencite{MustafaSuleiman2017Fsus} showed that an effective feature selection method both improves the accuracy of the classifier and the computation and storage cost. Though they did not highlight which of these features were abundant and which were important to include. Additionally, they only limited the study to one type of ML model, namely the KNN. 
 
-\parencite{MustafaSuleiman2017Fsus} studied the effect of feature selection using the NCA method with an M-SVM on three different data sets. Like \parencite{MustafaSuleiman2017Fsus} their method showed an increase in accuracy and runtime. However, as well as \parencite{MustafaSuleiman2017Fsus}, they did not investigate which features were the ones leading to the increased accuracy. Furthermore, only one classifier was used with the M-SVM and therefore no results were generated using some other type of classifier. 
+\parencite{MustafaSuleiman2017Fsus} studied the effect of feature selection using the NCA method with an M-SVM on three different data sets. Like \parencite{MustafaSuleiman2017Fsus} their method showed an increase in accuracy and runtime. However, as well as \parencite{MustafaSuleiman2017Fsus}, they did not investigate which features were the ones leading to the increased accuracy. Furthermore, only one classifier was used with the M-SVM and therefore no results were generated using some other type of classifier.
 
+
+% RohrerR.1998Fsim är en bra referens
 
 \chapter{Methods}
 
@@ -249,7 +251,7 @@ The aim of this study was not to develop a new segmentation method, but rather t
 \subsection{Feature extraction}
 
 As mentioned in the background, the two feature extraction methods used were ABCD and SIFT. In total 169 features were used where the SIFT and morphological features consisted of 150 and 19 features respectively.
-\begin{table}[]
+\begin{table}[h!]
   \begin{tabular}{|l|l|l|}
   \hline
   Feature type  & Indexes in feature set & Number of features \\ \hline
@@ -270,11 +272,12 @@ As mentioned in the background, the two feature extraction methods used were ABC
   
   Index 157 through 159 were based on the research of \parencite{inproceedings}. The first two (index 157 and 158) describe the asymmetry of the lesion where a high value indicates high asymmetry. In table \ref{feature_description}, \(A_x, A_y \textrm{ and } A\) denotes the asymmetry along the x- and y-axis and the area of the lesion respectively. The third, index 159, describes the border irregularity where \(P\) denotes the perimeter of the lesion, and \(d \textrm{ and } D\) denotes the minor and major diameter of the lesion.
 
-  The remaining features are based on the research of \parencite{celebi2008automatic} and describe the colour attributes of the lesion. These are based on the RGB-values of the pixels in the lesion and draws either comparisons to the lesion itself or to the surronding skin. 
-  The indices 160-162 describe the relative R, G and B ratio. In table \ref{feature_description}, \(R_L, G_L \textrm{ and } B_L\) describe the average value of red, green and blue in the surronding skin's pixels and \(R_L, G_L \textrm{ and } B_L\) denotes the average red, green and blue values of the lesion's pixels. Hence these features measure the contrast between the lesion and the surronding skin terms of the three colors. The indices 163-165 measure the relative R, G and B difference between the lesion and the surronding skin, the same notations are used. Lastly, features 165-168 measure the  normalized relative R,G and B differences between the surronding skin and the lesion. \parencite{celebi2008automatic}
+  The remaining features are based on the research of \parencite{celebi2008automatic} and describe the colour attributes of the lesion. These are based on the RGB-values of the pixels in the lesion and draws either comparisons to the lesion itself or to the surrounding skin. 
+  The indices 160-162 describe the relative $R$, $G$ and $B$ ratio. In table \ref{feature_description}, \(R_L, G_L \textrm{ and } B_L\) describe the average value of red, green and blue in the surrounding skin's pixels and \(R_L, G_L \textrm{ and } B_L\) denotes the average red, green and blue values of the lesion's pixels. Hence, these features measure the contrast between the lesion and the surrounding skin terms of the three colors. The indices 163-165 measure the relative $R$, $G$ and $B$ difference between the lesion and the surrounding skin, the same notations are used. Lastly, features 165-168 measure the normalized relative $R$, $G$ and $B$ differences between the surrounding skin and the lesion. \parencite{celebi2008automatic}
 
 
-\begin{table}[]
+\begin{table}[h!]
+  \caption{Description of the morphological features}
   \begin{tabular}{|l|l|}
   \hline
   Index in feature set & Description \\ \hline
@@ -299,15 +302,13 @@ As mentioned in the background, the two feature extraction methods used were ABC
   168                  &       \(F_{15} =F_{12} / (F_{10} + F_{11} + F_{12})\)      \\ \hline
   \end{tabular}
   \label{feature_description}
-  \end{table}
+\end{table}
 
-
+\newpage
 
 The implementation is originally done by \parencite{melanoma-classifier}, the documentation is available in the GitHub repository.
 
 % TODO: Dubbelkolla namn på library. Det är fel
-
-% TODO: Lägg in hur man beräknar grejerna, eller ska det ens in? Hänvisa till studie t.o.m peer review
 
 % Hur de beräknas
 % github repot
@@ -325,10 +326,18 @@ The implementation is based on a GitHub repository which uses the ''Bag of Words
 
 All classifiers used in this study are from the Scikit-sklearn library which is a free-to-use library for machine learning in Python \parencite{scikit-learn-doc}.
 
-% ! Nedanstående stämmer typ inte längre. Ska vi skriva något om parameter sweep? Vi gjorde ju lite...
-Although all ML models’ parameters can be fine-tuned to optimize performance and run-time, the default parameters will be used since it is not the aim of the study to create an optimal implementation. The focus is instead on the feature selection’s effect on the performance of the classifiers.
+With the aim to improve the accuracy of the models, hyperparameters were tuned in order to better fit the data. It is however important to note that a complete parameter sweep was not performed.
 
-% (källa ?)
+The \verb|n_neighbors| hyperparameter were modified for the KNN classifier and was set to $8$.
+
+For the NN classifier two hyperparameters were modified from the default value. \verb|hidden_layer_sizes| was set to $[8]$, which means that the classifier used one hidden layer with eight nodes. \verb|max_iter| was set to $100$ in order to speed up the testing time.
+
+Regarding the RF classifier, the only modified hyperparameter was \\ \verb|n_estimators| which was set to $5$. The standard value is $100$ but because of the testing time scaling rapidly it was lowered.
+
+For the SVM only one hyperparameter were modified, namely \verb|C|, which was set to $100$ instead of the usual $1$.
+% Kan skriva om att det kan ge overfitting om jag minns rätt men då behövs källa
+
+
 
 \section{Dataset}
 
@@ -711,6 +720,7 @@ As mentioned in the result section, the morphological features were overrepresen
 who compared deep features generated by a convoluted neural network against SIFT descriptors. They obtained the highest accuracy using only deep features. While mixing deep and SIFT features, the accuracy was decreased. Finally, only using SIFT features resulted in the worst observed performance. 
 
 % Feature 151
+% TODO: Fixa
 As mentioned in the results, the most prominent feature was feature 151, which is a morphological feature. The feature measures the extent of the lesion, i.e. how many of the pixels in the image are within the lesion. This might be due to the way the tests were conducted. In the forward selection, if a feature is selected early, then it is likely to be contained in the optimal set. Thus the fact that the feature was so common might be an indicator that it was chosen early in the process. Which in turn indicates that the feature is a strong indicator on its own. However, the feature was common in both SBS and SFS, thus it might simply be an effective indicator of malignant melanoma.
 
 % Feature 160
