@@ -183,7 +183,10 @@ The algorithm is simple to implement and does not have many hyperparameters to t
 
 \subsection{Neural Network (NN)}
 
-Neural networks are a type of machine learning algorithm that is inspired by the human brain. The network consists of several layers of nodes, where each node is connected to all nodes in the previous layer. The first layer is the input layer, where the data is fed into the network. The last layer is the output layer, where the final prediction is made. The layers in between are called hidden layers. The nodes in the hidden layers are connected to all nodes in the previous layer, and the output of each neuron is calculated by a function. The output of the neurons in the last hidden layer is then fed into the output layer, where the final prediction is made. \parencite{ibmWhatNeural}
+Neural networks are a type of machine learning algorithm that is inspired by the human brain. The network consists of several layers of nodes, where each node is connected to all nodes in the previous layer. The first layer is the input layer, where one node corresponds to one feature from the input data. The last layer is the output layer, where the final prediction is made. The layers in between are called hidden layers. All nodes in one layer is connected to all nodes in the next layer. Each connection between two nodes has a weight, which is adjusted during the training of the model. The weights are adjusted in order to minimize the loss function, which is a measure of how well the model performs. \parencite{ibmWhatNeural}
+
+When classifying, the input data is fed into the input layer. The data is then passed through the network, where each node in the hidden layers calculates a weighted sum of the inputs and applies an activation function to the result.
+The output of the neurons in the last hidden layer is then fed into the output layer, where the final prediction is made. \parencite{ibmWhatNeural}
 
 
 % Neural network is a type of machine learning algorithm, inspired by the human brain, and consists of several connected layers of nodes. There are three types of layers, namely input, output and hidden layers. 
@@ -193,7 +196,7 @@ Neural networks are a type of machine learning algorithm that is inspired by the
 
 \subsection{Random Forest (RF)}
 
-Random forest is a tree-based method. The model consists of several decision trees taking different factors into consideration. When classifying, all individual trees try to classify the data. Then, the class that most of the trees predicted is chosen as the final classification. \parencite{ibmrforest}
+Random forest is a tree-based method based on the idea of bagging. Bagging is a method where several models are trained on different subsets of the training data. This is done in order to reduce the correlation between different trees. The final prediction is made by a majority vote between the individual models. \parencite{ibmrforest}
 
 % book s. 319-321
 % s. 319-321
