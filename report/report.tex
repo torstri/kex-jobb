@@ -174,7 +174,9 @@ The classification of the lesions is based on the features extracted and can be 
 
 \subsection{K-Nearest Neighbors (KNN)}
 
-K-nearest-neighbors is used for classifying data points. The ground principle is to find the nearest neighboring data points from the training set for all the test data points. This is based on the idea that similar data points can be found close to one another. Similarly to random forest, it performs a majority voting and then chooses the most occurring class from neighbors as the final prediction. \parencite{ibmknn}
+K-nearest-neighbors is used for classifying data points. The ground principle is to find the nearest neighboring data points from the training set for all the test data points. This is based on the idea that similar data points can be found close to one another. When classifying, the model regards the $k$ the nearest data points and classifies the test data point based on which class the majority of these neighbors have. \parencite{ibmknn}
+
+The algorithm is simple to implement and does not have many hyperparameters to tune. However, one drawback is that it suffers from the curse of dimensionality, meaning that the model does not perform well with many features. \parencite{ibmknn}
 
 % book  s.39-41
 % Image on p. 40 in the book
@@ -401,9 +403,6 @@ In this section the overall results are presented which describes a ranking of a
 % Maybe put in a disclosure like this:
 % It should be noted that some classifiers used more features than others, which explains why...
 
-
-% Fråga inte hur detta funkar.
-
 \begin{figure}[h!]
   \centering
   \includegraphics[scale=0.8]{./figures/Figure_all_fres.png}
@@ -424,8 +423,8 @@ Concerning the difference between morphological and SIFT features table \ref{rep
     columns={Feature Type, Number of Features, Occurence(s), Representation},
     columns/Feature Type/.style={column name=Feature Type, column type={|l|}},
     columns/Number of Features/.style={column name=Feature count, column type={l|}},
-    columns/Occurence(s)/.style={column name=Occurences, column type={l|}},
-    columns/Representation/.style={column name=Average Occurences, column type={l|}},
+    columns/Occurence(s)/.style={column name=Occurrences, column type={l|}},
+    columns/Representation/.style={column name=Average Occurrences, column type={l|}},
     every head row/.style={before row=\hline, after row=\hline},
     every nth row={1}{before row=\hline},
     every last row/.style={after row=\hline}
@@ -520,7 +519,7 @@ The results show that the feature 'Solidity' (index 151) was prominent in the KN
 
 \newpage
 
-From figure \ref{fig:freq_nn} it is observable that the classifier had a quite even distribution overall where almost all features were present in the optimal set at least once. Furthermore, the distribution between the morphological and SIFT features was slightly in the favor of the first-mentioned.  
+From figure \ref{fig:freq_nn} it is observable that the classifier had a quite even distribution overall where almost all features were present in the optimal set at least once. Furthermore, the distribution between the morphological and SIFT features was slightly in the favor of the first-mentioned.
 
 
 \begin{table}[h!]
