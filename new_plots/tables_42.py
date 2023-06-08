@@ -134,7 +134,7 @@ for key in knn_total_frequencies:
     i += 1
 # sort the values in the bar chart, but keep the color
 plt.xticks([])
-plt.xlabel('Feature Index')
+plt.xlabel('Features sorted in descending order based on frequency')
 plt.ylabel('Frequency')
 plt.title('Feature Frequency KNN')
 # plt.savefig('feature_frequency.png')
@@ -150,7 +150,7 @@ for key in nn_total_frequencies:
     i += 1
 # sort the values in the bar chart, but keep the color
 plt.xticks([])
-plt.xlabel('Feature Index')
+plt.xlabel('Features sorted in descending order based on frequency')
 plt.ylabel('Frequency')
 plt.title('Feature Frequency NN')
 # plt.savefig('feature_frequency.png')
@@ -166,7 +166,7 @@ for key in rf_total_frequencies:
     i += 1
 # sort the values in the bar chart, but keep the color
 plt.xticks([])
-plt.xlabel('Feature Index')
+plt.xlabel('Features sorted in descending order based on frequency')
 plt.ylabel('Frequency')
 plt.title('Feature Frequency RF')
 # plt.savefig('feature_frequency.png')
@@ -181,7 +181,7 @@ for key in svm_total_frequencies:
     i += 1
 # sort the values in the bar chart, but keep the color
 plt.xticks([])
-plt.xlabel('Feature Index')
+plt.xlabel('Features sorted in descending order based on frequency')
 plt.ylabel('Frequency')
 plt.title('Feature Frequency SVM')
 # plt.savefig('feature_frequency.png')

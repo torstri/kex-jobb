@@ -40,7 +40,7 @@ def get_abcd(fil, filename):
 
 def get_frequencies (fil, filename, frequencies):
     temp_freqs = fil[filename]
-    print(temp_freqs)
+    # print(temp_freqs)
     for index in temp_freqs:
         # print("Index =", index, "Value =", temp_freqs.get(index))
         frequencies[int(index)] += temp_freqs.get(index)
@@ -58,9 +58,9 @@ temp_abcd, temp_sift = get_abcd(knn_sbs, "knn_freqs")
 knn_abcd += temp_abcd
 knn_sift += temp_sift
 
-print("############################")
-print("ABCD Knn =", knn_abcd,"And ",float(knn_abcd)/float(19), "SVM Sift =", knn_sift, "And", float(knn_sift)/float(169-19))
-print("############################")
+# print("############################")
+# print("ABCD Knn =", knn_abcd,"And ",float(knn_abcd)/float(19), "SVM Sift =", knn_sift, "And", float(knn_sift)/float(169-19))
+# print("############################")
 
 
 
@@ -69,9 +69,9 @@ temp_abcd, temp_sift = get_abcd(nn_sbs, "nn_freqs")
 nn_abcd += temp_abcd
 nn_sift += temp_sift
 
-print("############################")
-print("ABCD nn =", nn_abcd,"And ",float(nn_abcd)/float(19), "SVM Sift =", nn_sift, "And", float(nn_sift)/float(169-19))
-print("############################")
+# print("############################")
+# print("ABCD nn =", nn_abcd,"And ",float(nn_abcd)/float(19), "SVM Sift =", nn_sift, "And", float(nn_sift)/float(169-19))
+# print("############################")
 
 
 rf_abcd, rf_sift = get_abcd(rf_sfs, "rf_freqs")
@@ -79,9 +79,9 @@ temp_abcd, temp_sift = get_abcd(rf_sbs, "rf_freqs")
 rf_abcd += temp_abcd
 rf_sift += temp_sift
 
-print("############################")
-print("ABCD rf =", rf_abcd,"And ",float(rf_abcd)/float(19), "SVM Sift =", rf_sift, "And", float(rf_sift)/float(169-19))
-print("############################")
+# print("############################")
+# print("ABCD rf =", rf_abcd,"And ",float(rf_abcd)/float(19), "SVM Sift =", rf_sift, "And", float(rf_sift)/float(169-19))
+# print("############################")
 
 
 
@@ -92,11 +92,11 @@ temp_abcd, temp_sift = get_abcd(svm_sbs, "svm_freqs")
 svm_abcd += temp_abcd
 svm_sift += temp_sift
 
-print("############################")
-print("ABCD SVM =", svm_abcd,"And ",float(svm_abcd)/float(19), "SVM Sift =", svm_sift, "And", float(svm_sift)/float(169-19))
-print("############################")
+# print("############################")
+# print("ABCD SVM =", svm_abcd,"And ",float(svm_abcd)/float(19), "SVM Sift =", svm_sift, "And", float(svm_sift)/float(169-19))
+# print("############################")
 
-print("All =", svm_abcd + svm_sift + knn_abcd + knn_sift + nn_abcd + nn_sift + rf_abcd + rf_sift)
+# print("All =", svm_abcd + svm_sift + knn_abcd + knn_sift + nn_abcd + nn_sift + rf_abcd + rf_sift)
 
 
 
@@ -122,7 +122,7 @@ frequencies = get_frequencies(rf_sbs, "rf_freqs", frequencies)
 frequencies = get_frequencies(svm_sfs, "svm_freqs", frequencies)
 frequencies = get_frequencies(svm_sbs, "svm_freqs", frequencies)
 
-print("Frequencies =", frequencies)
+# print("Frequencies =", frequencies)
 
 sorted_frequencies = dict(sorted(frequencies.items(), key=lambda x:x[1], reverse=True))
 abcd  = 0
@@ -133,11 +133,11 @@ for feature in frequencies:
     else:
         sift += frequencies.get(feature)
 
-print("#################### Table 4.1 ##############################")
-print("ABCD =", abcd, "Sift =", sift)
+# print("#################### Table 4.1 ##############################")
+# print("ABCD =", abcd, "Sift =", sift)
 rep_abcd = float(abcd)/float(169 - 148)
 rep_sift = float(sift)/float(148)
-print("ABCD rep =", rep_abcd, "SIFT rep =", rep_sift)
+# print("ABCD rep =", rep_abcd, "SIFT rep =", rep_sift)
 
 # Plot sorted frequencies with a bar chart
 # plt.bar(range(len(sorted_frequencies)), list(sorted_frequencies.values()), align='center')
@@ -152,7 +152,7 @@ for key in sorted_frequencies:
     i += 1
 # sort the values in the bar chart, but keep the color
 plt.xticks([])
-plt.xlabel('Feature Index')
+plt.xlabel('Features sorted in descending order based on frequency')
 plt.ylabel('Frequency')
 plt.title('Feature Frequency')
 # plt.savefig('feature_frequency.png')

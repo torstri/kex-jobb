@@ -174,14 +174,19 @@ The classification of the lesions is based on the features extracted and can be 
 
 \subsection{K-Nearest Neighbors (KNN)}
 
-K-nearest-neighbors is used for classifying data points. The ground principle is to find the nearest neighboring data points from the training set for all the test data points. This is based on the idea that similar data points can be found close to one another. Similarly to random forest, it performs a majority voting and then chooses the most occurring class from neighbors as the final prediction. \parencite{ibmknn}
+K-nearest-neighbors is used for classifying data points. The ground principle is to find the nearest neighboring data points from the training set for all the test data points. This is based on the idea that similar data points can be found close to one another. When classifying, the model regards the $k$ the nearest data points and classifies the test data point based on which class the majority of these neighbors have. \parencite{ibmknn}
+
+The algorithm is simple to implement and does not have many hyperparameters to tune. However, one drawback is that it suffers from the curse of dimensionality, meaning that the model does not perform well with many features. \parencite{ibmknn}
 
 % book  s.39-41
 % Image on p. 40 in the book
 
 \subsection{Neural Network (NN)}
 
-Neural networks are a type of machine learning algorithm that is inspired by the human brain. The network consists of several layers of nodes, where each node is connected to all nodes in the previous layer. The first layer is the input layer, where the data is fed into the network. The last layer is the output layer, where the final prediction is made. The layers in between are called hidden layers. The nodes in the hidden layers are connected to all nodes in the previous layer, and the output of each neuron is calculated by a function. The output of the neurons in the last hidden layer is then fed into the output layer, where the final prediction is made. \parencite{ibmWhatNeural}
+Neural networks are a type of machine learning algorithm that is inspired by the human brain. The network consists of several layers of nodes, where each node is connected to all nodes in the previous layer. The first layer is the input layer, where one node corresponds to one feature from the input data. The last layer is the output layer, where the final prediction is made. The layers in between are called hidden layers. All nodes in one layer is connected to all nodes in the next layer. Each connection between two nodes has a weight, which is adjusted during the training of the model. The weights are adjusted in order to minimize the loss function, which is a measure of how well the model performs. \parencite{ibmWhatNeural}
+
+When classifying, the input data is fed into the input layer. The data is then passed through the network, where each node in the hidden layers calculates a weighted sum of the inputs and applies an activation function to the result.
+The output of the neurons in the last hidden layer is then fed into the output layer, where the final prediction is made. \parencite{ibmWhatNeural}
 
 
 % Neural network is a type of machine learning algorithm, inspired by the human brain, and consists of several connected layers of nodes. There are three types of layers, namely input, output and hidden layers. 
@@ -191,7 +196,7 @@ Neural networks are a type of machine learning algorithm that is inspired by the
 
 \subsection{Random Forest (RF)}
 
-Random forest is a tree-based method. The model consists of several decision trees taking different factors into consideration. When classifying, all individual trees try to classify the data. Then, the class that most of the trees predicted is chosen as the final classification. \parencite{ibmrforest}
+Random forest is a tree-based method based on the idea of bagging. Bagging is a method where several models are trained on different subsets of the training data. This is done in order to reduce the correlation between different trees. The final prediction is made by a majority vote between the individual models. \parencite{ibmrforest}
 
 % book s. 319-321
 % s. 319-321
@@ -226,7 +231,8 @@ The automatic classification of skin lesions has gained great interest for resea
 
 \parencite{MustafaSuleiman2017Fsus} studied the minimal number of necessary features for effective and accurate skin lesion classification using a KNN-model.  The features that were studies were based on the geometric (A), color (C)  and boundary (B) aspects of the ABCD rule of melanoma.(\parencite{MustafaSuleiman2017Fsus}) A feature selection method which implemented the Sequential Backward Selection (SBS) was used. When all features (15 in total) were used, the average accuracy was around 78\%. The highest accuracy of 91\% was obtained when there were only 6, 8 and 9 features. Hence, \parencite{MustafaSuleiman2017Fsus} showed that an effective feature selection method both improves the accuracy of the classifier and the computation and storage cost. Though they did not highlight which of these features were abundant and which were important to include. Additionally, they only limited the study to one type of ML model, namely the KNN. 
 
-\parencite{MustafaSuleiman2017Fsus} studied the effect of feature selection using the NCA method with an M-SVM on three different data sets. Like \parencite{MustafaSuleiman2017Fsus} their method showed an increase in accuracy and runtime. However, as well as \parencite{MustafaSuleiman2017Fsus}, they did not investigate which features were the ones leading to the increased accuracy. Furthermore, only one classifier was used with the M-SVM and therefore no results were generated using some other type of classifier. 
+\parencite{MustafaSuleiman2017Fsus} studied the effect of feature selection using the NCA method with an M-SVM on three different data sets. Like \parencite{MustafaSuleiman2017Fsus} their method showed an increase in accuracy and runtime. However, as well as \parencite{MustafaSuleiman2017Fsus}, they did not investigate which features were the ones leading to the increased accuracy. Furthermore, only one classifier was used with the M-SVM and therefore no results were generated using some other type of classifier.
+
 
 One study focused on a comparison between SIFT features and features extracted by  a Convoluted Neural Network, called deep features. They found that using only deep features resulted in the highest accuracy and using solely SIFT features led to the worst accuracy.\parencite{Zhang}
 
@@ -253,7 +259,7 @@ The aim of this study was not to develop a new segmentation method, but rather t
 \subsection{Feature extraction}
 
 As mentioned in the background, the two feature extraction methods used were ABCD and SIFT. In total 169 features were used where the SIFT and morphological features consisted of 150 and 19 features respectively.
-\begin{table}[]
+\begin{table}[h!]
   \begin{tabular}{|l|l|l|}
   \hline
   Feature type  & Indexes in feature set & Number of features \\ \hline
@@ -274,11 +280,12 @@ As mentioned in the background, the two feature extraction methods used were ABC
   
   Index 157 through 159 were based on the research of \parencite{inproceedings}. The first two (index 157 and 158) describe the asymmetry of the lesion where a high value indicates high asymmetry. In table \ref{feature_description}, \(A_x, A_y \textrm{ and } A\) denotes the asymmetry along the x- and y-axis and the area of the lesion respectively. The third, index 159, describes the border irregularity where \(P\) denotes the perimeter of the lesion, and \(d \textrm{ and } D\) denotes the minor and major diameter of the lesion.
 
-  The remaining features are based on the research of \parencite{celebi2008automatic} and describe the colour attributes of the lesion. These are based on the RGB-values of the pixels in the lesion and draws either comparisons to the lesion itself or to the surronding skin. 
-  The indices 160-162 describe the relative R, G and B ratio. In table \ref{feature_description}, \(R_L, G_L \textrm{ and } B_L\) describe the average value of red, green and blue in the surronding skin's pixels and \(R_L, G_L \textrm{ and } B_L\) denotes the average red, green and blue values of the lesion's pixels. Hence these features measure the contrast between the lesion and the surronding skin terms of the three colors. The indices 163-165 measure the relative R, G and B difference between the lesion and the surronding skin, the same notations are used. Lastly, features 165-168 measure the  normalized relative R,G and B differences between the surronding skin and the lesion. \parencite{celebi2008automatic}
+  The remaining features are based on the research of \parencite{celebi2008automatic} and describe the colour attributes of the lesion. These are based on the RGB-values of the pixels in the lesion and draws either comparisons to the lesion itself or to the surrounding skin. 
+  The indices 160-162 describe the relative $R$, $G$ and $B$ ratio. In table \ref{feature_description}, \(R_L, G_L \textrm{ and } B_L\) describe the average value of red, green and blue in the surrounding skin's pixels and \(R_L, G_L \textrm{ and } B_L\) denotes the average red, green and blue values of the lesion's pixels. Hence, these features measure the contrast between the lesion and the surrounding skin terms of the three colors. The indices 163-165 measure the relative $R$, $G$ and $B$ difference between the lesion and the surrounding skin, the same notations are used. Lastly, features 165-168 measure the normalized relative $R$, $G$ and $B$ differences between the surrounding skin and the lesion. \parencite{celebi2008automatic}
 
 
-\begin{table}[]
+\begin{table}[h!]
+  \caption{Description of the morphological features}
   \begin{tabular}{|l|l|}
   \hline
   Index in feature set & Description \\ \hline
@@ -303,15 +310,13 @@ As mentioned in the background, the two feature extraction methods used were ABC
   168                  &       \(F_{15} =F_{12} / (F_{10} + F_{11} + F_{12})\)      \\ \hline
   \end{tabular}
   \label{feature_description}
-  \end{table}
+\end{table}
 
-
+\newpage
 
 The implementation is originally done by \parencite{melanoma-classifier}, the documentation is available in the GitHub repository.
 
 % TODO: Dubbelkolla namn på library. Det är fel
-
-% TODO: Lägg in hur man beräknar grejerna, eller ska det ens in? Hänvisa till studie t.o.m peer review
 
 % Hur de beräknas
 % github repot
@@ -329,10 +334,18 @@ The implementation is based on a GitHub repository which uses the ''Bag of Words
 
 All classifiers used in this study are from the Scikit-sklearn library which is a free-to-use library for machine learning in Python \parencite{scikit-learn-doc}.
 
-% ! Nedanstående stämmer typ inte längre. Ska vi skriva något om parameter sweep? Vi gjorde ju lite...
-Although all ML models’ parameters can be fine-tuned to optimize performance and run-time, the default parameters will be used since it is not the aim of the study to create an optimal implementation. The focus is instead on the feature selection’s effect on the performance of the classifiers.
+With the aim to improve the accuracy of the models, hyperparameters were tuned in order to better fit the data. It is however important to note that a complete parameter sweep was not performed.
 
-% (källa ?)
+The \verb|n_neighbors| hyperparameter were modified for the KNN classifier and was set to $8$.
+
+For the NN classifier two hyperparameters were modified from the default value. \verb|hidden_layer_sizes| was set to $[8]$, which means that the classifier used one hidden layer with eight nodes. \verb|max_iter| was set to $100$ in order to speed up the testing time.
+
+Regarding the RF classifier, the only modified hyperparameter was \\ \verb|n_estimators| which was set to $5$. The standard value is $100$ but because of the testing time scaling rapidly it was lowered.
+
+For the SVM only one hyperparameter were modified, namely \verb|C|, which was set to $100$ instead of the usual $1$.
+% Kan skriva om att det kan ge overfitting om jag minns rätt men då behövs källa
+
+
 
 \section{Dataset}
 
@@ -396,9 +409,6 @@ In this section the overall results are presented which describes a ranking of a
 % Maybe put in a disclosure like this:
 % It should be noted that some classifiers used more features than others, which explains why...
 
-
-% Fråga inte hur detta funkar.
-
 \begin{figure}[h!]
   \centering
   \includegraphics[scale=0.8]{./figures/Figure_all_fres.png}
@@ -413,14 +423,14 @@ From the figure it is observable that two features had a higher frequency in the
 Concerning the difference between morphological and SIFT features table \ref{representation} show the results. 
 
 \begin{table}[h!]
-  \caption{Average number of occurrences in optimal set for ABCD and SIFT features.}
+  \caption{Average number of occurrences in optimal set for Morphological and SIFT features.}
   \pgfplotstabletypeset[ col sep=comma,
     string type,
     columns={Feature Type, Number of Features, Occurence(s), Representation},
     columns/Feature Type/.style={column name=Feature Type, column type={|l|}},
     columns/Number of Features/.style={column name=Feature count, column type={l|}},
-    columns/Occurence(s)/.style={column name=Occurences, column type={l|}},
-    columns/Representation/.style={column name=Average Occurences, column type={l|}},
+    columns/Occurence(s)/.style={column name=Occurrences, column type={l|}},
+    columns/Representation/.style={column name=Average Occurrences, column type={l|}},
     every head row/.style={before row=\hline, after row=\hline},
     every nth row={1}{before row=\hline},
     every last row/.style={after row=\hline}
@@ -434,16 +444,17 @@ From table \ref{representation} it is observable that the SIFT features have mor
 
 In this section results concerning features' importance for different classifiers are presented. To begin with the difference between the importance of SIFT and morphological features are presented in table \ref{class_sift_vs_abcd}. 
 
+% Latex-magi
 \begin{table}[h!]
-  \caption{}
+  \caption{Average number of occurrences in optimal set for Morphological and SIFT features grouped by classifier.}
   \pgfplotstabletypeset[ col sep=comma,
     string type,
     columns={Classifier, Morphological Occurences, Occurences per Morphological Feature, SIFT Occurences, Occurences per SIFT Feature},
     columns/Classifier/.style={column name=Classifier, column type={|l|}},
-    columns/Morphological Occurences/.style={column name=Morphological Occurences, column type={l|}},
-    columns/Occurences per Morphological Feature/.style={column name=Occurences per Morphological Feature, column type={l|}},
-    columns/SIFT Occurences/.style={column name=SIFT Occurences, column type={l|}},
-    columns/Occurences per SIFT Feature/.style={column name=Occurences per SIFT Feature, column type={l|}},
+    columns/Morphological Occurences/.style={column name=Morphological Occurrences, column type={>{\raggedright\arraybackslash}p{2.5cm}|}},
+    columns/Occurences per Morphological Feature/.style={column name=Occurrences per Morphological Feature, column type={>{\raggedright\arraybackslash}p{2.5cm}|}},
+    columns/SIFT Occurences/.style={column name=SIFT Occurrences, column type={>{\raggedright\arraybackslash}p{2.5cm}|}},
+    columns/Occurences per SIFT Feature/.style={column name=Occurrences per SIFT Feature, column type={>{\raggedright\arraybackslash}p{2.5cm}|}},
     every head row/.style={before row=\hline, after row=\hline},
     every nth row={1}{before row=\hline},
     every last row/.style={after row=\hline}
@@ -453,7 +464,7 @@ In this section results concerning features' importance for different classifier
 
 The results show no particular difference between the two types of features for the KNN, NN and RF classifiers. For the SVM, however, the morphological features were more common in the feature set.
 
-In the following subsections the results for every classifier is presented through both a figure showing the distribution of feature occurrences and a table giving more details into the results.
+In the following subsections the results for every classifier is presented through both a figure showing the distribution of feature occurrences and a table giving more details into which features were the most preferred.
 
 \subsection{K-nearest neighbors}
 
@@ -514,7 +525,7 @@ The results show that the feature 'Solidity' (index 151) was prominent in the KN
 
 \newpage
 
-From figure \ref{fig:freq_nn} it is observable that the classifier had a quite even distribution overall where almost all features were present in the optimal set at least once. Furthermore, the distribution between the morphological and SIFT features was slightly in the favor of the first-mentioned.  
+From figure \ref{fig:freq_nn} it is observable that the classifier had a quite even distribution overall where almost all features were present in the optimal set at least once. Furthermore, the distribution between the morphological and SIFT features was slightly in the favor of the first-mentioned.
 
 
 \begin{table}[h!]
@@ -691,9 +702,9 @@ Figure \ref{fig:nn} shows that the two methods had similar results for the neura
   \end{center}
 \end{figure}
 
-Similarly to the neural network, the difference between the two methods is not vast in terms of performance. The SBS outperformed the SFS method, utilizing fewer features for a greater gain in accuracy. Secondly, like the two afformentioned classifiers, there is a variance between the different tests for both selection methods.
+Similarly to the neural network, the difference between the two methods is not vast in terms of performance. The SBS outperformed the SFS method, utilizing fewer features for a greater gain in accuracy. Secondly, like the two aforementioned classifiers, there is a variance between the different tests for both selection methods.
 
-Lastly, in the case of the SFS method, there are spikes in all of the tests, where the performance is greatly increased when adding just a few feature. 
+Lastly, in the case of the SFS method, there are spikes in all the tests, where the performance is greatly increased when adding just a few features. 
 
 \newpage
 
@@ -716,13 +727,13 @@ As mentioned in the result section, the morphological features were overrepresen
 who compared deep features generated by a convoluted neural network against SIFT descriptors. They obtained the highest accuracy using only deep features. While mixing deep and SIFT features, the accuracy was decreased. Finally, only using SIFT features resulted in the worst observed performance. In our results, combining the SIFT and morphological features resulted in a higher accuracy than only using one of the types.
 
 % Feature 151
-The most prominent feature was feature 151, which is a morphological feature. The feature measures the solidity or the compactness of the lesion. This might be due to the way the tests were conducted. In the forward selection, if a feature is selected early, then it is likely to be contained in the optimal set. Thus the fact that the feature was so common might be an indicator that it was chosen early in the process. Which in turn indicates that the feature is a good predictor on its own. However, the feature was common in both SBS and SFS, thus it might simply be an effective predictor of malignant melanoma. This could be due to the fact that the compactness of a lesion is similar to describing the asymmetry, lesion which is one of the critera in the ABCD method. The fact that this is a good indicator might be because malignant lesions usually grow in a more random manner than benign.
+The most prominent feature was feature 151, which is a morphological feature. The feature measures the solidity or the compactness of the lesion. This might be due to the way the tests were conducted. In the forward selection, if a feature is selected early, then it is likely to be contained in the optimal set. Thus, the fact that the feature was so common might be an indicator that it was chosen early in the process. Which in turn indicates that the feature is a good predictor on its own. However, the feature was common in both SBS and SFS, thus it might simply be an effective predictor of malignant melanoma. This could be due to the fact that the compactness of a lesion is similar to describing the asymmetry, lesion which is one of the criteria in the ABCD method. The fact that this is a good indicator might be because malignant lesions usually grow in a more random manner than benign.
 
 % Feature 160
 The second most prominent feature was feature 160, which is a color feature. As stated in the results, the feature measures the quotient of the average amount of red color within the lesion over the amount of red color in the surrounding skin. Thus, a value greater than 1,0 means that the lesion is ''more red'' than the surronding skin and vice versa for a value lower than 1,0. It must be mentioned that a conclusion can not be made concerning whether a high or low value, or that the lesion is more or less red than the surronding skin, is a good indicator of melanoma. These results are somewhat in line with REFERENS FRÅN RELATED WORKS who found that the features which are based on the work of clinicians could classify lesions without losing discriminatory information. However, in this study the prominent features were not tested as a separate feature set. 
 
 % De stora skillnaderna mellan selection metoder
-An interesting result was the difference between the two selection methods for the SVM and KNN classifiers. In both cases the SFS method achieved higher maximum accuracies while at the same time using more features than the SBS. Furthermore, the results  show that during the selection process, the SFS method had a higher average accuracy than the SBS when they utilized the same number of features. They do however converge toward the same accuracy in the beginning and end of the selection process. For the RF and SFS case there were spikes of accuracy in all tests when only a small number of features. These spikes occured at different iterations of the selection process in all of the tests which could be an indication of hidden synergies between some of the features. No conclusion can however be made in the matter since this would require further investigating which features were added and performing more tests to see if this is a reoccuring phenomenon.
+An interesting result was the difference between the two selection methods for the SVM and KNN classifiers. In both cases the SFS method achieved higher maximum accuracies while at the same time using more features than the SBS. Furthermore, the results  show that during the selection process, the SFS method had a higher average accuracy than the SBS when they utilized the same number of features. They do however converge toward the same accuracy in the beginning and end of the selection process. For the RF and SFS case there were spikes of accuracy in all tests when only a few features. These spikes occurred at different iterations of the selection process in all the tests which could be an indication of hidden synergies between some features. No conclusion can however be made in the matter since this would require further investigating which features were added and performing more tests to see if this is a reoccurring phenomenon.
 
 Neural network and Random forest did not show any significant difference between the two selection methods. They also used more features on average in their most optimal set. Furthermore, these two models gained less in terms of performance compared to the SVM and KNN classifiers. Hence, the selection models seem to have difficulties to find effective features compared to the other classifiers.
 
@@ -734,7 +745,7 @@ Lastly, the graphs show that for all the methods, there was an early gain in ter
 
 From the results, this study concludes that morphological features were more important than SIFT features for our classifiers' accuracy. However, compared to solely using SIFT or morphological features, a combination of the two leads to a greater gain in accuracy.
 
-Two features were of signifact importance compared to all other and both of these features were morphological. The most prominent was a feature describing the compactness of the lesion and the second most important feature described the contrast between the lesion and the surronding skin in terms of the color red.
+Two features were of significant importance compared to all other and both of these features were morphological. The most prominent was a feature describing the compactness of the lesion and the second most important feature described the contrast between the lesion and the surrounding skin in terms of the color red.
 
 There was some variance between the difference models regarding which features were the most important. The main difference between the models were how many features were used. The SVM and KNN classifiers used fewer features than the NN and RF classifiers. 
 
@@ -742,7 +753,7 @@ Furthermore, the results show that the SFS method was more effective than the SB
 
 Our hope is that this research can contribute to the  advancement of the important subject of classifying melanoma skincancer using machine learning. We do however acknowledge the limitations of the scope of this study. Firstly, only two types of selection methods were used and they are based on the same idea of sequential selection. For future works it would be interesting to include other types of selection methods, for example entropy based methods. Secondly, the features consisted of two types, while these are frequently used in the research area, deep features are becoming an increasing point of interest for researchers. Thirdly, a binary dataset was used where the lesions either were malignant or benign. There are several other forms of skin cancer that are not as dangerous as melanoma but dangerous nonetheless. Multi-classed datasets are therefore an additional point of interest for future works. Lastly, synergies between different features introduce an effective manner of maintaining or even increasing the performance of the classifier while simultaneously decreasing the runtime. Thus an extention of this work would further examine the prominent features to determine which features could potentially lead to the greatest gain in runtime while still maintaining the performance.
 
-With the points for future research we hope that the subject area can further improve to help tackle the problem of accurately classifying skin cancer in an effective manner, making it more available to patients. 
+With these points for future research we hope that the subject area can further improve to help tackle the problem of accurately classifying skin cancer in an effective manner, making it more available to patients. 
 
 % Print the bibliography (and make it appear in the table of contents)
 \printbibliography[heading=bibintoc]
